@@ -1,4 +1,13 @@
 <resources>
     <string name="app_name">Погода</string>
     <string name="app_textView">Погода</string>
+    <string name="dateLabel">Дата</string>
+    <string name="temperatureLabel">Температура</string>
+    <string name="stateLabel">Осадки</string>
+    <string name="windLabel">Ветер</string>
+    <string name="humidityLabel">Влажность</string>
+    <string name="temperatureValue">+16,4</string>
+    <string name="stateValue">Облачно</string>
+    <string name="windValue">0 м/с</string>
+    <string name="humidityValue">77 %</string>
 </resources>
