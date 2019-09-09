@@ -3,6 +3,7 @@ package ru.systempla.weatherapp;
 import android.app.Activity;
 import android.content.Intent;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.EditText;
 
 public class StartSecondActivity implements View.OnClickListener {
@@ -17,15 +18,18 @@ public class StartSecondActivity implements View.OnClickListener {
 
     @Override
     public void onClick(View view) {
-        // Формируем посылку
+
         EditText txt = sourceActivity.findViewById(R.id.editText);
-        EditText num = sourceActivity.findViewById(R.id.editText2);
+        CheckBox pressureBox = sourceActivity.findViewById(R.id.checkBox);
+        CheckBox windBox = sourceActivity.findViewById(R.id.checkBox2);
+        CheckBox humidityBox = sourceActivity.findViewById(R.id.checkBox3);
 
         Parcel parcel = new Parcel();
         parcel.text = txt.getText().toString();
-        parcel.number = Integer.parseInt(num.getText().toString());
+        parcel.pressureFlag = pressureBox.isChecked();
+        parcel.windFlag = windBox.isChecked();
+        parcel.humidityFlag = humidityBox.isChecked();
 
-        // Посылка сформирована, отправляем
         Intent intent = new Intent(sourceActivity, SecondActivity.class);
         intent.putExtra(TEXT, parcel);
 

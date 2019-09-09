@@ -4,5 +4,7 @@ import java.io.Serializable;
 
 public class Parcel implements Serializable {
     public String text;
-    public int number;
+    public boolean pressureFlag;
+    public boolean windFlag;
+    public boolean humidityFlag;
 }
