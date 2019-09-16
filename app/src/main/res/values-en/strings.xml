@@ -1,0 +1,19 @@
+<resources>
+    <string name="app_name">Weather</string>
+    <string name="app_textView">Weather</string>
+    <string name="dateLabel">Date</string>
+    <string name="temperatureLabel">Temperature</string>
+    <string name="pressureLabel">Pressure</string>
+    <string name="windLabel">Wind speed</string>
+    <string name="humidityLabel">Humidity</string>
+    <string name="temperatureValue">+16,4</string>
+    <string name="pressureValue">743 mb</string>
+    <string name="windValue">0 m/s</string>
+    <string name="humidityValue">77 %</string>
+    <string name="pressureCBoxLabel">@string/pressureLabel</string>
+    <string name="windCBoxLabel">@string/windLabel</string>
+    <string name="humidityCBoxLabel">@string/humidityLabel</string>
+    <string name="buttonRequestLabel">Check the weather</string>
+    <string name="cityLabel">City</string>
+    <string name="cityValue">City</string>
+</resources>

@@ -7,7 +7,7 @@
     <string name="windLabel">Ветер</string>
     <string name="humidityLabel">Влажность</string>
     <string name="temperatureValue">+16,4</string>
-    <string name="pressureValue">743 мм.р.с</string>
+    <string name="pressureValue">743 мм.рт.ст.</string>
     <string name="windValue">0 м/с</string>
     <string name="humidityValue">77 %</string>
     <string name="pressureCBoxLabel">@string/pressureLabel</string>
