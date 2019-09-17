@@ -16,4 +16,15 @@
     <string name="buttonRequestLabel">Check the weather</string>
     <string name="cityLabel">City</string>
     <string name="cityValue">City</string>
+    <string name="empty">The list of cities is empty</string>
+    <string name="view">TextView</string>
+
+    <string-array name="Cities">
+        <item>Moscow</item>
+        <item>Saint Petersburg</item>
+        <item>Yekaterinburg</item>
+        <item>Novosibirsk</item>
+        <item>Samara</item>
+    </string-array>
+
 </resources>

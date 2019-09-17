@@ -1,16 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- это макет для портретной (книжной) ориентации-->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <!-- в портретной (книжной) ориентации у активити только один фрагмент -->
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <fragment android:name="ru.systempla.weatherapp.CitiesFragment"
+        <fragment android:name="ru.geekbrains.lifecycle.LifeCycleFragment"
             android:id="@+id/cities"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
