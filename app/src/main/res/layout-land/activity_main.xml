@@ -1,18 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- это макет для альбомной ориентации -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <!-- Фрагмент с выбором городов -->
-    <fragment android:name="ru.systempla.weatherapp.CitiesFragment"
-        android:id="@+id/cities"
-        android:layout_weight="1"
+    <LinearLayout
         android:layout_width="0px"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:orientation="vertical">
 
-    <!-- Здесь будет герб выбраного города -->
+        <FrameLayout
+            android:id="@+id/ls_fragment_container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+        </FrameLayout>
+
+        <FrameLayout
+            android:id="@+id/settings_button_fragment_container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="5">
+
+        </FrameLayout>
+
+    </LinearLayout>
+
     <FrameLayout
         android:id="@+id/weather_info"
         android:layout_width="0px"

@@ -33,10 +33,39 @@ public class WeatherInfoFragment extends Fragment {
 
         TextView cityNameView = layout.findViewById(R.id.textView);
 
+//        TextView temperatureLabel = layout.findViewById(R.id.temperature_label);
+//        TextView temperatureValue = layout.findViewById(R.id.temperature_value);
+
+        TextView pressureLabel = layout.findViewById(R.id.pressure_label);
+        TextView pressureValue = layout.findViewById(R.id.pressure_value);
+
+        TextView windLabel = layout.findViewById(R.id.wind_label);
+        TextView windValue = layout.findViewById(R.id.wind_value);
+
+        TextView humidityLabel = layout.findViewById(R.id.humidity_label);
+        TextView humidityValue = layout.findViewById(R.id.humidity_value);
+
         Parcel parcel = getParcel();
 
         cityNameView.setText(parcel.getCityName());
 
+        pressureLabel.setVisibility(getVisiabolityInt(parcel.getSettingsParcel().isPressureFlag()));
+        pressureValue.setVisibility(getVisiabolityInt(parcel.getSettingsParcel().isPressureFlag()));
+
+        windLabel.setVisibility(getVisiabolityInt(parcel.getSettingsParcel().isWindFlag()));
+        windValue.setVisibility(getVisiabolityInt(parcel.getSettingsParcel().isWindFlag()));
+
+        humidityLabel.setVisibility(getVisiabolityInt(parcel.getSettingsParcel().isHumidityFlag()));
+        humidityValue.setVisibility(getVisiabolityInt(parcel.getSettingsParcel().isHumidityFlag()));
+
         return layout;
+    }
+
+    private int getVisiabolityInt(boolean flag){
+        if (flag) {
+            return 0;
+        } else {
+            return 8;
+        }
     }
 }
