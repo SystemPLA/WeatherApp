@@ -5,6 +5,9 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.os.Bundle;
+import android.view.View;
+
+import android.util.Log;
 
 public class MainActivity extends AppCompatActivity implements OnFragmentInteractionListener {
 
@@ -19,13 +22,15 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
         if (interactionId==1){
             FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
             fragmentTransaction.replace(R.id.ls_fragment_container, fragmentSettings);
-            fragmentTransaction.remove(fragmentSettingButton);
+            fragmentSettingButton.getView().setVisibility(View.GONE);
+            if (fragmentSettingButton.getView().getVisibility()==View.GONE) {
+            }
             fragmentTransaction.commit();
         }
         if (interactionId==2) {
             FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
             fragmentTransaction.replace(R.id.ls_fragment_container, fragmentCities);
-            fragmentTransaction.add(R.id.settings_button_fragment_container, fragmentSettingButton);
+            fragmentSettingButton.getView().setVisibility(View.VISIBLE);
             fragmentTransaction.commit();
             settingsParcel = sparcel;
         }
@@ -41,8 +46,9 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
         fragmentSettings = new SettingsFragment();
 
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.add(R.id.ls_fragment_container, fragmentCities);
-        fragmentTransaction.add(R.id.settings_button_fragment_container, fragmentSettingButton);
+        fragmentTransaction.replace(R.id.ls_fragment_container, fragmentCities);
+        fragmentTransaction.replace(R.id.settings_button_fragment_container, fragmentSettingButton);
+        Log.i("MA","On Create: replace fraCities, FSB");
         fragmentTransaction.commit();
     }
 

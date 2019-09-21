@@ -46,6 +46,6 @@ public class SettingsButtonFragment extends Fragment implements View.OnClickList
     @Override
     public void onClick(View view) {
         mListener.onInteraction(1, null);
-        Log.i("SBF", "Click");
     }
+
 }
