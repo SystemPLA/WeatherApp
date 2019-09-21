@@ -10,9 +10,14 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-public class SettingsButtonFragment extends Fragment {
+import android.util.Log;
+import android.widget.Button;
+
+public class SettingsButtonFragment extends Fragment implements View.OnClickListener {
 
     private OnFragmentInteractionListener mListener;
+    private  View SBFView;
+    private Button fragmentSettingButton;
 
     @Override
     public void onAttach(Context context) {
@@ -29,18 +34,18 @@ public class SettingsButtonFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        SBFView = inflater.inflate(R.layout.fragment_settings_button, container, false);
+        fragmentSettingButton = (Button) SBFView.findViewById(R.id.settings_button);
 
-        return inflater.inflate(R.layout.fragment_settings_button, container, false);
+        fragmentSettingButton.setOnClickListener(this);
+
+        return SBFView;
     }
 
+
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        getActivity().findViewById(R.id.settings_button).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mListener.onInteraction(1, null);
-            }
-        });
+    public void onClick(View view) {
+        mListener.onInteraction(1, null);
+        Log.i("SBF", "Click");
     }
 }
