@@ -1,6 +1,7 @@
 package ru.systempla.weatherapp;
 
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -42,11 +43,20 @@ public class CitiesFragment extends ListFragment {
             currentParcel = (Parcel) savedInstanceState.getSerializable(KEY);
         else
             currentParcel = new Parcel(0,
-                    getResources().getTextArray(R.array.Cities)[0].toString());
+                    getResources().getTextArray(R.array.Cities)[0].toString(),
+                    ((MainActivity) getActivity()).getSettingsParcel());
 
         if (isExistWeatherInfo) {
             getListView().setChoiceMode(ListView.CHOICE_MODE_SINGLE);
             showWeatherInfo(currentParcel);
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE){
+            getListView().setItemChecked(currentParcel.getCityIndex(), true);
         }
     }
 
@@ -59,7 +69,7 @@ public class CitiesFragment extends ListFragment {
     @Override
     public void onListItemClick(ListView l, View view, int position, long id) {
         TextView cityNameView = (TextView) view;
-        currentParcel =  new Parcel(position, cityNameView.getText().toString());
+        currentParcel =  new Parcel(position, cityNameView.getText().toString(),((MainActivity) getActivity()).getSettingsParcel());
         showWeatherInfo(currentParcel);
     }
 

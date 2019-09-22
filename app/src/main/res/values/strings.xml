@@ -18,6 +18,8 @@
     <string name="cityValue">Город</string>
     <string name="empty">Список городов пуст</string>
     <string name="view">TextView</string>
+    <string name="settings_button_text">Настройки</string>
+    <string name="settings_label">@string/settings_button_text</string>
 
     <string-array name="Cities">
         <item>Москва</item>

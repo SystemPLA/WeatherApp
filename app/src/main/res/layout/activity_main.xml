@@ -6,15 +6,27 @@
     android:layout_height="match_parent">
 
     <!-- в портретной (книжной) ориентации у активити только один фрагмент -->
-    <FrameLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-        <fragment android:name="ru.systempla.weatherapp.CitiesFragment"
-            android:id="@+id/cities"
+        <FrameLayout
+            android:id="@+id/ls_fragment_container"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:layout_weight="1">
 
-    </FrameLayout>
+        </FrameLayout>
+
+        <FrameLayout
+            android:id="@+id/settings_button_fragment_container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="5">
+
+        </FrameLayout>
+
+    </LinearLayout>
 
 </LinearLayout>
