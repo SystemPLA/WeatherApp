@@ -13,7 +13,6 @@
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
         android:checked="true"
-        android:clickable="true"
         android:text="@string/pressureCBoxLabel"
         app:layout_constraintBottom_toTopOf="@+id/cb_humidity"
         app:layout_constraintEnd_toEndOf="parent"
