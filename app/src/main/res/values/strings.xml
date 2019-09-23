@@ -20,6 +20,9 @@
     <string name="view">TextView</string>
     <string name="settings_button_text">Настройки</string>
     <string name="settings_label">@string/settings_button_text</string>
+    <string name="history_bt_label">Погодная история</string>
+    <string name="weather_history_header_label">@string/history_bt_label</string>
+    <string name="add_to_rv_bt_label">Вывести больше данных</string>
 
     <string-array name="Cities">
         <item>Москва</item>

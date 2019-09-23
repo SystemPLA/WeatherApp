@@ -1,9 +1,11 @@
 package ru.systempla.weatherapp;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -33,9 +35,6 @@ public class WeatherInfoFragment extends Fragment {
 
         TextView cityNameView = layout.findViewById(R.id.textView);
 
-//        TextView temperatureLabel = layout.findViewById(R.id.temperature_label);
-//        TextView temperatureValue = layout.findViewById(R.id.temperature_value);
-
         TextView pressureLabel = layout.findViewById(R.id.pressure_label);
         TextView pressureValue = layout.findViewById(R.id.pressure_value);
 
@@ -57,6 +56,16 @@ public class WeatherInfoFragment extends Fragment {
 
         humidityLabel.setVisibility(getVisiabolityInt(parcel.getSettingsParcel().isHumidityFlag()));
         humidityValue.setVisibility(getVisiabolityInt(parcel.getSettingsParcel().isHumidityFlag()));
+
+        Button historyButton = layout.findViewById(R.id.history_bt);
+        historyButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent();
+                intent.setClass(getActivity(), HistoryActivity.class);
+                startActivity(intent);
+            }
+        });
 
         return layout;
     }

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="dates">
+        <item>01.02.2017</item>
+        <item>02.02.2017</item>
+        <item>03.02.2017</item>
+        <item>04.02.2017</item>
+        <item>05.02.2017</item>
+        <item>06.02.2017</item>
+        <item>07.02.2017</item>
+        <item>08.02.2017</item>
+        <item>09.02.2017</item>
+        <item>10.02.2017</item>
+    </string-array>
+<string-array name="temperatures">
+    <item>+16,4</item>
+    <item>+10,3</item>
+    <item>-6,1</item>
+    <item>+6,4</item>
+    <item>+11,4</item>
+    <item>-16,4</item>
+    <item>+26,4</item>
+    <item>-36,4</item>
+    <item>-14,4</item>
+    <item>+15,4</item>
+</string-array>
+<string-array name="pressures">
+    <item>743 мм.рт.ст.</item>
+    <item>740 мм.рт.ст.</item>
+    <item>747 мм.рт.ст.</item>
+    <item>742 мм.рт.ст.</item>
+    <item>749 мм.рт.ст.</item>
+    <item>739 мм.рт.ст.</item>
+    <item>733 мм.рт.ст.</item>
+    <item>745 мм.рт.ст.</item>
+    <item>746 мм.рт.ст.</item>
+    <item>748 мм.рт.ст.</item>
+</string-array>
+<string-array name="windSpeeds">
+    <item>10 м/с</item>
+    <item>12 м/с</item>
+    <item>1 м/с</item>
+    <item>0 м/с</item>
+    <item>4 м/с</item>
+    <item>7 м/с</item>
+    <item>9 м/с</item>
+    <item>15 м/с</item>
+    <item>2 м/с</item>
+    <item>3 м/с</item>
+</string-array>
+<string-array name="humidities">
+    <item>77 %</item>
+    <item>70 %</item>
+    <item>72 %</item>
+    <item>79 %</item>
+    <item>73 %</item>
+    <item>74 %</item>
+    <item>75 %</item>
+    <item>76 %</item>
+    <item>78 %</item>
+    <item>71 %</item>
+</string-array>
+</resources>

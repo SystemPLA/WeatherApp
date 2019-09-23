@@ -19,6 +19,7 @@
         </activity>
 
         <activity android:name=".WeatherInfoActivity"/>
+        <activity android:name=".HistoryActivity"/>
 
     </application>
 
