@@ -22,7 +22,7 @@
     <string name="settings_label">@string/settings_button_text</string>
     <string name="history_bt_label">Weather history</string>
     <string name="weather_history_header_label">@string/history_bt_label</string>
-    <string name="add_to_rv_bt_label">Shoe more data</string>
+    <string name="add_to_rv_bt_label">Show more data</string>
 
     <string-array name="Cities">
         <item>Moscow</item>
