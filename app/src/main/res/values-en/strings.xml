@@ -23,6 +23,9 @@
     <string name="history_bt_label">Weather history</string>
     <string name="weather_history_header_label">@string/history_bt_label</string>
     <string name="add_to_rv_bt_label">Show more data</string>
+    <string name="settings_tm">@string/settings_button_text</string>
+    <string name="change_city">Change city</string>
+    <string name="action_not_found">Action not found</string>
 
     <string-array name="Cities">
         <item>Moscow</item>
