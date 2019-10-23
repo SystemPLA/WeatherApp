@@ -26,6 +26,17 @@
     <string name="settings_tm">@string/settings_button_text</string>
     <string name="change_city">Change city</string>
     <string name="action_not_found">Action not found</string>
+    <string name="send_mes">Send</string>
+    <string name="about_dev">About developer</string>
+    <string name="communicate">Communicate</string>
+    <string name="home_page">Main page</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Settings</string>
 
     <string-array name="Cities">
         <item>Moscow</item>

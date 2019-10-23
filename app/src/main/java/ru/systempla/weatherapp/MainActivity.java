@@ -1,50 +1,59 @@
 package ru.systempla.weatherapp;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
-
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-
-import android.util.Log;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
+
+import com.google.android.material.navigation.NavigationView;
+
 import java.util.Objects;
 
-public class MainActivity extends AppCompatActivity implements OnFragmentInteractionListener {
+import ru.systempla.weatherapp.ui.com.SMFragment;
+import ru.systempla.weatherapp.ui.dev.DeveloperInfoFragment;
+
+public class MainActivity extends AppCompatActivity implements OnFragmentInteractionListener, NavigationView.OnNavigationItemSelectedListener {
 
     private Toolbar toolbar;
     private EditText searchEditText;
-    private Fragment fragmentCities;
-    private Fragment fragmentSettingButton;
+    private DrawerLayout drawer;
     private Fragment fragmentSettings;
+    private Fragment developerInfoFragment;
+    private Fragment sendMessageFragment;
+
     private SettingsParcel settingsParcel = new SettingsParcel(true,true,true);
 
 
     @Override
     public void onInteraction(int interactionId, SettingsParcel sparcel) {
-        if (interactionId==1){
-            FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-            fragmentTransaction.replace(R.id.ls_fragment_container, fragmentSettings);
-            fragmentSettingButton.getView().setVisibility(View.GONE);
-            if (fragmentSettingButton.getView().getVisibility()==View.GONE) {
-            }
-            fragmentTransaction.commit();
-        }
-        if (interactionId==2) {
-            FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-            fragmentTransaction.replace(R.id.ls_fragment_container, fragmentCities);
-            fragmentSettingButton.getView().setVisibility(View.VISIBLE);
-            fragmentTransaction.commit();
-            settingsParcel = sparcel;
-        }
+//        if (interactionId==1){
+//            FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+//            fragmentTransaction.replace(R.id.ls_fragment_container, fragmentSettings);
+//            fragmentSettingButton.getView().setVisibility(View.GONE);
+//            if (fragmentSettingButton.getView().getVisibility()==View.GONE) {
+//            }
+//            fragmentTransaction.commit();
+//        }
+//        if (interactionId==2) {
+//            FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+//            fragmentTransaction.replace(R.id.ls_fragment_container, fragmentCities);
+//            fragmentSettingButton.getView().setVisibility(View.VISIBLE);
+//            fragmentTransaction.commit();
+//            settingsParcel = sparcel;
+//        }
     }
 
     @Override
@@ -53,16 +62,11 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
         setContentView(R.layout.activity_main);
 
         initViews();
+        initSideMenu();
 
-        fragmentCities = new CitiesFragment();
-        fragmentSettingButton = new SettingsButtonFragment();
         fragmentSettings = new SettingsFragment();
-
-        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.replace(R.id.ls_fragment_container, fragmentCities);
-        fragmentTransaction.replace(R.id.settings_button_fragment_container, fragmentSettingButton);
-        Log.i("MA","On Create: replace fraCities, FSB");
-        fragmentTransaction.commit();
+        developerInfoFragment = new DeveloperInfoFragment();
+        sendMessageFragment = new SMFragment();
     }
 
     public SettingsParcel getSettingsParcel(){
@@ -74,6 +78,13 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
         setSupportActionBar(toolbar);
 
         searchEditText = findViewById(R.id.searchEditText);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
     }
 
     @Override
@@ -91,6 +102,7 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
         //noinspection SimplifiableIfStatement
         switch (id) {
             case R.id.change_settings: {
+                replaceFragment(fragmentSettings);
                 Toast.makeText(getApplicationContext(), "Изменение настроек", Toast.LENGTH_SHORT).show();
                 break;
             }
@@ -127,5 +139,38 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
 
             //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
+    }
+
+    private void initSideMenu() {
+        drawer = findViewById(R.id.drawer_layout);
+        NavigationView navigationView = findViewById(R.id.nav_view);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawer, toolbar, R.string.navigation_drawer_open,
+                R.string.navigation_drawer_close);
+        drawer.addDrawerListener(toggle);
+        toggle.syncState();
+        navigationView.setNavigationItemSelectedListener(this);
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+        int id = menuItem.getItemId();
+
+        if (id == R.id.nav_home) {
+
+        } else if (id == R.id.nav_tools) {
+            replaceFragment(developerInfoFragment);
+        } else if (id == R.id.nav_send) {
+            replaceFragment(sendMessageFragment);
+        }
+
+        drawer.closeDrawer(GravityCompat.START);
+        return true;
+    }
+
+    private void replaceFragment(Fragment target) {
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        fragmentTransaction.replace(R.id.ls_fragment_container, target);
+        fragmentTransaction.commit();
     }
 }

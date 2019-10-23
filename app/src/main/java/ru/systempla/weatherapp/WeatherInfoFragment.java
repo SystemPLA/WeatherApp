@@ -48,14 +48,14 @@ public class WeatherInfoFragment extends Fragment {
 
         cityNameView.setText(parcel.getCityName());
 
-        pressureLabel.setVisibility(getVisiabolityInt(parcel.getSettingsParcel().isPressureFlag()));
-        pressureValue.setVisibility(getVisiabolityInt(parcel.getSettingsParcel().isPressureFlag()));
+        pressureLabel.setVisibility(getVisiabilityInt(parcel.getSettingsParcel().isPressureFlag()));
+        pressureValue.setVisibility(getVisiabilityInt(parcel.getSettingsParcel().isPressureFlag()));
 
-        windLabel.setVisibility(getVisiabolityInt(parcel.getSettingsParcel().isWindFlag()));
-        windValue.setVisibility(getVisiabolityInt(parcel.getSettingsParcel().isWindFlag()));
+        windLabel.setVisibility(getVisiabilityInt(parcel.getSettingsParcel().isWindFlag()));
+        windValue.setVisibility(getVisiabilityInt(parcel.getSettingsParcel().isWindFlag()));
 
-        humidityLabel.setVisibility(getVisiabolityInt(parcel.getSettingsParcel().isHumidityFlag()));
-        humidityValue.setVisibility(getVisiabolityInt(parcel.getSettingsParcel().isHumidityFlag()));
+        humidityLabel.setVisibility(getVisiabilityInt(parcel.getSettingsParcel().isHumidityFlag()));
+        humidityValue.setVisibility(getVisiabilityInt(parcel.getSettingsParcel().isHumidityFlag()));
 
         Button historyButton = layout.findViewById(R.id.history_bt);
         historyButton.setOnClickListener(new View.OnClickListener() {
@@ -70,7 +70,7 @@ public class WeatherInfoFragment extends Fragment {
         return layout;
     }
 
-    private int getVisiabolityInt(boolean flag){
+    private int getVisiabilityInt(boolean flag){
         if (flag) {
             return 0;
         } else {

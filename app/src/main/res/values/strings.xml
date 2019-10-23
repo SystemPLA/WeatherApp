@@ -26,6 +26,17 @@
     <string name="settings_tm">Настройки</string>
     <string name="change_city">Изменить город</string>
     <string name="action_not_found">Действие не найдено</string>
+    <string name="send_mes">Написать</string>
+    <string name="about_dev">О разработчике</string>
+    <string name="communicate">Обратная связь</string>
+    <string name="home_page">Главная страница</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">@string/settings_tm</string>
 
     <string-array name="Cities">
         <item>Москва</item>
