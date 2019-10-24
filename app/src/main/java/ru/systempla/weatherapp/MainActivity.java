@@ -1,7 +1,9 @@
 package ru.systempla.weatherapp;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.InputType;
 import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -11,6 +13,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
@@ -99,32 +102,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 break;
             }
             case R.id.change_city: {
-                if(searchEditText.getVisibility() == View.VISIBLE) {
-                    searchEditText.setVisibility(View.GONE);
-                    Objects.requireNonNull(getSupportActionBar())
-                            .setTitle(getString(R.string.app_name));
-                } else {
-                    Objects.requireNonNull(getSupportActionBar()).setTitle("");
-                    searchEditText.setVisibility(View.VISIBLE);
-                    searchEditText.addTextChangedListener(new TextWatcher() {
-                        @Override
-                        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                        }
-
-                        @Override
-                        public void onTextChanged(CharSequence s, int start, int before, int count) {
-                        }
-
-                        @Override
-                        public void afterTextChanged(Editable s) {
-                            last_city = s.toString();
-                            currentParcel = new Parcel(last_city, settingsParcel);
-                            weatherFragment = WeatherInfoFragment.create(currentParcel);
-                            Toast.makeText(getApplicationContext(), s.toString(), Toast.LENGTH_SHORT).show();
-                            replaceFragment(weatherFragment);
-                        }
-                    });
-                }
+                showInputDialog();
                 break;
             }
             default: {
@@ -132,6 +110,25 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         Toast.LENGTH_SHORT).show();
             }
         }
+    }
+
+    private void showInputDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(R.string.change_city);
+
+        final EditText input = new EditText(this);
+        input.setInputType(InputType.TYPE_CLASS_TEXT);
+        builder.setView(input);
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                last_city = input.getText().toString();
+                currentParcel = new Parcel(last_city, settingsParcel);
+                weatherFragment = WeatherInfoFragment.create(currentParcel);
+                replaceFragment(weatherFragment);
+            }
+        });
+        builder.show();
     }
 
     private void initSideMenu() {
