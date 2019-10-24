@@ -27,9 +27,13 @@ import ru.systempla.weatherapp.ui.dev.DeveloperInfoFragment;
 import ru.systempla.weatherapp.ui.main_weather.WeatherInfoFragment;
 import ru.systempla.weatherapp.ui.parcel.Parcel;
 import ru.systempla.weatherapp.ui.parcel.SettingsParcel;
+import ru.systempla.weatherapp.ui.settings.SettingsChangeListener;
 import ru.systempla.weatherapp.ui.settings.SettingsFragment;
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+import static ru.systempla.weatherapp.ui.settings.SettingsFragment.create;
+
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener,
+        SettingsChangeListener {
 
     private Toolbar toolbar;
     private EditText searchEditText;
@@ -45,12 +49,21 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private SettingsParcel settingsParcel = new SettingsParcel(true,true,true);
 
     @Override
+    public void onSettingsChange(SettingsParcel settingsParcel) {
+        this.settingsParcel = settingsParcel;
+        currentParcel = new Parcel(last_city, settingsParcel);
+        weatherFragment = WeatherInfoFragment.create(currentParcel);
+        replaceFragment(weatherFragment);
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         initViews();
         initSideMenu();
+        currentParcel = new Parcel(last_city, settingsParcel);
 
         fragmentSettings = new SettingsFragment();
         developerInfoFragment = new DeveloperInfoFragment();
@@ -81,8 +94,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         int id = item.getItemId();
         switch (id) {
             case R.id.change_settings: {
+                fragmentSettings = SettingsFragment.create(currentParcel);
                 replaceFragment(fragmentSettings);
-                Toast.makeText(getApplicationContext(), "Изменение настроек", Toast.LENGTH_SHORT).show();
                 break;
             }
             case R.id.change_city: {

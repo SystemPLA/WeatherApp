@@ -18,7 +18,7 @@ public class SMFragment extends Fragment {
 
     private TextView messageField;
     private TextView emailField;
-    Button sendButton;
+    private Button sendButton;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
