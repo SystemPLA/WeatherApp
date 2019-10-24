@@ -43,7 +43,16 @@ public class WeatherInfoFragment extends Fragment {
                              Bundle savedInstanceState) {
         View layout = inflater.inflate(R.layout.fragment_weather, container, false);
 
-        initViews(layout);
+        TextView cityNameView = layout.findViewById(R.id.city_title_label);
+
+        TextView pressureLabel = layout.findViewById(R.id.pressure_label);
+        TextView pressureValue = layout.findViewById(R.id.pressure_value);
+
+        TextView windLabel = layout.findViewById(R.id.wind_label);
+        TextView windValue = layout.findViewById(R.id.wind_value);
+
+        TextView humidityLabel = layout.findViewById(R.id.humidity_label);
+        TextView humidityValue = layout.findViewById(R.id.humidity_value);
 
         Parcel parcel = getParcel();
 
@@ -79,16 +88,4 @@ public class WeatherInfoFragment extends Fragment {
         }
     }
 
-    private void initViews(View layout) {
-        TextView cityNameView = layout.findViewById(R.id.textView);
-
-        TextView pressureLabel = layout.findViewById(R.id.pressure_label);
-        TextView pressureValue = layout.findViewById(R.id.pressure_value);
-
-        TextView windLabel = layout.findViewById(R.id.wind_label);
-        TextView windValue = layout.findViewById(R.id.wind_value);
-
-        TextView humidityLabel = layout.findViewById(R.id.humidity_label);
-        TextView humidityValue = layout.findViewById(R.id.humidity_value);
-    }
 }

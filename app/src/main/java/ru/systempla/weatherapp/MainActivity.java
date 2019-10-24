@@ -34,6 +34,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private Fragment developerInfoFragment;
     private Fragment sendMessageFragment;
     private Fragment weatherFragment;
+    private Parcel currentParcel;
 
     public String last_city = "";
 
@@ -51,10 +52,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         developerInfoFragment = new DeveloperInfoFragment();
         sendMessageFragment = new SMFragment();
         weatherFragment = new WeatherInfoFragment();
-    }
-
-    public SettingsParcel getSettingsParcel(){
-        return this.settingsParcel;
     }
 
     private void initViews() {
@@ -110,6 +107,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         @Override
                         public void afterTextChanged(Editable s) {
                             last_city = s.toString();
+                            currentParcel = new Parcel(last_city, settingsParcel);
+                            weatherFragment = WeatherInfoFragment.create(currentParcel);
                             //Вам приходит на вход текст поиска - ищем его - в бд, через АПИ (сервер в инете) и т.д.
                             Toast.makeText(getApplicationContext(), s.toString(), Toast.LENGTH_SHORT).show();
                             replaceFragment(weatherFragment);
@@ -143,6 +142,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         int id = menuItem.getItemId();
 
         if (id == R.id.nav_home) {
+            currentParcel = new Parcel(last_city, settingsParcel);
+            weatherFragment = WeatherInfoFragment.create(currentParcel);
             replaceFragment(weatherFragment);
         } else if (id == R.id.nav_tools) {
             replaceFragment(developerInfoFragment);
