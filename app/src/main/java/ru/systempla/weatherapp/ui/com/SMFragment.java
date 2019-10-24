@@ -36,9 +36,15 @@ public class SMFragment extends Fragment {
                         +messageField.getText().toString()+" "+getString(R.string.is_sent);
                 Toast.makeText(getActivity().getApplicationContext(), toastText,
                         Toast.LENGTH_LONG).show();
+                clearForms();
             }
         });
 
         return layout;
+    }
+
+    private void clearForms() {
+        messageField.setText("");
+        emailField.setText("");
     }
 }
