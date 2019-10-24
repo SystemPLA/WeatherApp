@@ -37,6 +37,14 @@
     <string name="nav_header_subtitle">android.studio@android.com</string>
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">@string/settings_tm</string>
+    <string name="dev_title_label">@string/about_dev</string>
+    <string name="systempla">SystemPLA</string>
+    <string name="send_us_message">Напишите нам</string>
+    <string name="message_text">текст сообщения</string>
+    <string name="e_mail">e-mail</string>
+    <string name="send">Отправить</string>
+
+    <string name="place_not_found">Место не найдено</string>
 
     <string-array name="Cities">
         <item>Москва</item>

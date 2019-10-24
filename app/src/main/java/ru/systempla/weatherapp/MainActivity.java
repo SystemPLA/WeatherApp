@@ -25,7 +25,7 @@ import java.util.Objects;
 import ru.systempla.weatherapp.ui.com.SMFragment;
 import ru.systempla.weatherapp.ui.dev.DeveloperInfoFragment;
 
-public class MainActivity extends AppCompatActivity implements OnFragmentInteractionListener, NavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private Toolbar toolbar;
     private EditText searchEditText;
@@ -33,28 +33,11 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
     private Fragment fragmentSettings;
     private Fragment developerInfoFragment;
     private Fragment sendMessageFragment;
+    private Fragment weatherFragment;
+
+    public String last_city = "";
 
     private SettingsParcel settingsParcel = new SettingsParcel(true,true,true);
-
-
-    @Override
-    public void onInteraction(int interactionId, SettingsParcel sparcel) {
-//        if (interactionId==1){
-//            FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-//            fragmentTransaction.replace(R.id.ls_fragment_container, fragmentSettings);
-//            fragmentSettingButton.getView().setVisibility(View.GONE);
-//            if (fragmentSettingButton.getView().getVisibility()==View.GONE) {
-//            }
-//            fragmentTransaction.commit();
-//        }
-//        if (interactionId==2) {
-//            FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-//            fragmentTransaction.replace(R.id.ls_fragment_container, fragmentCities);
-//            fragmentSettingButton.getView().setVisibility(View.VISIBLE);
-//            fragmentTransaction.commit();
-//            settingsParcel = sparcel;
-//        }
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,6 +50,7 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
         fragmentSettings = new SettingsFragment();
         developerInfoFragment = new DeveloperInfoFragment();
         sendMessageFragment = new SMFragment();
+        weatherFragment = new WeatherInfoFragment();
     }
 
     public SettingsParcel getSettingsParcel(){
@@ -125,8 +109,10 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
 
                         @Override
                         public void afterTextChanged(Editable s) {
+                            last_city = s.toString();
                             //Вам приходит на вход текст поиска - ищем его - в бд, через АПИ (сервер в инете) и т.д.
                             Toast.makeText(getApplicationContext(), s.toString(), Toast.LENGTH_SHORT).show();
+                            replaceFragment(weatherFragment);
                         }
                     });
                 }
@@ -157,7 +143,7 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
         int id = menuItem.getItemId();
 
         if (id == R.id.nav_home) {
-
+            replaceFragment(weatherFragment);
         } else if (id == R.id.nav_tools) {
             replaceFragment(developerInfoFragment);
         } else if (id == R.id.nav_send) {
@@ -170,7 +156,8 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
 
     private void replaceFragment(Fragment target) {
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.replace(R.id.ls_fragment_container, target);
+        fragmentTransaction.replace(R.id.fragment_container, target);
         fragmentTransaction.commit();
     }
+
 }

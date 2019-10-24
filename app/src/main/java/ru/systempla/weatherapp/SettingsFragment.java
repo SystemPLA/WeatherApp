@@ -13,18 +13,18 @@ import androidx.fragment.app.Fragment;
 
 public class SettingsFragment extends Fragment {
 
-    private OnFragmentInteractionListener mListener;
+//    private OnFragmentInteractionListener mListener;
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        mListener = (OnFragmentInteractionListener) getActivity();
+//        mListener = (OnFragmentInteractionListener) getActivity();
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-        mListener = null;
+//        mListener = null;
     }
 
     @Override
@@ -37,13 +37,13 @@ public class SettingsFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        getActivity().findViewById(R.id.ok_button).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mListener.onInteraction(2, new SettingsParcel(((CheckBox)getActivity().findViewById(R.id.cb_pressure)).isChecked(),
-                        ((CheckBox)getActivity().findViewById(R.id.cb_wind)).isChecked(),
-                        ((CheckBox)getActivity().findViewById(R.id.cb_humidity)).isChecked()));
-            }
-        });
+//        getActivity().findViewById(R.id.ok_button).setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                mListener.onInteraction(2, new SettingsParcel(((CheckBox)getActivity().findViewById(R.id.cb_pressure)).isChecked(),
+//                        ((CheckBox)getActivity().findViewById(R.id.cb_wind)).isChecked(),
+//                        ((CheckBox)getActivity().findViewById(R.id.cb_humidity)).isChecked()));
+//            }
+//        });
     }
 }
