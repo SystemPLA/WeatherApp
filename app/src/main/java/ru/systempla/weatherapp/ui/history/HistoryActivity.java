@@ -1,4 +1,4 @@
-package ru.systempla.weatherapp;
+package ru.systempla.weatherapp.ui.history;
 
 import android.os.Bundle;
 import android.view.View;
@@ -10,6 +10,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
+
+import ru.systempla.weatherapp.R;
 
 public class HistoryActivity extends AppCompatActivity {
 

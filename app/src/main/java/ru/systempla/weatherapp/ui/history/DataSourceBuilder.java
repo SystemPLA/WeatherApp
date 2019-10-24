@@ -1,9 +1,11 @@
-package ru.systempla.weatherapp;
+package ru.systempla.weatherapp.ui.history;
 
 import android.content.res.Resources;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import ru.systempla.weatherapp.R;
 
 public class DataSourceBuilder {
 

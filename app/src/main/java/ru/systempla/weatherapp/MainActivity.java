@@ -24,6 +24,10 @@ import java.util.Objects;
 
 import ru.systempla.weatherapp.ui.com.SMFragment;
 import ru.systempla.weatherapp.ui.dev.DeveloperInfoFragment;
+import ru.systempla.weatherapp.ui.main_weather.WeatherInfoFragment;
+import ru.systempla.weatherapp.ui.parcel.Parcel;
+import ru.systempla.weatherapp.ui.parcel.SettingsParcel;
+import ru.systempla.weatherapp.ui.settings.SettingsFragment;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -63,24 +67,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         handleMenuItemClick(item);
         return super.onOptionsItemSelected(item);
     }
 
     private void handleMenuItemClick(MenuItem item) {
         int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
         switch (id) {
             case R.id.change_settings: {
                 replaceFragment(fragmentSettings);
@@ -109,7 +107,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                             last_city = s.toString();
                             currentParcel = new Parcel(last_city, settingsParcel);
                             weatherFragment = WeatherInfoFragment.create(currentParcel);
-                            //Вам приходит на вход текст поиска - ищем его - в бд, через АПИ (сервер в инете) и т.д.
                             Toast.makeText(getApplicationContext(), s.toString(), Toast.LENGTH_SHORT).show();
                             replaceFragment(weatherFragment);
                         }
@@ -121,8 +118,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 Toast.makeText(getApplicationContext(), getString(R.string.action_not_found),
                         Toast.LENGTH_SHORT).show();
             }
-
-            //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
     }
 

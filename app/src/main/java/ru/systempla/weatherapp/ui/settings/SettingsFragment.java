@@ -1,4 +1,4 @@
-package ru.systempla.weatherapp;
+package ru.systempla.weatherapp.ui.settings;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -10,6 +10,8 @@ import android.widget.CheckBox;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+
+import ru.systempla.weatherapp.R;
 
 public class SettingsFragment extends Fragment {
 

@@ -1,4 +1,4 @@
-package ru.systempla.weatherapp;
+package ru.systempla.weatherapp.ui.history;
 
 
 public class HistoryEntry {

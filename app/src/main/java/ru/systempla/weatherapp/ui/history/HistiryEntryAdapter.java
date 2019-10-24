@@ -1,4 +1,4 @@
-package ru.systempla.weatherapp;
+package ru.systempla.weatherapp.ui.history;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -10,6 +10,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
+
+import ru.systempla.weatherapp.R;
 
 class HistoryEntryAdapter extends RecyclerView.Adapter<HistoryEntryAdapter.ViewHolder> {
 
