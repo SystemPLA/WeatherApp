@@ -1,11 +1,16 @@
 package ru.systempla.weatherapp;
 
 import android.content.DialogInterface;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.text.InputType;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -19,6 +24,8 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.material.navigation.NavigationView;
+
+import java.util.List;
 
 import ru.systempla.weatherapp.ui.com.SMFragment;
 import ru.systempla.weatherapp.ui.dev.DeveloperInfoFragment;
@@ -38,6 +45,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private Fragment sendMessageFragment;
     private Fragment weatherFragment;
     private Parcel currentParcel;
+    private TextView temperatureSensorText;
+    private TextView humiditySensorText;
+    private Sensor sensorTemperature;
+    private Sensor sensorHumidity;
+    private SensorManager sensorManager;
 
     private String last_city = "";
 
@@ -58,6 +70,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         initViews();
         initSideMenu();
+        getSensors();
+
         currentParcel = new Parcel(last_city, settingsParcel);
 
         fragmentSettings = new SettingsFragment();
@@ -66,9 +80,29 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         weatherFragment = new WeatherInfoFragment();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // Регистрируем слушатель датчика освещенности
+        sensorManager.registerListener(listenerTemperature, sensorTemperature,
+                SensorManager.SENSOR_DELAY_NORMAL);
+        sensorManager.registerListener(listenerHumidity, sensorHumidity,
+                SensorManager.SENSOR_DELAY_NORMAL);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        sensorManager.unregisterListener(listenerTemperature, sensorTemperature);
+        sensorManager.unregisterListener(listenerHumidity, sensorHumidity);
+    }
+
     private void initViews() {
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        temperatureSensorText = findViewById(R.id.textTemperatureSensor);
+        humiditySensorText = findViewById(R.id.textHumiditySensor);
     }
 
     @Override
@@ -155,5 +189,50 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         fragmentTransaction.replace(R.id.fragment_container, target);
         fragmentTransaction.commit();
     }
+
+    private void getSensors() {
+        // Менеджер датчиков
+        sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
+        // Датчик освещенности (он есть на многих моделях)
+        sensorTemperature = sensorManager.getDefaultSensor(Sensor.TYPE_AMBIENT_TEMPERATURE);
+        sensorHumidity = sensorManager.getDefaultSensor(Sensor.TYPE_RELATIVE_HUMIDITY);
+    }
+
+    private void showTemperatureSensor(SensorEvent event){
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append("Temperature Sensor value = ").append(event.values[0])
+                .append("\n").append("=======================================").append("\n");
+        temperatureSensorText.setText(stringBuilder);
+    }
+
+    private void showHumiditySensor(SensorEvent event){
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append("Humidity Sensor value = ").append(event.values[0])
+                .append("\n").append("=======================================").append("\n");
+        humiditySensorText.setText(stringBuilder);
+    }
+
+    // Слушатель датчика освещенности
+    SensorEventListener listenerTemperature = new SensorEventListener() {
+
+        @Override
+        public void onAccuracyChanged(Sensor sensor, int accuracy) {}
+
+        @Override
+        public void onSensorChanged(SensorEvent event) {
+            showTemperatureSensor(event);
+        }
+    };
+
+    SensorEventListener listenerHumidity = new SensorEventListener() {
+
+        @Override
+        public void onAccuracyChanged(Sensor sensor, int accuracy) {}
+
+        @Override
+        public void onSensorChanged(SensorEvent event) {
+            showHumiditySensor(event);
+        }
+    };
 
 }

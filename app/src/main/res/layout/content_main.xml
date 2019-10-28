@@ -18,6 +18,17 @@
             android:layout_height="wrap_content"
             android:orientation="vertical" >
 
+
+            <TextView
+                android:id="@+id/textTemperatureSensor"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/textHumiditySensor"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
             <androidx.cardview.widget.CardView
                 android:id="@+id/fragment_container"
                 card_view:cardCornerRadius="15dp"
