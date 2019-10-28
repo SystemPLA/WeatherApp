@@ -28,13 +28,6 @@
 
             </androidx.cardview.widget.CardView>
 
-<!--            <FrameLayout-->
-<!--                android:id="@+id/settings_button_fragment_container"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="wrap_content">-->
-
-<!--            </FrameLayout>-->
-
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 

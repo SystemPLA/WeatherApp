@@ -1,14 +1,13 @@
 package ru.systempla.weatherapp.ui.history;
 
-
-public class HistoryEntry {
+class HistoryEntry {
     private final String date;
     private final String temperature;
     private final String pressure;
     private final String windSpeed;
     private final String humidity;
 
-    public HistoryEntry(String date, String temperature, String pressure, String windSpeed, String humidity) {
+    HistoryEntry(String date, String temperature, String pressure, String windSpeed, String humidity) {
         this.date = date;
         this.temperature = temperature;
         this.pressure = pressure;
@@ -16,23 +15,23 @@ public class HistoryEntry {
         this.humidity = humidity;
     }
 
-    public String getDate() {
+    String getDate() {
         return date;
     }
 
-    public String getTemperature() {
+    String getTemperature() {
         return temperature;
     }
 
-    public String getPressure() {
+    String getPressure() {
         return pressure;
     }
 
-    public String getWindSpeed() {
+    String getWindSpeed() {
         return windSpeed;
     }
 
-    public String getHumidity() {
+    String getHumidity() {
         return humidity;
     }
 }

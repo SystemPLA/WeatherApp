@@ -25,9 +25,7 @@ public class SMFragment extends Fragment {
 
         View layout = inflater.inflate(R.layout.sm_layout, container, false);
 
-        sendButton = layout.findViewById(R.id.send_button);
-        messageField = layout.findViewById(R.id.mes_text);
-        emailField = layout.findViewById(R.id.email_text);
+        initViews(layout);
 
         sendButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -41,10 +39,17 @@ public class SMFragment extends Fragment {
         });
 
         return layout;
+
     }
 
     private void clearForms() {
         messageField.setText("");
         emailField.setText("");
+    }
+
+    private void initViews(View layout) {
+        sendButton = layout.findViewById(R.id.send_button);
+        messageField = layout.findViewById(R.id.mes_text);
+        emailField = layout.findViewById(R.id.email_text);
     }
 }

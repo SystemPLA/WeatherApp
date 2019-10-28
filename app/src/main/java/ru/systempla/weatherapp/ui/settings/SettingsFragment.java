@@ -18,7 +18,7 @@ import ru.systempla.weatherapp.ui.parcel.SettingsParcel;
 
 public class SettingsFragment extends Fragment {
 
-    public static final String SETTINGS = "parcel";
+    private static final String SETTINGS = "parcel";
 
     private Parcel parcel;
     private CheckBox pressureCB;
@@ -85,7 +85,7 @@ public class SettingsFragment extends Fragment {
         applySettingsButton = layout.findViewById(R.id.ok_button);
     }
 
-    void applySettings(Parcel parcel) {
+    private void applySettings(Parcel parcel) {
         pressureCB.setChecked(parcel.getSettingsParcel().isPressureFlag());
         windSpeedCB.setChecked(parcel.getSettingsParcel().isWindFlag());
         humidityCB.setChecked(parcel.getSettingsParcel().isHumidityFlag());

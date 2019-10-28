@@ -30,7 +30,7 @@ public class WeatherInfoFragment extends Fragment {
 
     private final static String LOG_TAG = "WeatherInfoFragment";
 
-    Typeface weatherFont;
+    private Typeface weatherFont;
     private final Handler handler = new Handler();
     private TextView cityNameView;
     private TextView updatedTextView;
@@ -47,7 +47,7 @@ public class WeatherInfoFragment extends Fragment {
     private Button historyButton;
     private Parcel parcel;
 
-    public static final String PARCEL = "parcel";
+    private static final String PARCEL = "parcel";
 
     public static WeatherInfoFragment create(Parcel parcel) {
         WeatherInfoFragment fragment = new WeatherInfoFragment();
@@ -90,7 +90,7 @@ public class WeatherInfoFragment extends Fragment {
         return layout;
     }
 
-    private int getVisiabilityInt(boolean flag){
+    private int getVisibilityInt(boolean flag){
         if (flag) {
             return 0;
         } else {
@@ -121,14 +121,14 @@ public class WeatherInfoFragment extends Fragment {
     }
 
     private void applySettings(Parcel parcel) {
-        pressureLabel.setVisibility(getVisiabilityInt(parcel.getSettingsParcel().isPressureFlag()));
-        pressureValue.setVisibility(getVisiabilityInt(parcel.getSettingsParcel().isPressureFlag()));
+        pressureLabel.setVisibility(getVisibilityInt(parcel.getSettingsParcel().isPressureFlag()));
+        pressureValue.setVisibility(getVisibilityInt(parcel.getSettingsParcel().isPressureFlag()));
 
-        windLabel.setVisibility(getVisiabilityInt(parcel.getSettingsParcel().isWindFlag()));
-        windValue.setVisibility(getVisiabilityInt(parcel.getSettingsParcel().isWindFlag()));
+        windLabel.setVisibility(getVisibilityInt(parcel.getSettingsParcel().isWindFlag()));
+        windValue.setVisibility(getVisibilityInt(parcel.getSettingsParcel().isWindFlag()));
 
-        humidityLabel.setVisibility(getVisiabilityInt(parcel.getSettingsParcel().isHumidityFlag()));
-        humidityValue.setVisibility(getVisiabilityInt(parcel.getSettingsParcel().isHumidityFlag()));
+        humidityLabel.setVisibility(getVisibilityInt(parcel.getSettingsParcel().isHumidityFlag()));
+        humidityValue.setVisibility(getVisibilityInt(parcel.getSettingsParcel().isHumidityFlag()));
     }
 
     private void initFonts() {

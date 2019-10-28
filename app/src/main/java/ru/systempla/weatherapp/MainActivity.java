@@ -2,12 +2,9 @@ package ru.systempla.weatherapp;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.text.Editable;
 import android.text.InputType;
-import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -23,8 +20,6 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.material.navigation.NavigationView;
 
-import java.util.Objects;
-
 import ru.systempla.weatherapp.ui.com.SMFragment;
 import ru.systempla.weatherapp.ui.dev.DeveloperInfoFragment;
 import ru.systempla.weatherapp.ui.main_weather.WeatherInfoFragment;
@@ -33,13 +28,10 @@ import ru.systempla.weatherapp.ui.parcel.SettingsParcel;
 import ru.systempla.weatherapp.ui.settings.SettingsChangeListener;
 import ru.systempla.weatherapp.ui.settings.SettingsFragment;
 
-import static ru.systempla.weatherapp.ui.settings.SettingsFragment.create;
-
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener,
         SettingsChangeListener {
 
     private Toolbar toolbar;
-    private EditText searchEditText;
     private DrawerLayout drawer;
     private Fragment fragmentSettings;
     private Fragment developerInfoFragment;
@@ -47,7 +39,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private Fragment weatherFragment;
     private Parcel currentParcel;
 
-    public String last_city = "";
+    private String last_city = "";
 
     private SettingsParcel settingsParcel = new SettingsParcel(true,true,true);
 
@@ -77,8 +69,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private void initViews() {
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-        searchEditText = findViewById(R.id.searchEditText);
     }
 
     @Override
