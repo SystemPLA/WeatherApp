@@ -1,4 +1,4 @@
-package ru.systempla.weatherapp;
+package ru.systempla.weatherapp.ui.history;
 
 import android.os.Bundle;
 import android.view.View;
@@ -11,17 +11,21 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
+import ru.systempla.weatherapp.R;
+
 public class HistoryActivity extends AppCompatActivity {
+
+    private RecyclerView recyclerView;
+    private Button add;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.weather_history_activity);
 
-        RecyclerView recyclerView = findViewById(R.id.rv_history);
+        initViews();
 
         recyclerView.setItemAnimator(new DefaultItemAnimator());
-
         recyclerView.setHasFixedSize(true);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
@@ -32,7 +36,6 @@ public class HistoryActivity extends AppCompatActivity {
         final HistoryEntryAdapter adapter = new HistoryEntryAdapter(dataSource);
         recyclerView.setAdapter(adapter);
 
-        Button add = findViewById(R.id.add_to_rv_bt);
         add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -42,5 +45,10 @@ public class HistoryActivity extends AppCompatActivity {
                 adapter.notifyDataSetChanged();
             }
         });
+    }
+
+    private void initViews() {
+        recyclerView = findViewById(R.id.rv_history);
+        add = findViewById(R.id.add_to_rv_bt);
     }
 }

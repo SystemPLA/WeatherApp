@@ -1,21 +1,23 @@
-package ru.systempla.weatherapp;
+package ru.systempla.weatherapp.ui.history;
 
 import android.content.res.Resources;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class DataSourceBuilder {
+import ru.systempla.weatherapp.R;
+
+class DataSourceBuilder {
 
     private final List<HistoryEntry> dataSource;
     private final Resources resources;
 
-    public DataSourceBuilder(Resources resources) {
+    DataSourceBuilder(Resources resources) {
         dataSource = new ArrayList<>(6);
         this.resources = resources;
     }
 
-    public List<HistoryEntry> build() {
+    List<HistoryEntry> build() {
         String[] dates = resources.getStringArray(R.array.dates);
         String[] temperatures = resources.getStringArray(R.array.temperatures);
         String[] pressures = resources.getStringArray(R.array.pressures);

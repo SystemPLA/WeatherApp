@@ -1,16 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<androidx.cardview.widget.CardView xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/ls_fragment_container"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_margin="20dp"
-    card_view:cardCornerRadius="15dp"
-    card_view:cardElevation="10dp"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:card_view="http://schemas.android.com/apk/res-auto">
-
     <androidx.core.widget.NestedScrollView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:card_view="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fillViewport="true">
@@ -21,7 +12,7 @@
             android:orientation="vertical" >
 
             <TextView
-                android:id="@+id/textView"
+                android:id="@+id/city_field"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/view"
@@ -56,30 +47,52 @@
                     card_view:srcCompat="@drawable/bright" />
 
                 <TextView
+                    android:id="@+id/updated_field"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
+                    card_view:layout_constraintEnd_toEndOf="parent"
+                    card_view:layout_constraintStart_toStartOf="parent"
+                    card_view:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/weather_icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:textSize="@dimen/icon_font_size"
+                    card_view:layout_constraintEnd_toEndOf="parent"
+                    card_view:layout_constraintStart_toStartOf="parent"
+                    card_view:layout_constraintTop_toBottomOf="@+id/updated_field" />
+
+                <TextView
                     android:id="@+id/temperature_label"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="32dp"
-                    android:layout_marginTop="8dp"
                     android:layout_marginBottom="8dp"
                     android:text="@string/temperatureLabel"
                     android:textSize="18sp"
                     card_view:layout_constraintBottom_toTopOf="@+id/pressure_label"
                     card_view:layout_constraintStart_toStartOf="parent"
-                    card_view:layout_constraintTop_toTopOf="parent" />
+                    card_view:layout_constraintTop_toBottomOf="@+id/details_field" />
 
                 <TextView
                     android:id="@+id/temperature_value"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
                     android:layout_marginEnd="32dp"
                     android:layout_marginBottom="8dp"
-                    android:text="@string/temperatureValue"
                     android:textSize="18sp"
                     card_view:layout_constraintBottom_toTopOf="@+id/pressure_value"
                     card_view:layout_constraintEnd_toEndOf="parent"
-                    card_view:layout_constraintTop_toTopOf="parent" />
+                    card_view:layout_constraintTop_toBottomOf="@+id/details_field" />
 
                 <TextView
                     android:id="@+id/pressure_label"
@@ -101,7 +114,6 @@
                     android:layout_marginTop="8dp"
                     android:layout_marginEnd="32dp"
                     android:layout_marginBottom="8dp"
-                    android:text="@string/pressureValue"
                     android:textSize="18sp"
                     card_view:layout_constraintBottom_toTopOf="@+id/wind_value"
                     card_view:layout_constraintEnd_toEndOf="parent"
@@ -127,7 +139,6 @@
                     android:layout_marginTop="8dp"
                     android:layout_marginEnd="32dp"
                     android:layout_marginBottom="8dp"
-                    android:text="@string/windValue"
                     android:textSize="18sp"
                     card_view:layout_constraintBottom_toTopOf="@+id/humidity_value"
                     card_view:layout_constraintEnd_toEndOf="parent"
@@ -153,15 +164,23 @@
                     android:layout_marginTop="8dp"
                     android:layout_marginEnd="32dp"
                     android:layout_marginBottom="8dp"
-                    android:text="@string/humidityValue"
                     android:textSize="18sp"
                     card_view:layout_constraintBottom_toTopOf="@+id/imageView"
                     card_view:layout_constraintEnd_toEndOf="parent"
                     card_view:layout_constraintTop_toBottomOf="@+id/wind_value" />
 
+                <TextView
+                    android:id="@+id/details_field"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
+                    card_view:layout_constraintEnd_toEndOf="parent"
+                    card_view:layout_constraintStart_toStartOf="parent"
+                    card_view:layout_constraintTop_toBottomOf="@+id/weather_icon" />
+
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
-
-</androidx.cardview.widget.CardView>
