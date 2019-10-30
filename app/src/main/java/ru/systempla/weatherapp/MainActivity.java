@@ -57,6 +57,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private SettingsParcel settingsParcel = new SettingsParcel(true,true,true);
 
+//    OnNavigationItemSelectedListener method
+
     @Override
     public void onSettingsChange(SettingsParcel settingsParcel) {
         this.settingsParcel = settingsParcel;
@@ -64,6 +66,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         weatherFragment = WeatherInfoFragment.create(currentParcel);
         replaceFragment(weatherFragment);
     }
+
+//    Activity method
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,6 +84,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         developerInfoFragment = new DeveloperInfoFragment();
         sendMessageFragment = new SMFragment();
         weatherFragment = new WeatherInfoFragment();
+    }
+
+    private void initViews() {
+        toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        temperatureSensorText = findViewById(R.id.textTemperatureSensor);
+        humiditySensorText = findViewById(R.id.textHumiditySensor);
+        fragmentContainer = findViewById(R.id.fragment_container);
     }
 
     @Override
@@ -108,15 +121,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         } else {
             finish();
         }
-    }
-
-    private void initViews() {
-        toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-
-        temperatureSensorText = findViewById(R.id.textTemperatureSensor);
-        humiditySensorText = findViewById(R.id.textHumiditySensor);
-        fragmentContainer = findViewById(R.id.fragment_container);
     }
 
     @Override
@@ -205,6 +209,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
     }
+
+//    Sensors
 
     private void getSensors() {
         // Менеджер датчиков
