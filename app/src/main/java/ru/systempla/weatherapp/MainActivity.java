@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.text.InputType;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -25,7 +26,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.material.navigation.NavigationView;
 
-import java.util.List;
+import java.util.Objects;
 
 import ru.systempla.weatherapp.ui.com.SMFragment;
 import ru.systempla.weatherapp.ui.dev.DeveloperInfoFragment;
@@ -50,6 +51,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private Sensor sensorTemperature;
     private Sensor sensorHumidity;
     private SensorManager sensorManager;
+    private View fragmentContainer;
 
     private String last_city = "";
 
@@ -97,12 +99,24 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         sensorManager.unregisterListener(listenerHumidity, sensorHumidity);
     }
 
+    @Override
+    public void onBackPressed() {
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+        } else if(getSupportFragmentManager().getBackStackEntryCount() > 1) {
+            getSupportFragmentManager().popBackStack();
+        } else {
+            finish();
+        }
+    }
+
     private void initViews() {
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         temperatureSensorText = findViewById(R.id.textTemperatureSensor);
         humiditySensorText = findViewById(R.id.textHumiditySensor);
+        fragmentContainer = findViewById(R.id.fragment_container);
     }
 
     @Override
@@ -185,8 +199,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     private void replaceFragment(Fragment target) {
+        if (fragmentContainer.getVisibility()==View.GONE) fragmentContainer.setVisibility(View.VISIBLE);
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.replace(R.id.fragment_container, target);
+        fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
     }
 

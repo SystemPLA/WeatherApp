@@ -31,11 +31,12 @@
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/fragment_container"
-                card_view:cardCornerRadius="15dp"
-                card_view:cardElevation="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="20dp">
+                android:layout_margin="20dp"
+                android:visibility="gone"
+                card_view:cardCornerRadius="15dp"
+                card_view:cardElevation="10dp">
 
             </androidx.cardview.widget.CardView>
 
