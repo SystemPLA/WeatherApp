@@ -22,6 +22,7 @@ import java.text.DateFormat;
 import java.util.Date;
 import java.util.Locale;
 
+import ru.systempla.weatherapp.service.BoundService;
 import ru.systempla.weatherapp.ui.history.HistoryActivity;
 import ru.systempla.weatherapp.ui.parcel.Parcel;
 import ru.systempla.weatherapp.R;
