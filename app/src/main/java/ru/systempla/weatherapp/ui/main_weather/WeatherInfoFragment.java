@@ -141,7 +141,7 @@ public class WeatherInfoFragment extends Fragment {
         new Thread() {
             @Override
             public void run() {
-                final JSONObject jsonObject = WeatherDataLoader.getJSONData(city);
+                final JSONObject jsonObject = parcel.getmService().getService().getWeatherUpdate(city);
                 if(jsonObject == null) {
                     handler.post(new Runnable() {
                         @Override

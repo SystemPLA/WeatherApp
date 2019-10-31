@@ -1,8 +1,6 @@
 package ru.systempla.weatherapp;
 
-import android.content.BroadcastReceiver;
 import android.content.ComponentName;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.ServiceConnection;
@@ -13,7 +11,6 @@ import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.text.InputType;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -33,7 +30,6 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.material.navigation.NavigationView;
 
-import ru.systempla.weatherapp.service.BackgroundService;
 import ru.systempla.weatherapp.service.BoundService;
 import ru.systempla.weatherapp.ui.com.SMFragment;
 import ru.systempla.weatherapp.ui.dev.DeveloperInfoFragment;
@@ -108,6 +104,24 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         temperatureSensorText = findViewById(R.id.textTemperatureSensor);
         humiditySensorText = findViewById(R.id.textHumiditySensor);
         fragmentContainer = findViewById(R.id.fragment_container);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if (!isBind) {
+            Intent intent = new Intent(getApplicationContext(), BoundService.class);
+            bindService(intent, mConnection, BIND_AUTO_CREATE);
+        }
+    }
+
+    @Override
+    protected void onStop() {
+        if (isBind) {
+            this.unbindService(mConnection);
+            isBind = false;
+        }
+        super.onStop();
     }
 
     @Override
@@ -282,12 +296,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             /* Get service object (binder) */
             mService = (BoundService.ServiceBinder) service;
             isBind = mService != null;
-
-            /*Get a data from service */
-            if (isBind) {
-                int n = mService.getService().getWeatherUpdate();
-            }
-
         }
 
         @Override
