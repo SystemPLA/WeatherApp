@@ -9,10 +9,11 @@ import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.io.Serializable;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-public class BoundService extends Service {
+public class BoundService extends Service implements Serializable {
 
 	private static final String OPEN_WEATHER_API_KEY = "f3f2763fe63803beef4851d6365c83bc";
 	private static final String OPEN_WEATHER_API_URL =
@@ -60,7 +61,7 @@ public class BoundService extends Service {
 		}
 	}
 
-	public class ServiceBinder extends Binder {
+	public class ServiceBinder extends Binder implements Serializable {
 		public BoundService getService() {
 			return BoundService.this;
 		}
