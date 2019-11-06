@@ -50,7 +50,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private BoundService.ServiceBinder mService = null;
     private MyServiceConnection mConnection = null;
 
-    private final String defaultCity = "Reutov";
+    private final String defaultCity = "";
 
     private Toolbar toolbar;
     private DrawerLayout drawer;
@@ -91,7 +91,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         initSideMenu();
         getSensors();
 
-        currentParcel = new Parcel(last_city, settingsParcel, mService);
+        if(savedInstanceState != null) {
+            currentParcel = (Parcel) savedInstanceState.getSerializable(PARCEL_KEY);
+            last_city = currentParcel.getCityName();
+            settingsParcel = currentParcel.getSettingsParcel();
+            if (fragmentContainer.getVisibility()==View.GONE) fragmentContainer.setVisibility(View.VISIBLE);
+        } else {
+            currentParcel = new Parcel(last_city, settingsParcel, mService);
+        }
 
         fragmentSettings = new SettingsFragment();
         developerInfoFragment = new DeveloperInfoFragment();
