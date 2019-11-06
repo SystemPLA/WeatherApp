@@ -44,6 +44,8 @@ import ru.systempla.weatherapp.ui.settings.SettingsFragment;
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener,
         SettingsChangeListener {
 
+    private final String PARCEL_KEY = "PARCEL";
+
     private boolean isBind = false;
     private BoundService.ServiceBinder mService = null;
     private MyServiceConnection mConnection = null;
@@ -141,6 +143,20 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         super.onPause();
         sensorManager.unregisterListener(listenerTemperature, sensorTemperature);
         sensorManager.unregisterListener(listenerHumidity, sensorHumidity);
+    }
+
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putSerializable(PARCEL_KEY, currentParcel);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        if(savedInstanceState != null) {
+            currentParcel = (Parcel) savedInstanceState.getSerializable(PARCEL_KEY);
+        }
     }
 
     @Override
