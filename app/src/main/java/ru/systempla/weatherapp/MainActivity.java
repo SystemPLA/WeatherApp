@@ -1,11 +1,15 @@
 package ru.systempla.weatherapp;
 
+import android.content.ComponentName;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.ServiceConnection;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.text.InputType;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -26,8 +30,9 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.material.navigation.NavigationView;
 
-import java.util.Objects;
+import java.io.Serializable;
 
+import ru.systempla.weatherapp.service.BoundService;
 import ru.systempla.weatherapp.ui.com.SMFragment;
 import ru.systempla.weatherapp.ui.dev.DeveloperInfoFragment;
 import ru.systempla.weatherapp.ui.main_weather.WeatherInfoFragment;
@@ -38,6 +43,12 @@ import ru.systempla.weatherapp.ui.settings.SettingsFragment;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener,
         SettingsChangeListener {
+
+    private boolean isBind = false;
+    private BoundService.ServiceBinder mService = null;
+    private MyServiceConnection mConnection = null;
+
+    private final String defaultCity = "Reutov";
 
     private Toolbar toolbar;
     private DrawerLayout drawer;
@@ -53,7 +64,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private SensorManager sensorManager;
     private View fragmentContainer;
 
-    private String last_city = "";
+    private String last_city = defaultCity;
 
     private SettingsParcel settingsParcel = new SettingsParcel(true,true,true);
 
@@ -62,7 +73,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public void onSettingsChange(SettingsParcel settingsParcel) {
         this.settingsParcel = settingsParcel;
-        currentParcel = new Parcel(last_city, settingsParcel);
+        currentParcel = new Parcel(last_city, settingsParcel, mService);
         weatherFragment = WeatherInfoFragment.create(currentParcel);
         replaceFragment(weatherFragment);
     }
@@ -78,12 +89,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         initSideMenu();
         getSensors();
 
-        currentParcel = new Parcel(last_city, settingsParcel);
+        currentParcel = new Parcel(last_city, settingsParcel, mService);
 
         fragmentSettings = new SettingsFragment();
         developerInfoFragment = new DeveloperInfoFragment();
         sendMessageFragment = new SMFragment();
         weatherFragment = new WeatherInfoFragment();
+
+        mConnection = new MyServiceConnection();
     }
 
     private void initViews() {
@@ -93,6 +106,24 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         temperatureSensorText = findViewById(R.id.textTemperatureSensor);
         humiditySensorText = findViewById(R.id.textHumiditySensor);
         fragmentContainer = findViewById(R.id.fragment_container);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if (!isBind) {
+            Intent intent = new Intent(getApplicationContext(), BoundService.class);
+            bindService(intent, mConnection, BIND_AUTO_CREATE);
+        }
+    }
+
+    @Override
+    protected void onStop() {
+        if (isBind) {
+            this.unbindService(mConnection);
+            isBind = false;
+        }
+        super.onStop();
     }
 
     @Override
@@ -165,7 +196,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 last_city = input.getText().toString();
-                currentParcel = new Parcel(last_city, settingsParcel);
+                currentParcel = new Parcel(last_city, settingsParcel, mService);
                 weatherFragment = WeatherInfoFragment.create(currentParcel);
                 replaceFragment(weatherFragment);
             }
@@ -189,7 +220,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         int id = menuItem.getItemId();
 
         if (id == R.id.nav_home) {
-            currentParcel = new Parcel(last_city, settingsParcel);
+            currentParcel = new Parcel(last_city, settingsParcel, mService);
             weatherFragment = WeatherInfoFragment.create(currentParcel);
             replaceFragment(weatherFragment);
         } else if (id == R.id.nav_tools) {
@@ -257,4 +288,23 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     };
 
+//    Service
+
+    private class MyServiceConnection implements ServiceConnection {
+
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+
+            /* Get service object (binder) */
+            mService = (BoundService.ServiceBinder) service;
+            isBind = mService != null;
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+            isBind = false;
+            mService = null;
+        }
+
+    }
 }

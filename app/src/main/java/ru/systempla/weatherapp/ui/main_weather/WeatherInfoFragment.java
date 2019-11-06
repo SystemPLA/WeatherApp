@@ -22,6 +22,7 @@ import java.text.DateFormat;
 import java.util.Date;
 import java.util.Locale;
 
+import ru.systempla.weatherapp.service.BoundService;
 import ru.systempla.weatherapp.ui.history.HistoryActivity;
 import ru.systempla.weatherapp.ui.parcel.Parcel;
 import ru.systempla.weatherapp.R;
@@ -140,7 +141,7 @@ public class WeatherInfoFragment extends Fragment {
         new Thread() {
             @Override
             public void run() {
-                final JSONObject jsonObject = WeatherDataLoader.getJSONData(city);
+                final JSONObject jsonObject = parcel.getmService().getService().getWeatherUpdate(city);
                 if(jsonObject == null) {
                     handler.post(new Runnable() {
                         @Override
