@@ -30,7 +30,11 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.material.navigation.NavigationView;
 
-import java.io.Serializable;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 
 import ru.systempla.weatherapp.service.BoundService;
 import ru.systempla.weatherapp.ui.com.SMFragment;
@@ -45,12 +49,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         SettingsChangeListener {
 
     private final String PARCEL_KEY = "PARCEL";
+    private final String FILE_NAME = "ru.systempla.weatherapp.parcel";
 
     private boolean isBind = false;
     private BoundService.ServiceBinder mService = null;
     private MyServiceConnection mConnection = null;
 
-    private final String defaultCity = "";
+    private final String DEFAULT_CITY = "Реутов";
 
     private Toolbar toolbar;
     private DrawerLayout drawer;
@@ -58,7 +63,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private Fragment developerInfoFragment;
     private Fragment sendMessageFragment;
     private Fragment weatherFragment;
-    private Parcel currentParcel;
     private TextView temperatureSensorText;
     private TextView humiditySensorText;
     private Sensor sensorTemperature;
@@ -66,9 +70,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private SensorManager sensorManager;
     private View fragmentContainer;
 
-    private String last_city = defaultCity;
+    private String last_city = DEFAULT_CITY;
 
     private SettingsParcel settingsParcel = new SettingsParcel(true,true,true);
+    private Parcel currentParcel = new Parcel(last_city, settingsParcel, mService);
 
 //    OnNavigationItemSelectedListener method
 
@@ -97,7 +102,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             settingsParcel = currentParcel.getSettingsParcel();
             if (fragmentContainer.getVisibility()==View.GONE) fragmentContainer.setVisibility(View.VISIBLE);
         } else {
-            currentParcel = new Parcel(last_city, settingsParcel, mService);
+            readFromFile(FILE_NAME);
         }
 
         fragmentSettings = new SettingsFragment();
@@ -164,6 +169,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if(savedInstanceState != null) {
             currentParcel = (Parcel) savedInstanceState.getSerializable(PARCEL_KEY);
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        saveToFile(FILE_NAME);
+        super.onDestroy();
     }
 
     @Override
@@ -330,4 +341,50 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
 
     }
+
+//    Preference
+
+    private void saveToFile(String fileName) {
+        File file;
+        try {
+            file = new File(fileName);
+
+            FileOutputStream fileOutputStream;
+            ObjectOutputStream objectOutputStream;
+
+            if(!file.exists()) {
+                file.createNewFile();
+            }
+
+            fileOutputStream  = new FileOutputStream(file, false);
+            objectOutputStream = new ObjectOutputStream(fileOutputStream);
+
+            objectOutputStream.writeObject(currentParcel);
+
+            fileOutputStream.close();
+            objectOutputStream.close();
+        } catch (Exception exc) {
+            exc.printStackTrace();
+        }
+    }
+
+    private void readFromFile(String fileName) {
+        FileInputStream fileInputStream;
+        ObjectInputStream objectInputStream;
+
+        try {
+            fileInputStream = new FileInputStream(fileName);
+            objectInputStream = new ObjectInputStream(fileInputStream);
+
+            currentParcel = (Parcel)objectInputStream.readObject();
+            last_city = currentParcel.getCityName();
+            settingsParcel = currentParcel.getSettingsParcel();
+
+            fileInputStream.close();
+            objectInputStream.close();
+        } catch(Exception exc) {
+            exc.printStackTrace();
+        }
+    }
 }
+
