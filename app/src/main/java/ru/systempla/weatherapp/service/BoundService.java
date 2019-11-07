@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Binder;
 import android.os.IBinder;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
@@ -33,6 +34,7 @@ public class BoundService extends Service implements Serializable {
 	/** 
 	 * Method for clients.  
 	 * */
+
 	public JSONObject getWeatherUpdate(String city) {
 		try {
 			URL url = new URL(String.format(OPEN_WEATHER_API_URL, city));
