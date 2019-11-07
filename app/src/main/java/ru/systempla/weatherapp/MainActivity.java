@@ -9,6 +9,7 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.IBinder;
 import android.text.InputType;
 import android.view.Menu;
@@ -17,6 +18,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -49,7 +51,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         SettingsChangeListener {
 
     private final String PARCEL_KEY = "PARCEL";
-    private final String FILE_NAME = "ru.systempla.weatherapp.parcel";
+    private final String externalFileName = "systempla_weatherapp_parcel_file.lect";
 
     private boolean isBind = false;
     private BoundService.ServiceBinder mService = null;
@@ -102,7 +104,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             settingsParcel = currentParcel.getSettingsParcel();
             if (fragmentContainer.getVisibility()==View.GONE) fragmentContainer.setVisibility(View.VISIBLE);
         } else {
-            readFromFile(FILE_NAME);
+            String path = getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS) + "/" + externalFileName;
+            readFromFile(path);
         }
 
         fragmentSettings = new SettingsFragment();
@@ -160,6 +163,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     protected void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
+        String path = getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS) + "/" + externalFileName;
+        saveToFile(path);
         outState.putSerializable(PARCEL_KEY, currentParcel);
     }
 
@@ -169,12 +174,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if(savedInstanceState != null) {
             currentParcel = (Parcel) savedInstanceState.getSerializable(PARCEL_KEY);
         }
-    }
-
-    @Override
-    protected void onDestroy() {
-        saveToFile(FILE_NAME);
-        super.onDestroy();
     }
 
     @Override
@@ -363,6 +362,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
             fileOutputStream.close();
             objectOutputStream.close();
+            Log.d("Activity_File", "Save to file is finished. Last city is " + currentParcel.getCityName());
         } catch (Exception exc) {
             exc.printStackTrace();
         }
@@ -382,6 +382,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
             fileInputStream.close();
             objectInputStream.close();
+            Log.d("Activity_File", "Read from file is finished. Last city is " + last_city);
         } catch(Exception exc) {
             exc.printStackTrace();
         }

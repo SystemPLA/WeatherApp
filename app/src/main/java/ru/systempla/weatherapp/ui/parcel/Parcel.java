@@ -6,9 +6,16 @@ import ru.systempla.weatherapp.service.BoundService;
 
 public class Parcel implements Serializable {
 
+
     private BoundService.ServiceBinder mService;
     private final SettingsParcel settingsParcel;
     private final String cityName;
+
+    public Parcel() {
+        this.mService = null;
+        this.cityName = "";
+        this.settingsParcel = new SettingsParcel();
+    }
 
     public String getCityName() {
         return cityName;
