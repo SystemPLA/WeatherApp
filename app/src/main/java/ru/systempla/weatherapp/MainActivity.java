@@ -98,6 +98,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         initSideMenu();
         getSensors();
 
+        fragmentSettings = new SettingsFragment();
+        developerInfoFragment = new DeveloperInfoFragment();
+        sendMessageFragment = new SMFragment();
+        weatherFragment = new WeatherInfoFragment();
+
+        mConnection = new MyServiceConnection();
+
         if(savedInstanceState != null) {
             currentParcel = (Parcel) savedInstanceState.getSerializable(PARCEL_KEY);
             last_city = currentParcel.getCityName();
@@ -106,14 +113,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         } else {
             String path = getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS) + "/" + externalFileName;
             readFromFile(path);
+            weatherFragment = WeatherInfoFragment.create(currentParcel);
+            replaceFragment(weatherFragment);
         }
-
-        fragmentSettings = new SettingsFragment();
-        developerInfoFragment = new DeveloperInfoFragment();
-        sendMessageFragment = new SMFragment();
-        weatherFragment = new WeatherInfoFragment();
-
-        mConnection = new MyServiceConnection();
     }
 
     private void initViews() {
