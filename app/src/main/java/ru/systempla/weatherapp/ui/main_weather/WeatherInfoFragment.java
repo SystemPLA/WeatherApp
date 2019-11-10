@@ -26,6 +26,7 @@ import java.text.DateFormat;
 import java.util.Date;
 import java.util.Locale;
 
+import ru.systempla.weatherapp.rest.entities.WeatherRequestRestModel;
 import ru.systempla.weatherapp.service.BoundService;
 import ru.systempla.weatherapp.ui.history.HistoryActivity;
 import ru.systempla.weatherapp.ui.parcel.Parcel;
@@ -169,8 +170,8 @@ public class WeatherInfoFragment extends Fragment {
         new Thread() {
             @Override
             public void run() {
-                final JSONObject jsonObject = mService.getService().getWeatherUpdate(city);
-                if(jsonObject == null) {
+                final WeatherRequestRestModel model = mService.getService().getWeatherUpdate(city);
+                if(model == null) {
                     handler.post(new Runnable() {
                         @Override
                         public void run() {
@@ -182,7 +183,7 @@ public class WeatherInfoFragment extends Fragment {
                     handler.post(new Runnable() {
                         @Override
                         public void run() {
-                            renderWeather(jsonObject);
+                            renderWeather(model);
                         }
                     });
                 }
@@ -190,45 +191,47 @@ public class WeatherInfoFragment extends Fragment {
         }.start();
     }
 
-    private void renderWeather(JSONObject jsonObject) {
-        Log.d(LOG_TAG, "json: " + jsonObject.toString());
-        try {
-            JSONObject details = jsonObject.getJSONArray("weather").getJSONObject(0);
-            JSONObject main = jsonObject.getJSONObject("main");
-            JSONObject wind = jsonObject.getJSONObject("wind");
-
-            setPlaceName(jsonObject);
-            setCurrentTemp(main);
-            setWeatherIcon(details.getInt("id"),
-                    jsonObject.getJSONObject("sys").getLong("sunrise") * 1000,
-                    jsonObject.getJSONObject("sys").getLong("sunset") * 1000);
-            setUpdatedText(jsonObject);
-            setDetails(wind, main, details);
-        } catch (Exception exc) {
-            exc.printStackTrace();
-            Log.e(LOG_TAG, "One or more fields not found in the JSON data");
-        }
+    private void renderWeather(WeatherRequestRestModel model) {
+        setPlaceName(model.name, model.sys.country);
+        setDetails(model.weather[0].description, model.main.humidity, model.main.pressure, model.wind.speed);
+        setCurrentTemp(model.main.temp);
+        setUpdatedText(model.dt);
+        setWeatherIcon(model.weather[0].id,
+                model.sys.sunrise * 1000,
+                model.sys.sunset * 1000);
     }
 
-    private void setPlaceName(JSONObject jsonObject) throws JSONException {
-        String cityText = jsonObject.getString("name").toUpperCase() + ", "
-                + jsonObject.getJSONObject("sys").getString("country");
+    private void setPlaceName(String name, String country) {
+        String cityText = name.toUpperCase() + ", " + country;
         cityNameView.setText(cityText);
     }
 
-    private void setCurrentTemp(JSONObject main) throws JSONException {
-        String currentTextText = String.format(Locale.getDefault(), "%.2f",
-                main.getDouble("temp")) + "\u2103";
+    private void setDetails(String description, float humidity, float pressure, float speed) {
+        pressureValue.setText(pressure + "hPa");
+        humidityValue.setText(humidity + "%");
+        windValue.setText(speed + "mps");
+        detailsTextView.setText(description.toUpperCase());
+    }
+
+    private void setCurrentTemp(float temp) {
+        String currentTextText = String.format(Locale.getDefault(), "%.2f", temp) + "\u2103";
         temperatureValue.setText(currentTextText);
+    }
+
+    private void setUpdatedText(long dt) {
+        DateFormat dateFormat = DateFormat.getDateTimeInstance();
+        String updateOn = dateFormat.format(new Date(dt * 1000));
+        String updatedText = "Last update: " + updateOn;
+        updatedTextView.setText(updatedText);
     }
 
     private void setWeatherIcon(int actualId, long sunrise, long sunset) {
         int id = actualId / 100;
         String icon = "";
 
-        if(actualId == 800) {
+        if (actualId == 800) {
             long currentTime = new Date().getTime();
-            if(currentTime >= sunrise && currentTime < sunset) {
+            if (currentTime >= sunrise && currentTime < sunset) {
                 icon = "\u2600";
                 //icon = getString(R.string.weather_sunny);
             } else {
@@ -264,20 +267,6 @@ public class WeatherInfoFragment extends Fragment {
             }
         }
         weatherIconTextView.setText(icon);
-    }
-
-    private void setUpdatedText(JSONObject jsonObject) throws JSONException {
-        DateFormat dateFormat = DateFormat.getDateTimeInstance();
-        String updateOn = dateFormat.format(new Date(jsonObject.getLong("dt") * 1000));
-        String updatedText = "Last update: " + updateOn;
-        updatedTextView.setText(updatedText);
-    }
-
-    private void setDetails(JSONObject wind, JSONObject main, JSONObject details) throws JSONException {
-        pressureValue.setText(main.getString("pressure") + "hPa");
-        humidityValue.setText(main.getString("humidity") + "%");
-        windValue.setText(wind.getString("speed") + "mps");
-        detailsTextView.setText(details.getString("description").toUpperCase());
     }
 
     private class MyServiceConnection implements ServiceConnection {
