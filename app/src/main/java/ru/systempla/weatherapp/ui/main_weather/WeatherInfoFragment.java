@@ -7,7 +7,6 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,11 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.text.DateFormat;
 import java.util.Date;
@@ -40,10 +35,8 @@ public class WeatherInfoFragment extends Fragment {
     private BoundService.ServiceBinder mService = null;
     private MyServiceConnection mConnection = null;
 
-    private final static String LOG_TAG = "WeatherInfoFragment";
-
-    private Typeface weatherFont;
     private final Handler handler = new Handler();
+    private Typeface weatherFont;
     private TextView cityNameView;
     private TextView updatedTextView;
     private TextView weatherIconTextView;
