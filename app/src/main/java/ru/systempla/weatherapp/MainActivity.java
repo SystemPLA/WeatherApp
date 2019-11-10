@@ -1,15 +1,12 @@
 package ru.systempla.weatherapp;
 
-import android.content.ComponentName;
 import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.ServiceConnection;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
-import android.os.IBinder;
+import android.os.Environment;
 import android.text.InputType;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -17,6 +14,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -30,9 +28,12 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.material.navigation.NavigationView;
 
-import java.io.Serializable;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 
-import ru.systempla.weatherapp.service.BoundService;
 import ru.systempla.weatherapp.ui.com.SMFragment;
 import ru.systempla.weatherapp.ui.dev.DeveloperInfoFragment;
 import ru.systempla.weatherapp.ui.main_weather.WeatherInfoFragment;
@@ -44,11 +45,10 @@ import ru.systempla.weatherapp.ui.settings.SettingsFragment;
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener,
         SettingsChangeListener {
 
-    private boolean isBind = false;
-    private BoundService.ServiceBinder mService = null;
-    private MyServiceConnection mConnection = null;
+    private final String PARCEL_KEY = "PARCEL";
+    private final String externalFileName = "systempla_weatherapp_parcel_file.lect";
 
-    private final String defaultCity = "Reutov";
+    private final String DEFAULT_CITY = "Реутов";
 
     private Toolbar toolbar;
     private DrawerLayout drawer;
@@ -56,7 +56,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private Fragment developerInfoFragment;
     private Fragment sendMessageFragment;
     private Fragment weatherFragment;
-    private Parcel currentParcel;
     private TextView temperatureSensorText;
     private TextView humiditySensorText;
     private Sensor sensorTemperature;
@@ -64,16 +63,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private SensorManager sensorManager;
     private View fragmentContainer;
 
-    private String last_city = defaultCity;
+    private String last_city = DEFAULT_CITY;
 
     private SettingsParcel settingsParcel = new SettingsParcel(true,true,true);
+    private Parcel currentParcel = new Parcel(last_city, settingsParcel);
 
 //    OnNavigationItemSelectedListener method
 
     @Override
     public void onSettingsChange(SettingsParcel settingsParcel) {
         this.settingsParcel = settingsParcel;
-        currentParcel = new Parcel(last_city, settingsParcel, mService);
+        currentParcel = new Parcel(last_city, settingsParcel);
         weatherFragment = WeatherInfoFragment.create(currentParcel);
         replaceFragment(weatherFragment);
     }
@@ -89,14 +89,22 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         initSideMenu();
         getSensors();
 
-        currentParcel = new Parcel(last_city, settingsParcel, mService);
-
         fragmentSettings = new SettingsFragment();
         developerInfoFragment = new DeveloperInfoFragment();
         sendMessageFragment = new SMFragment();
         weatherFragment = new WeatherInfoFragment();
 
-        mConnection = new MyServiceConnection();
+        if(savedInstanceState != null) {
+            currentParcel = (Parcel) savedInstanceState.getSerializable(PARCEL_KEY);
+            last_city = currentParcel.getCityName();
+            settingsParcel = currentParcel.getSettingsParcel();
+            if (fragmentContainer.getVisibility()==View.GONE) fragmentContainer.setVisibility(View.VISIBLE);
+        } else {
+            String path = getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS) + "/" + externalFileName;
+            readFromFile(path);
+            weatherFragment = WeatherInfoFragment.create(currentParcel);
+            replaceFragment(weatherFragment);
+        }
     }
 
     private void initViews() {
@@ -106,24 +114,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         temperatureSensorText = findViewById(R.id.textTemperatureSensor);
         humiditySensorText = findViewById(R.id.textHumiditySensor);
         fragmentContainer = findViewById(R.id.fragment_container);
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        if (!isBind) {
-            Intent intent = new Intent(getApplicationContext(), BoundService.class);
-            bindService(intent, mConnection, BIND_AUTO_CREATE);
-        }
-    }
-
-    @Override
-    protected void onStop() {
-        if (isBind) {
-            this.unbindService(mConnection);
-            isBind = false;
-        }
-        super.onStop();
     }
 
     @Override
@@ -141,6 +131,22 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         super.onPause();
         sensorManager.unregisterListener(listenerTemperature, sensorTemperature);
         sensorManager.unregisterListener(listenerHumidity, sensorHumidity);
+    }
+
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        String path = getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS) + "/" + externalFileName;
+        saveToFile(path);
+        outState.putSerializable(PARCEL_KEY, currentParcel);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        if(savedInstanceState != null) {
+            currentParcel = (Parcel) savedInstanceState.getSerializable(PARCEL_KEY);
+        }
     }
 
     @Override
@@ -196,7 +202,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 last_city = input.getText().toString();
-                currentParcel = new Parcel(last_city, settingsParcel, mService);
+                currentParcel = new Parcel(last_city, settingsParcel);
                 weatherFragment = WeatherInfoFragment.create(currentParcel);
                 replaceFragment(weatherFragment);
             }
@@ -220,7 +226,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         int id = menuItem.getItemId();
 
         if (id == R.id.nav_home) {
-            currentParcel = new Parcel(last_city, settingsParcel, mService);
+            currentParcel = new Parcel(last_city, settingsParcel);
             weatherFragment = WeatherInfoFragment.create(currentParcel);
             replaceFragment(weatherFragment);
         } else if (id == R.id.nav_tools) {
@@ -288,23 +294,51 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     };
 
-//    Service
+//    Preference
 
-    private class MyServiceConnection implements ServiceConnection {
+    private void saveToFile(String fileName) {
+        File file;
+        try {
+            file = new File(fileName);
 
-        @Override
-        public void onServiceConnected(ComponentName name, IBinder service) {
+            FileOutputStream fileOutputStream;
+            ObjectOutputStream objectOutputStream;
 
-            /* Get service object (binder) */
-            mService = (BoundService.ServiceBinder) service;
-            isBind = mService != null;
+            if(!file.exists()) {
+                file.createNewFile();
+            }
+
+            fileOutputStream  = new FileOutputStream(file, false);
+            objectOutputStream = new ObjectOutputStream(fileOutputStream);
+
+            objectOutputStream.writeObject(currentParcel);
+
+            fileOutputStream.close();
+            objectOutputStream.close();
+            Log.d("Activity_File", "Save to file is finished. Last city is " + currentParcel.getCityName());
+        } catch (Exception exc) {
+            exc.printStackTrace();
         }
+    }
 
-        @Override
-        public void onServiceDisconnected(ComponentName name) {
-            isBind = false;
-            mService = null;
+    private void readFromFile(String fileName) {
+        FileInputStream fileInputStream;
+        ObjectInputStream objectInputStream;
+
+        try {
+            fileInputStream = new FileInputStream(fileName);
+            objectInputStream = new ObjectInputStream(fileInputStream);
+
+            currentParcel = (Parcel)objectInputStream.readObject();
+            last_city = currentParcel.getCityName();
+            settingsParcel = currentParcel.getSettingsParcel();
+
+            fileInputStream.close();
+            objectInputStream.close();
+            Log.d("Activity_File", "Read from file is finished. Last city is " + last_city);
+        } catch(Exception exc) {
+            exc.printStackTrace();
         }
-
     }
 }
+

@@ -2,13 +2,15 @@ package ru.systempla.weatherapp.ui.parcel;
 
 import java.io.Serializable;
 
-import ru.systempla.weatherapp.service.BoundService;
-
 public class Parcel implements Serializable {
 
-    private BoundService.ServiceBinder mService;
     private final SettingsParcel settingsParcel;
     private final String cityName;
+
+    public Parcel() {
+        this.cityName = "";
+        this.settingsParcel = new SettingsParcel();
+    }
 
     public String getCityName() {
         return cityName;
@@ -18,13 +20,8 @@ public class Parcel implements Serializable {
         return settingsParcel;
     }
 
-    public BoundService.ServiceBinder getmService() {
-        return mService;
-    }
-
-    public Parcel(String cityName, SettingsParcel settingsParcel, BoundService.ServiceBinder mService) {
+    public Parcel(String cityName, SettingsParcel settingsParcel) {
         this.settingsParcel = settingsParcel;
         this.cityName = cityName;
-        this.mService = mService;
     }
 }

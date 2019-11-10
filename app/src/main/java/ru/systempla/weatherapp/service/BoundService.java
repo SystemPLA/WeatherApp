@@ -15,7 +15,7 @@ import java.net.URL;
 
 public class BoundService extends Service implements Serializable {
 
-	private static final String OPEN_WEATHER_API_KEY = "f3f2763fe63803beef4851d6365c83bc";
+	private static final String OPEN_WEATHER_API_KEY = "bf47d8733b57a7fad0801641fe3dc5cc";
 	private static final String OPEN_WEATHER_API_URL =
 			"https://api.openweathermap.org/data/2.5/weather?q=%s&units=metric";
 	private static final String KEY = "x-api-key";
@@ -33,6 +33,7 @@ public class BoundService extends Service implements Serializable {
 	/** 
 	 * Method for clients.  
 	 * */
+
 	public JSONObject getWeatherUpdate(String city) {
 		try {
 			URL url = new URL(String.format(OPEN_WEATHER_API_URL, city));

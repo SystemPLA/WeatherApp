@@ -1,9 +1,12 @@
 package ru.systempla.weatherapp.ui.main_weather;
 
+import android.content.ComponentName;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.IBinder;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import org.json.JSONException;
@@ -27,7 +31,13 @@ import ru.systempla.weatherapp.ui.history.HistoryActivity;
 import ru.systempla.weatherapp.ui.parcel.Parcel;
 import ru.systempla.weatherapp.R;
 
+import static android.content.Context.BIND_AUTO_CREATE;
+
 public class WeatherInfoFragment extends Fragment {
+
+    private boolean isBind = false;
+    private BoundService.ServiceBinder mService = null;
+    private MyServiceConnection mConnection = null;
 
     private final static String LOG_TAG = "WeatherInfoFragment";
 
@@ -68,6 +78,8 @@ public class WeatherInfoFragment extends Fragment {
                              Bundle savedInstanceState) {
         View layout = inflater.inflate(R.layout.fragment_weather, container, false);
 
+        mConnection = new MyServiceConnection();
+
         initViews(layout);
         initFonts();
 
@@ -86,9 +98,25 @@ public class WeatherInfoFragment extends Fragment {
             }
         });
 
-        updateWeatherData(parcel.getCityName());
-
         return layout;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        if (!isBind) {
+            Intent intent = new Intent(getActivity(), BoundService.class);
+            getActivity().bindService(intent, mConnection, BIND_AUTO_CREATE);
+        }
+    }
+
+    @Override
+    public void onStop() {
+        if (isBind) {
+            getActivity().unbindService(mConnection);
+            isBind = false;
+        }
+        super.onStop();
     }
 
     private int getVisibilityInt(boolean flag){
@@ -141,7 +169,7 @@ public class WeatherInfoFragment extends Fragment {
         new Thread() {
             @Override
             public void run() {
-                final JSONObject jsonObject = parcel.getmService().getService().getWeatherUpdate(city);
+                final JSONObject jsonObject = mService.getService().getWeatherUpdate(city);
                 if(jsonObject == null) {
                     handler.post(new Runnable() {
                         @Override
@@ -250,5 +278,23 @@ public class WeatherInfoFragment extends Fragment {
         humidityValue.setText(main.getString("humidity") + "%");
         windValue.setText(wind.getString("speed") + "mps");
         detailsTextView.setText(details.getString("description").toUpperCase());
+    }
+
+    private class MyServiceConnection implements ServiceConnection {
+
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+            /* Get service object (binder) */
+            mService = (BoundService.ServiceBinder) service;
+            isBind = mService != null;
+            updateWeatherData(parcel.getCityName());
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+            isBind = false;
+            mService = null;
+        }
+
     }
 }

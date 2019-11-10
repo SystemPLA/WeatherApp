@@ -8,6 +8,12 @@ public class SettingsParcel implements Serializable {
     private boolean windFlag;
     private boolean humidityFlag;
 
+    public SettingsParcel() {
+        this.pressureFlag = true;
+        this.windFlag = true;
+        this.humidityFlag = true;
+    }
+
     public SettingsParcel(boolean pressureFlag, boolean windFlag, boolean humidityFlag) {
         this.pressureFlag = pressureFlag;
         this.windFlag = windFlag;
