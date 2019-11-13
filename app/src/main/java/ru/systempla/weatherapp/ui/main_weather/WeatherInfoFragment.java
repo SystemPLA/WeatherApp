@@ -3,6 +3,7 @@ package ru.systempla.weatherapp.ui.main_weather;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
@@ -21,6 +22,8 @@ import java.text.DateFormat;
 import java.util.Date;
 import java.util.Locale;
 
+import ru.systempla.weatherapp.database.DatabaseHelper;
+import ru.systempla.weatherapp.database.WeatherHistoryTable;
 import ru.systempla.weatherapp.rest.entities.WeatherRequestRestModel;
 import ru.systempla.weatherapp.service.BoundService;
 import ru.systempla.weatherapp.ui.history.HistoryActivity;
@@ -49,6 +52,8 @@ public class WeatherInfoFragment extends Fragment {
     private TextView humidityValue;
     private TextView temperatureValue;
 
+    SQLiteDatabase database;
+
     private Button historyButton;
     private Parcel parcel;
 
@@ -72,6 +77,7 @@ public class WeatherInfoFragment extends Fragment {
                              Bundle savedInstanceState) {
         View layout = inflater.inflate(R.layout.fragment_weather, container, false);
 
+        initDB();
         initViews(layout);
         initFonts();
         applySettings(getParcel());
@@ -82,6 +88,10 @@ public class WeatherInfoFragment extends Fragment {
 
     private void initServiceConnection() {
         mConnection = new MyServiceConnection();
+    }
+
+    private void initDB() {
+        database = new DatabaseHelper(getActivity().getApplicationContext()).getWritableDatabase();
     }
 
     @Override
@@ -188,6 +198,11 @@ public class WeatherInfoFragment extends Fragment {
     }
 
     private void renderWeather(WeatherRequestRestModel model) {
+
+        WeatherHistoryTable.addWeatherHistory(model.name, model.sys.country, model.main.temp,
+                model.main.humidity, model.main.pressure, model.wind.speed, model.weather[0].description,
+                model.weather[0].id, model.sys.sunrise, model.sys.sunset, model.dt, database);
+
         setPlaceName(model.name, model.sys.country);
         setDetails(model.weather[0].description, model.main.humidity, model.main.pressure, model.wind.speed);
         setCurrentTemp(model.main.temp);

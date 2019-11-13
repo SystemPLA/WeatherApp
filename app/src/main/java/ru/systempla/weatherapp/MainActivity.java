@@ -1,6 +1,7 @@
 package ru.systempla.weatherapp;
 
 import android.content.DialogInterface;
+import android.database.sqlite.SQLiteDatabase;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -34,6 +35,7 @@ import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
+import ru.systempla.weatherapp.database.DatabaseHelper;
 import ru.systempla.weatherapp.ui.com.SMFragment;
 import ru.systempla.weatherapp.ui.dev.DeveloperInfoFragment;
 import ru.systempla.weatherapp.ui.main_weather.WeatherInfoFragment;
@@ -106,6 +108,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             replaceFragment(weatherFragment);
         }
     }
+
+
 
     private void initViews() {
         toolbar = findViewById(R.id.toolbar);
