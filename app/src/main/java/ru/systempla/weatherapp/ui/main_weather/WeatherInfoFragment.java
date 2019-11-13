@@ -72,27 +72,16 @@ public class WeatherInfoFragment extends Fragment {
                              Bundle savedInstanceState) {
         View layout = inflater.inflate(R.layout.fragment_weather, container, false);
 
-        mConnection = new MyServiceConnection();
-
         initViews(layout);
         initFonts();
-
-        parcel = getParcel();
-
-        applySettings(parcel);
-
-        cityNameView.setText(parcel.getCityName());
-
-        historyButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent();
-                intent.setClass(getActivity(), HistoryActivity.class);
-                startActivity(intent);
-            }
-        });
+        applySettings(getParcel());
+        initServiceConnection();
 
         return layout;
+    }
+
+    private void initServiceConnection() {
+        mConnection = new MyServiceConnection();
     }
 
     @Override
@@ -141,9 +130,21 @@ public class WeatherInfoFragment extends Fragment {
         temperatureValue = layout.findViewById(R.id.temperature_value);
 
         historyButton = layout.findViewById(R.id.history_bt);
+
+        historyButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent();
+                intent.setClass(getActivity(), HistoryActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     private void applySettings(Parcel parcel) {
+
+        this.parcel = parcel;
+
         pressureLabel.setVisibility(getVisibilityInt(parcel.getSettingsParcel().isPressureFlag()));
         pressureValue.setVisibility(getVisibilityInt(parcel.getSettingsParcel().isPressureFlag()));
 
@@ -152,6 +153,8 @@ public class WeatherInfoFragment extends Fragment {
 
         humidityLabel.setVisibility(getVisibilityInt(parcel.getSettingsParcel().isHumidityFlag()));
         humidityValue.setVisibility(getVisibilityInt(parcel.getSettingsParcel().isHumidityFlag()));
+
+        cityNameView.setText(parcel.getCityName());
     }
 
     private void initFonts() {
