@@ -59,6 +59,10 @@ public class WeatherHistoryTable {
         database.insert(TABLE_NAME, null, values);
     }
 
+    public static void deleteAll(SQLiteDatabase database) {
+        database.delete(TABLE_NAME, null, null);
+    }
+
     public static List<WeatherHistoryEntryModel> getAllNotes(SQLiteDatabase database) {
         Cursor cursor = database.rawQuery("SELECT * FROM " + TABLE_NAME, null);
         return getResultFromCursor(cursor);

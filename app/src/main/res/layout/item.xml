@@ -20,17 +20,47 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/temperature_value"
+                android:id="@+id/city_country"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
+                android:textSize="24sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/date_tv"
+                card_view:layout_constraintEnd_toEndOf="parent"
+                card_view:layout_constraintStart_toStartOf="parent"
+                card_view:layout_constraintTop_toBottomOf="@+id/date_tv" />
+
+            <TextView
+                android:id="@+id/date_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"
+                android:text="@string/dateLabel"
+                android:textSize="24sp"
+                app:layout_constraintBottom_toTopOf="@+id/city_country"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                card_view:layout_constraintBottom_toTopOf="@+id/textView4"
+                card_view:layout_constraintEnd_toEndOf="parent"
+                card_view:layout_constraintStart_toStartOf="parent"
+                card_view:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/temperature_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_marginEnd="32dp"
+                android:layout_marginTop="16dp"
                 android:text="@string/temperatureValue"
                 android:textSize="18sp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/date_tv"
+                app:layout_constraintTop_toBottomOf="@+id/city_country"
                 card_view:layout_constraintEnd_toEndOf="parent"
-                card_view:layout_constraintTop_toBottomOf="@+id/date_tv" />
+                card_view:layout_constraintTop_toBottomOf="@+id/city_country" />
 
             <TextView
                 android:id="@+id/pressure_label"
@@ -102,20 +132,6 @@
                 card_view:layout_constraintTop_toBottomOf="@+id/wind_value" />
 
             <TextView
-                android:id="@+id/date_tv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:text="@string/dateLabel"
-                android:textSize="24sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                card_view:layout_constraintEnd_toEndOf="parent"
-                card_view:layout_constraintStart_toStartOf="parent"
-                card_view:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
                 android:id="@+id/temperature_label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -124,9 +140,9 @@
                 android:text="@string/temperatureLabel"
                 android:textSize="18sp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/date_tv"
+                app:layout_constraintTop_toBottomOf="@+id/city_country"
                 card_view:layout_constraintStart_toStartOf="parent"
-                card_view:layout_constraintTop_toBottomOf="@+id/date_tv" />
+                card_view:layout_constraintTop_toBottomOf="@+id/city_country" />
 
             <TextView
                 android:id="@+id/wind_label"

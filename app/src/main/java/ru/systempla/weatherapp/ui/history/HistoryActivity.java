@@ -1,5 +1,6 @@
 package ru.systempla.weatherapp.ui.history;
 
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -12,11 +13,15 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 import ru.systempla.weatherapp.R;
+import ru.systempla.weatherapp.database.WeatherHistoryTable;
+import ru.systempla.weatherapp.ui.parcel.DataBaseParcel;
 
 public class HistoryActivity extends AppCompatActivity {
 
+    public static final String DATA_PARCEL_KEY = "DB_parcel";
     private RecyclerView recyclerView;
-    private Button add;
+    private Button clearBt;
+    SQLiteDatabase database;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,6 +29,7 @@ public class HistoryActivity extends AppCompatActivity {
         setContentView(R.layout.weather_history_activity);
 
         initViews();
+        initDB();
 
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setHasFixedSize(true);
@@ -31,24 +37,29 @@ public class HistoryActivity extends AppCompatActivity {
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
 
-        DataSourceBuilder builder = new DataSourceBuilder(getResources());
+        DataSourceBuilder builder = new DataSourceBuilder(WeatherHistoryTable.getAllNotes(database));
         final List<HistoryEntry> dataSource = builder.build();
         final HistoryEntryAdapter adapter = new HistoryEntryAdapter(dataSource);
         recyclerView.setAdapter(adapter);
 
-        add.setOnClickListener(new View.OnClickListener() {
+        clearBt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 //тестовые данные для новых элементов списка
-                dataSource.add(0, new HistoryEntry("Аппокалипсис сегодня",
-                        "+100","1 мм. рт. ст","100 м/с", "200%"));
+                WeatherHistoryTable.deleteAll(database);
+                dataSource.clear();
                 adapter.notifyDataSetChanged();
             }
         });
     }
 
+    private void initDB() {
+        DataBaseParcel parcel = (DataBaseParcel) getIntent().getSerializableExtra(DATA_PARCEL_KEY);
+        database = parcel.getDatabase();
+    }
+
     private void initViews() {
         recyclerView = findViewById(R.id.rv_history);
-        add = findViewById(R.id.add_to_rv_bt);
+        clearBt = findViewById(R.id.clear_rv);
     }
 }

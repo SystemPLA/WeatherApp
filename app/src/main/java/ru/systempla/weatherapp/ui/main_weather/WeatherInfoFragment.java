@@ -27,10 +27,12 @@ import ru.systempla.weatherapp.database.WeatherHistoryTable;
 import ru.systempla.weatherapp.rest.entities.WeatherRequestRestModel;
 import ru.systempla.weatherapp.service.BoundService;
 import ru.systempla.weatherapp.ui.history.HistoryActivity;
+import ru.systempla.weatherapp.ui.parcel.DataBaseParcel;
 import ru.systempla.weatherapp.ui.parcel.Parcel;
 import ru.systempla.weatherapp.R;
 
 import static android.content.Context.BIND_AUTO_CREATE;
+import static ru.systempla.weatherapp.ui.history.HistoryActivity.DATA_PARCEL_KEY;
 
 public class WeatherInfoFragment extends Fragment {
 
@@ -145,6 +147,7 @@ public class WeatherInfoFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent();
+                intent.putExtra(DATA_PARCEL_KEY, new DataBaseParcel(database));
                 intent.setClass(getActivity(), HistoryActivity.class);
                 startActivity(intent);
             }

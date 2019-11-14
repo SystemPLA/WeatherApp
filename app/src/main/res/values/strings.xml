@@ -22,7 +22,7 @@
     <string name="settings_label">@string/settings_button_text</string>
     <string name="history_bt_label">Погодная история</string>
     <string name="weather_history_header_label">@string/history_bt_label</string>
-    <string name="add_to_rv_bt_label">Вывести больше данных</string>
+    <string name="add_to_rv_bt_label">Очистить</string>
     <string name="settings_tm">Настройки</string>
     <string name="change_city">Изменить город</string>
     <string name="action_not_found">Действие не найдено</string>
