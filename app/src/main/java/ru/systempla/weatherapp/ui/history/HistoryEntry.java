@@ -2,6 +2,7 @@ package ru.systempla.weatherapp.ui.history;
 
 import java.text.DateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 import ru.systempla.weatherapp.database.WeatherHistoryEntryModel;
 
@@ -18,10 +19,10 @@ class HistoryEntry {
         DateFormat dateFormat = DateFormat.getDateTimeInstance();
         this.cityCountry = model.getName().toUpperCase() + ", " + model.getCountry();
         this.date = dateFormat.format(new Date(model.getDt() * 1000));
-        this.temperature = String.valueOf(model.getTemp());
-        this.pressure = String.valueOf(model.getPressure());
-        this.windSpeed = String.valueOf(model.getSpeed());
-        this.humidity = String.valueOf(model.getHumidity());
+        this.temperature = String.format(Locale.getDefault(), "%.2f", model.getTemp()) + " \u2103";
+        this.pressure = model.getPressure() + " hPa";
+        this.windSpeed = model.getSpeed() + " mps";
+        this.humidity = model.getHumidity() + " %";
     }
 
     String getCityCountry() {

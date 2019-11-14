@@ -13,12 +13,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 import ru.systempla.weatherapp.R;
+import ru.systempla.weatherapp.database.DatabaseHelper;
 import ru.systempla.weatherapp.database.WeatherHistoryTable;
-import ru.systempla.weatherapp.ui.parcel.DataBaseParcel;
 
 public class HistoryActivity extends AppCompatActivity {
 
-    public static final String DATA_PARCEL_KEY = "DB_parcel";
     private RecyclerView recyclerView;
     private Button clearBt;
     SQLiteDatabase database;
@@ -45,7 +44,6 @@ public class HistoryActivity extends AppCompatActivity {
         clearBt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //тестовые данные для новых элементов списка
                 WeatherHistoryTable.deleteAll(database);
                 dataSource.clear();
                 adapter.notifyDataSetChanged();
@@ -54,8 +52,7 @@ public class HistoryActivity extends AppCompatActivity {
     }
 
     private void initDB() {
-        DataBaseParcel parcel = (DataBaseParcel) getIntent().getSerializableExtra(DATA_PARCEL_KEY);
-        database = parcel.getDatabase();
+        database = new DatabaseHelper(getApplicationContext()).getWritableDatabase();
     }
 
     private void initViews() {

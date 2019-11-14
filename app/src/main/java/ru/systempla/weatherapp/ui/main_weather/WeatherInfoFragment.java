@@ -27,12 +27,10 @@ import ru.systempla.weatherapp.database.WeatherHistoryTable;
 import ru.systempla.weatherapp.rest.entities.WeatherRequestRestModel;
 import ru.systempla.weatherapp.service.BoundService;
 import ru.systempla.weatherapp.ui.history.HistoryActivity;
-import ru.systempla.weatherapp.ui.parcel.DataBaseParcel;
 import ru.systempla.weatherapp.ui.parcel.Parcel;
 import ru.systempla.weatherapp.R;
 
 import static android.content.Context.BIND_AUTO_CREATE;
-import static ru.systempla.weatherapp.ui.history.HistoryActivity.DATA_PARCEL_KEY;
 
 public class WeatherInfoFragment extends Fragment {
 
@@ -147,7 +145,6 @@ public class WeatherInfoFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent();
-                intent.putExtra(DATA_PARCEL_KEY, new DataBaseParcel(database));
                 intent.setClass(getActivity(), HistoryActivity.class);
                 startActivity(intent);
             }
@@ -221,14 +218,14 @@ public class WeatherInfoFragment extends Fragment {
     }
 
     private void setDetails(String description, float humidity, float pressure, float speed) {
-        pressureValue.setText(pressure + "hPa");
-        humidityValue.setText(humidity + "%");
-        windValue.setText(speed + "mps");
+        pressureValue.setText(pressure + " hPa");
+        humidityValue.setText(humidity + " %");
+        windValue.setText(speed + " mps");
         detailsTextView.setText(description.toUpperCase());
     }
 
     private void setCurrentTemp(float temp) {
-        String currentTextText = String.format(Locale.getDefault(), "%.2f", temp) + "\u2103";
+        String currentTextText = String.format(Locale.getDefault(), "%.2f", temp) + " \u2103";
         temperatureValue.setText(currentTextText);
     }
 

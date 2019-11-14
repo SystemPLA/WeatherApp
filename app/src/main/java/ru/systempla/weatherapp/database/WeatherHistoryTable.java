@@ -64,7 +64,8 @@ public class WeatherHistoryTable {
     }
 
     public static List<WeatherHistoryEntryModel> getAllNotes(SQLiteDatabase database) {
-        Cursor cursor = database.rawQuery("SELECT * FROM " + TABLE_NAME, null);
+        Cursor cursor = database.rawQuery("SELECT * FROM " + TABLE_NAME + " ORDER BY "
+                + COLUMN_DATE_TIME + " DESC", null);
         return getResultFromCursor(cursor);
     }
 
