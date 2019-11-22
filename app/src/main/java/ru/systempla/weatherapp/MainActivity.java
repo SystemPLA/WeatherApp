@@ -108,7 +108,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         loadSavedData(savedInstanceState);
     }
 
-    private String getLocation() {
+    private Location getLocation() {
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED
                 && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
@@ -117,12 +117,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION,
                     Manifest.permission.ACCESS_COARSE_LOCATION}, 100);
         }
-        Location loc = mLocManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-        return getAddressByLoc(loc);
+        return mLocManager.getLastKnownLocation(LocationManager.PASSIVE_PROVIDER);
     }
 
     private String getAddressByLoc(Location loc) {
-
+        if (loc == null) return MSG_NO_DATA;
         final Geocoder geo = new Geocoder(this);
         List<Address> list;
         try {
@@ -131,7 +130,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             e.printStackTrace();
             return e.getLocalizedMessage();
         }
-
         if (list.isEmpty()) {
             return MSG_NO_DATA;
         } else {
@@ -153,8 +151,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             if (fragmentContainer.getVisibility() == View.GONE)
                 fragmentContainer.setVisibility(View.VISIBLE);
         } else {
-            String gps_location = getLocation();
-            if (gps_location == null) {
+            String gps_location = getAddressByLoc(getLocation());
+            if (gps_location.equals(MSG_NO_DATA)) {
                 String path = getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS) + "/" + externalFileName;
                 readFromFile(path);
             } else {
