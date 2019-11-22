@@ -8,10 +8,6 @@ public class WeatherHistoryEntryModel {
     private float humidity;
     private float pressure;
     private float speed;
-    private String description;
-    private int actualId;
-    private long sunrise;
-    private long sunset;
     private long dt;
 
     public String getName() {
@@ -62,37 +58,6 @@ public class WeatherHistoryEntryModel {
         this.speed = speed;
     }
 
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public int getActualId() {
-        return actualId;
-    }
-
-    public void setActualId(int actualId) {
-        this.actualId = actualId;
-    }
-
-    public long getSunrise() {
-        return sunrise;
-    }
-
-    public void setSunrise(long sunrise) {
-        this.sunrise = sunrise;
-    }
-
-    public long getSunset() {
-        return sunset;
-    }
-
-    public void setSunset(long sunset) {
-        this.sunset = sunset;
-    }
 
     public long getDt() {
         return dt;

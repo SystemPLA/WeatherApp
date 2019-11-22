@@ -81,10 +81,6 @@ public class WeatherHistoryTable {
             int humidityIdx = cursor.getColumnIndex(COLUMN_HUMIDITY);
             int pressureIdx = cursor.getColumnIndex(COLUMN_PRESSURE);
             int windSpeedIdx = cursor.getColumnIndex(COLUMN_WIND_SPEED);
-            int descriptionIdx = cursor.getColumnIndex(COLUMN_DESCRIPTION);
-            int weatherAIdIdx = cursor.getColumnIndex(COLUMN_WEATHER_ID);
-            int sunriseIdx = cursor.getColumnIndex(COLUMN_SUNRISE);
-            int sunsetIdx = cursor.getColumnIndex(COLUMN_SUNSET);
             int dateTimeIdx = cursor.getColumnIndex(COLUMN_DATE_TIME);
 
             do {
@@ -96,10 +92,6 @@ public class WeatherHistoryTable {
                 tempModel.setHumidity(cursor.getFloat(humidityIdx));
                 tempModel.setPressure(cursor.getFloat(pressureIdx));
                 tempModel.setSpeed(cursor.getFloat(windSpeedIdx));
-                tempModel.setDescription(cursor.getString(descriptionIdx));
-                tempModel.setActualId(cursor.getInt(weatherAIdIdx));
-                tempModel.setSunrise(cursor.getInt(sunriseIdx));
-                tempModel.setSunset(cursor.getInt(sunsetIdx));
                 tempModel.setDt(cursor.getInt(dateTimeIdx));
 
                 result.add(tempModel);

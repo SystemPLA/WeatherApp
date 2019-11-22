@@ -47,6 +47,7 @@ import ru.systempla.weatherapp.ui.settings.SettingsFragment;
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener,
         SettingsChangeListener {
 
+    private final String LOG_TAG = "Main activity";
     private final String PARCEL_KEY = "PARCEL";
     private final String externalFileName = "systempla_weatherapp_parcel_file.lect";
 
@@ -90,23 +91,34 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         initViews();
         initSideMenu();
         getSensors();
+        initFragments();
+        loadSavedData(savedInstanceState);
+    }
 
-        fragmentSettings = new SettingsFragment();
-        developerInfoFragment = new DeveloperInfoFragment();
-        sendMessageFragment = new SMFragment();
-        weatherFragment = new WeatherInfoFragment();
-
+    private void loadSavedData(Bundle savedInstanceState) {
         if(savedInstanceState != null) {
             currentParcel = (Parcel) savedInstanceState.getSerializable(PARCEL_KEY);
-            last_city = currentParcel.getCityName();
+            try {
+                last_city = currentParcel.getCityName();
+            } catch (Exception e) {
+                e.printStackTrace();
+                Log.e(LOG_TAG, "currentParcel.getCityName = null");
+            }
             settingsParcel = currentParcel.getSettingsParcel();
-            if (fragmentContainer.getVisibility()==View.GONE) fragmentContainer.setVisibility(View.VISIBLE);
+            if (fragmentContainer.getVisibility()== View.GONE) fragmentContainer.setVisibility(View.VISIBLE);
         } else {
             String path = getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS) + "/" + externalFileName;
             readFromFile(path);
             weatherFragment = WeatherInfoFragment.create(currentParcel);
             replaceFragment(weatherFragment);
         }
+    }
+
+    private void initFragments() {
+        fragmentSettings = new SettingsFragment();
+        developerInfoFragment = new DeveloperInfoFragment();
+        sendMessageFragment = new SMFragment();
+        weatherFragment = new WeatherInfoFragment();
     }
 
     private void initViews() {

@@ -21,6 +21,8 @@ public class HistoryActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private Button clearBt;
     SQLiteDatabase database;
+    HistoryEntryAdapter adapter;
+    List<HistoryEntry> dataSource;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,18 +31,11 @@ public class HistoryActivity extends AppCompatActivity {
 
         initViews();
         initDB();
+        initRecyclerView();
+        initClearButton();
+    }
 
-        recyclerView.setItemAnimator(new DefaultItemAnimator());
-        recyclerView.setHasFixedSize(true);
-
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
-        recyclerView.setLayoutManager(layoutManager);
-
-        DataSourceBuilder builder = new DataSourceBuilder(WeatherHistoryTable.getAllNotes(database));
-        final List<HistoryEntry> dataSource = builder.build();
-        final HistoryEntryAdapter adapter = new HistoryEntryAdapter(dataSource);
-        recyclerView.setAdapter(adapter);
-
+    private void initClearButton() {
         clearBt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -49,6 +44,19 @@ public class HistoryActivity extends AppCompatActivity {
                 adapter.notifyDataSetChanged();
             }
         });
+    }
+
+    private void initRecyclerView() {
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.setHasFixedSize(true);
+
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(layoutManager);
+
+        DataSourceBuilder builder = new DataSourceBuilder(WeatherHistoryTable.getAllNotes(database));
+        dataSource = builder.build();
+        adapter = new HistoryEntryAdapter(dataSource);
+        recyclerView.setAdapter(adapter);
     }
 
     private void initDB() {
