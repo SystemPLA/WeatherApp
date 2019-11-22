@@ -1,6 +1,7 @@
 package ru.systempla.weatherapp;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.hardware.Sensor;
@@ -77,10 +78,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private String last_city = DEFAULT_CITY;
 
-    private SettingsParcel settingsParcel = new SettingsParcel(true,true,true);
+    private SettingsParcel settingsParcel = new SettingsParcel(true, true, true);
     private Parcel currentParcel = new Parcel(last_city, settingsParcel);
 
     private LocationManager mLocManager = null;
+    private LocListener mLocListener = null;
 
 //    OnNavigationItemSelectedListener method
 
@@ -107,7 +109,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     private String getLocation() {
-        Location loc = null;
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED
                 && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
@@ -115,9 +116,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION,
                     Manifest.permission.ACCESS_COARSE_LOCATION}, 100);
-            loc = mLocManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-
         }
+        Location loc = mLocManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
         return getAddressByLoc(loc);
     }
 
@@ -136,12 +136,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             return MSG_NO_DATA;
         } else {
             Address address = list.get(0);
-            return address.getThoroughfare();
+            return address.getLocality();
         }
     }
 
     private void loadSavedData(Bundle savedInstanceState) {
-        if(savedInstanceState != null) {
+        if (savedInstanceState != null) {
             currentParcel = (Parcel) savedInstanceState.getSerializable(PARCEL_KEY);
             try {
                 last_city = currentParcel.getCityName();
@@ -150,13 +150,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 Log.e(LOG_TAG_MAIN, "currentParcel.getCityName = null");
             }
             settingsParcel = currentParcel.getSettingsParcel();
-            if (fragmentContainer.getVisibility()== View.GONE) fragmentContainer.setVisibility(View.VISIBLE);
+            if (fragmentContainer.getVisibility() == View.GONE)
+                fragmentContainer.setVisibility(View.VISIBLE);
         } else {
             String gps_location = getLocation();
             if (gps_location == null) {
                 String path = getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS) + "/" + externalFileName;
                 readFromFile(path);
-            } else{
+            } else {
                 last_city = gps_location;
                 currentParcel = new Parcel(last_city, settingsParcel);
             }
@@ -181,6 +182,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         fragmentContainer = findViewById(R.id.fragment_container);
     }
 
+    @SuppressLint("MissingPermission")
     @Override
     protected void onResume() {
         super.onResume();
@@ -189,6 +191,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 SensorManager.SENSOR_DELAY_NORMAL);
         sensorManager.registerListener(listenerHumidity, sensorHumidity,
                 SensorManager.SENSOR_DELAY_NORMAL);
+        if (mLocListener == null) mLocListener = new LocListener();
+        mLocManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
+                3000L, 1.0F, mLocListener);
     }
 
     @Override
@@ -196,6 +201,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         super.onPause();
         sensorManager.unregisterListener(listenerTemperature, sensorTemperature);
         sensorManager.unregisterListener(listenerHumidity, sensorHumidity);
+        if (mLocListener != null) mLocManager.removeUpdates(mLocListener);
     }
 
     @Override
@@ -315,8 +321,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 //    Sensors
 
     private void getSensors() {
-        // Менеджер датчиков
         sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
+        mLocManager = (LocationManager) getSystemService(LOCATION_SERVICE);
         // Датчик освещенности (он есть на многих моделях)
         sensorTemperature = sensorManager.getDefaultSensor(Sensor.TYPE_AMBIENT_TEMPERATURE);
         sensorHumidity = sensorManager.getDefaultSensor(Sensor.TYPE_RELATIVE_HUMIDITY);
@@ -334,6 +340,19 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         stringBuilder.append("Humidity Sensor value = ").append(event.values[0])
                 .append("\n").append("=======================================").append("\n");
         humiditySensorText.setText(stringBuilder);
+    }
+
+    private final class LocListener implements LocationListener {
+        @Override
+        public void onLocationChanged(Location location) {
+            Log.d(LOG_TAG_MAIN, "onLocationChanged: " + location.toString());
+        }
+        @Override
+        public void onStatusChanged(String provider, int status, Bundle extras) { /* Empty */ }
+        @Override
+        public void onProviderEnabled(String provider) { /* Empty */ }
+        @Override
+        public void onProviderDisabled(String provider) { /* Empty */ }
     }
 
     // Слушатель датчика освещенности
