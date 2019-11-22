@@ -1,30 +1,23 @@
 package ru.systempla.weatherapp.ui.history;
 
-import android.content.res.Resources;
-
 import java.util.ArrayList;
 import java.util.List;
 
-import ru.systempla.weatherapp.R;
+import ru.systempla.weatherapp.database.WeatherHistoryEntryModel;
 
 class DataSourceBuilder {
 
     private final List<HistoryEntry> dataSource;
-    private final Resources resources;
+    private final List<WeatherHistoryEntryModel> resources;
 
-    DataSourceBuilder(Resources resources) {
-        dataSource = new ArrayList<>(6);
+    DataSourceBuilder(List<WeatherHistoryEntryModel> resources) {
+        dataSource = new ArrayList<>(resources.size());
         this.resources = resources;
     }
 
     List<HistoryEntry> build() {
-        String[] dates = resources.getStringArray(R.array.dates);
-        String[] temperatures = resources.getStringArray(R.array.temperatures);
-        String[] pressures = resources.getStringArray(R.array.pressures);
-        String[] windSpeeds = resources.getStringArray(R.array.windSpeeds);
-        String[] humidities = resources.getStringArray(R.array.humidities);
-        for (int i = 0; i < dates.length; i++)
-            dataSource.add(new HistoryEntry(dates[i], temperatures[i], pressures[i], windSpeeds[i], humidities[i]));
+        for (int i = 0; i < resources.size(); i++)
+            dataSource.add(new HistoryEntry(resources.get(i)));
         return dataSource;
     }
 }

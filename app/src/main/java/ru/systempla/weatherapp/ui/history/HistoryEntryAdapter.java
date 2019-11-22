@@ -20,6 +20,7 @@ class HistoryEntryAdapter extends RecyclerView.Adapter<HistoryEntryAdapter.ViewH
     class ViewHolder extends RecyclerView.ViewHolder {
 
         private final TextView date;
+        private final TextView cityCountry;
         private final TextView temperatureValue;
         private final TextView pressureValue;
         private final TextView windSpeedValue;
@@ -29,6 +30,7 @@ class HistoryEntryAdapter extends RecyclerView.Adapter<HistoryEntryAdapter.ViewH
             super(view);
 
             date = view.findViewById(R.id.date_tv);
+            cityCountry = view.findViewById((R.id.city_country));
             temperatureValue = view.findViewById(R.id.temperature_value);
             pressureValue = view.findViewById(R.id.pressure_value);
             windSpeedValue = view.findViewById(R.id.wind_value);
@@ -62,6 +64,7 @@ class HistoryEntryAdapter extends RecyclerView.Adapter<HistoryEntryAdapter.ViewH
 
         // Вывести на экран, используя ViewHolder
         holder.date.setText(item.getDate());
+        holder.cityCountry.setText(item.getCityCountry());
         holder.temperatureValue.setText(item.getTemperature());
         holder.pressureValue.setText(item.getPressure());
         holder.windSpeedValue.setText(item.getWindSpeed());

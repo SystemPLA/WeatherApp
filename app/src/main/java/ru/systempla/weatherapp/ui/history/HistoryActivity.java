@@ -1,5 +1,6 @@
 package ru.systempla.weatherapp.ui.history;
 
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -12,11 +13,16 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 import ru.systempla.weatherapp.R;
+import ru.systempla.weatherapp.database.DatabaseHelper;
+import ru.systempla.weatherapp.database.WeatherHistoryTable;
 
 public class HistoryActivity extends AppCompatActivity {
 
     private RecyclerView recyclerView;
-    private Button add;
+    private Button clearBt;
+    SQLiteDatabase database;
+    HistoryEntryAdapter adapter;
+    List<HistoryEntry> dataSource;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,31 +30,41 @@ public class HistoryActivity extends AppCompatActivity {
         setContentView(R.layout.weather_history_activity);
 
         initViews();
+        initDB();
+        initRecyclerView();
+        initClearButton();
+    }
 
+    private void initClearButton() {
+        clearBt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                WeatherHistoryTable.deleteAll(database);
+                dataSource.clear();
+                adapter.notifyDataSetChanged();
+            }
+        });
+    }
+
+    private void initRecyclerView() {
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setHasFixedSize(true);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
 
-        DataSourceBuilder builder = new DataSourceBuilder(getResources());
-        final List<HistoryEntry> dataSource = builder.build();
-        final HistoryEntryAdapter adapter = new HistoryEntryAdapter(dataSource);
+        DataSourceBuilder builder = new DataSourceBuilder(WeatherHistoryTable.getAllNotes(database));
+        dataSource = builder.build();
+        adapter = new HistoryEntryAdapter(dataSource);
         recyclerView.setAdapter(adapter);
+    }
 
-        add.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //тестовые данные для новых элементов списка
-                dataSource.add(0, new HistoryEntry("Аппокалипсис сегодня",
-                        "+100","1 мм. рт. ст","100 м/с", "200%"));
-                adapter.notifyDataSetChanged();
-            }
-        });
+    private void initDB() {
+        database = new DatabaseHelper(getApplicationContext()).getWritableDatabase();
     }
 
     private void initViews() {
         recyclerView = findViewById(R.id.rv_history);
-        add = findViewById(R.id.add_to_rv_bt);
+        clearBt = findViewById(R.id.clear_rv);
     }
 }
