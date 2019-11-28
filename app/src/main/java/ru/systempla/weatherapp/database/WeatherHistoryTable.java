@@ -98,7 +98,11 @@ public class WeatherHistoryTable {
             } while (cursor.moveToNext());
         }
 
-        try { cursor.close(); } catch (Exception ignored) {}
+        try {
+            if (cursor != null) {
+                cursor.close();
+            }
+        } catch (Exception ignored) {}
         return result == null ? new ArrayList<WeatherHistoryEntryModel>(0) : result;
     }
 }

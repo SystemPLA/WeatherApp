@@ -38,12 +38,10 @@ class HistoryEntryAdapter extends RecyclerView.Adapter<HistoryEntryAdapter.ViewH
         }
     }
 
-    // Передаем в конструктор источник данных
     HistoryEntryAdapter(List<HistoryEntry> dataSource) {
         this.dataSource = dataSource;
     }
 
-    // Создать новый элемент пользовательского интерфейса
     @NonNull
     @Override
     public HistoryEntryAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -55,14 +53,10 @@ class HistoryEntryAdapter extends RecyclerView.Adapter<HistoryEntryAdapter.ViewH
         return viewHolder;
     }
 
-    // Связывание данных (data binding) в пользовательском интерфейсе
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, final int position) {
-        // Получить элемент из источника данных
-        final int pos = position;
         HistoryEntry item = dataSource.get(position);
 
-        // Вывести на экран, используя ViewHolder
         holder.date.setText(item.getDate());
         holder.cityCountry.setText(item.getCityCountry());
         holder.temperatureValue.setText(item.getTemperature());
@@ -70,11 +64,9 @@ class HistoryEntryAdapter extends RecyclerView.Adapter<HistoryEntryAdapter.ViewH
         holder.windSpeedValue.setText(item.getWindSpeed());
         holder.humidityValue.setText(item.getHumidity());
 
-        // отрабатывает при необходимости нарисовать карточку
         Log.d("HistoryEntryAdapter", "onBindViewHolder");
     }
 
-    // Вернуть размер данных
     @Override
     public int getItemCount() {
         return dataSource.size();

@@ -22,7 +22,7 @@ public class WeatherHistoryEntryModel {
         return country;
     }
 
-    public void setCountry(String country) {
+    void setCountry(String country) {
         this.country = country;
     }
 
@@ -30,7 +30,7 @@ public class WeatherHistoryEntryModel {
         return temp;
     }
 
-    public void setTemp(float temp) {
+    void setTemp(float temp) {
         this.temp = temp;
     }
 
@@ -38,7 +38,7 @@ public class WeatherHistoryEntryModel {
         return humidity;
     }
 
-    public void setHumidity(float humidity) {
+    void setHumidity(float humidity) {
         this.humidity = humidity;
     }
 
@@ -46,7 +46,7 @@ public class WeatherHistoryEntryModel {
         return pressure;
     }
 
-    public void setPressure(float pressure) {
+    void setPressure(float pressure) {
         this.pressure = pressure;
     }
 
@@ -54,7 +54,7 @@ public class WeatherHistoryEntryModel {
         return speed;
     }
 
-    public void setSpeed(float speed) {
+    void setSpeed(float speed) {
         this.speed = speed;
     }
 
@@ -63,7 +63,7 @@ public class WeatherHistoryEntryModel {
         return dt;
     }
 
-    public void setDt(long dt) {
+    void setDt(long dt) {
         this.dt = dt;
     }
 }

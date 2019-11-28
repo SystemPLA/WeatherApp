@@ -44,6 +44,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.List;
+import java.util.Objects;
 
 import ru.systempla.weatherapp.ui.com.SMFragment;
 import ru.systempla.weatherapp.ui.dev.DeveloperInfoFragment;
@@ -141,12 +142,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private void loadSavedData(Bundle savedInstanceState) {
         if (savedInstanceState != null) {
             currentParcel = (Parcel) savedInstanceState.getSerializable(PARCEL_KEY);
-            try {
-                last_city = currentParcel.getCityName();
-            } catch (Exception e) {
-                e.printStackTrace();
-                Log.e(LOG_TAG_MAIN, "currentParcel.getCityName = null");
-            }
+            last_city = Objects.requireNonNull(currentParcel).getCityName();
             settingsParcel = currentParcel.getSettingsParcel();
             if (fragmentContainer.getVisibility() == View.GONE)
                 fragmentContainer.setVisibility(View.VISIBLE);
@@ -184,7 +180,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     protected void onResume() {
         super.onResume();
-        // Регистрируем слушатель датчика освещенности
         sensorManager.registerListener(listenerTemperature, sensorTemperature,
                 SensorManager.SENSOR_DELAY_NORMAL);
         sensorManager.registerListener(listenerHumidity, sensorHumidity,
@@ -213,9 +208,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
-        if(savedInstanceState != null) {
-            currentParcel = (Parcel) savedInstanceState.getSerializable(PARCEL_KEY);
-        }
+        currentParcel = (Parcel) savedInstanceState.getSerializable(PARCEL_KEY);
     }
 
     @Override
@@ -321,7 +314,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private void getSensors() {
         sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
         mLocManager = (LocationManager) getSystemService(LOCATION_SERVICE);
-        // Датчик освещенности (он есть на многих моделях)
         sensorTemperature = sensorManager.getDefaultSensor(Sensor.TYPE_AMBIENT_TEMPERATURE);
         sensorHumidity = sensorManager.getDefaultSensor(Sensor.TYPE_RELATIVE_HUMIDITY);
     }
@@ -353,7 +345,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         public void onProviderDisabled(String provider) { /* Empty */ }
     }
 
-    // Слушатель датчика освещенности
     SensorEventListener listenerTemperature = new SensorEventListener() {
 
         @Override

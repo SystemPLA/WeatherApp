@@ -30,9 +30,8 @@ public class BoundService extends Service implements Serializable {
 
 	public WeatherRequestRestModel getWeatherUpdate(String city) {
 		try {
-			WeatherRequestRestModel model = OpenWeatherRepo.getSingleton().getAPI().loadWeather(city + ",ru",
+			return OpenWeatherRepo.getSingleton().getAPI().loadWeather(city + ",ru",
 					OPEN_WEATHER_API_KEY, "metric").execute().body();
-			return model;
 		} catch (IOException e) {
 			e.printStackTrace();
 			return null;

@@ -21,6 +21,7 @@ import androidx.fragment.app.Fragment;
 import java.text.DateFormat;
 import java.util.Date;
 import java.util.Locale;
+import java.util.Objects;
 
 import ru.systempla.weatherapp.database.DatabaseHelper;
 import ru.systempla.weatherapp.database.WeatherHistoryTable;
@@ -39,7 +40,6 @@ public class WeatherInfoFragment extends Fragment {
     private MyServiceConnection mConnection = null;
 
     private final Handler handler = new Handler();
-    private Typeface weatherFont;
     private TextView cityNameView;
     private TextView updatedTextView;
     private TextView weatherIconTextView;
@@ -52,9 +52,8 @@ public class WeatherInfoFragment extends Fragment {
     private TextView humidityValue;
     private TextView temperatureValue;
 
-    SQLiteDatabase database;
+    private SQLiteDatabase database;
 
-    private Button historyButton;
     private Parcel parcel;
 
     private static final String PARCEL = "parcel";
@@ -68,8 +67,8 @@ public class WeatherInfoFragment extends Fragment {
         return fragment;
     }
 
-    public Parcel getParcel() {
-        return (Parcel) getArguments().getSerializable(PARCEL);
+    private Parcel getParcel() {
+        return (Parcel) Objects.requireNonNull(getArguments()).getSerializable(PARCEL);
     }
 
     @Override
@@ -91,7 +90,7 @@ public class WeatherInfoFragment extends Fragment {
     }
 
     private void initDB() {
-        database = new DatabaseHelper(getActivity().getApplicationContext()).getWritableDatabase();
+        database = new DatabaseHelper(Objects.requireNonNull(getActivity()).getApplicationContext()).getWritableDatabase();
     }
 
     @Override
@@ -99,14 +98,14 @@ public class WeatherInfoFragment extends Fragment {
         super.onStart();
         if (!isBind) {
             Intent intent = new Intent(getActivity(), BoundService.class);
-            getActivity().bindService(intent, mConnection, BIND_AUTO_CREATE);
+            Objects.requireNonNull(getActivity()).bindService(intent, mConnection, BIND_AUTO_CREATE);
         }
     }
 
     @Override
     public void onStop() {
         if (isBind) {
-            getActivity().unbindService(mConnection);
+            Objects.requireNonNull(getActivity()).unbindService(mConnection);
             isBind = false;
         }
         super.onStop();
@@ -139,13 +138,13 @@ public class WeatherInfoFragment extends Fragment {
 
         temperatureValue = layout.findViewById(R.id.temperature_value);
 
-        historyButton = layout.findViewById(R.id.history_bt);
+        Button historyButton = layout.findViewById(R.id.history_bt);
 
         historyButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent();
-                intent.setClass(getActivity(), HistoryActivity.class);
+                intent.setClass(Objects.requireNonNull(getActivity()), HistoryActivity.class);
                 startActivity(intent);
             }
         });
@@ -168,7 +167,7 @@ public class WeatherInfoFragment extends Fragment {
     }
 
     private void initFonts() {
-        weatherFont = Typeface.createFromAsset(getActivity().getAssets(), "fonts/weather.ttf");
+        Typeface weatherFont = Typeface.createFromAsset(Objects.requireNonNull(getActivity()).getAssets(), "fonts/weather.ttf");
         weatherIconTextView.setTypeface(weatherFont);
     }
 
@@ -181,7 +180,7 @@ public class WeatherInfoFragment extends Fragment {
                     handler.post(new Runnable() {
                         @Override
                         public void run() {
-                            Toast.makeText(getActivity().getApplicationContext(), R.string.place_not_found,
+                            Toast.makeText(Objects.requireNonNull(getActivity()).getApplicationContext(), R.string.place_not_found,
                                     Toast.LENGTH_LONG).show();
                         }
                     });
@@ -218,9 +217,9 @@ public class WeatherInfoFragment extends Fragment {
     }
 
     private void setDetails(String description, float humidity, float pressure, float speed) {
-        pressureValue.setText(pressure + " hPa");
-        humidityValue.setText(humidity + " %");
-        windValue.setText(speed + " mps");
+        pressureValue.setText(String.format("%s hPa", pressure));
+        humidityValue.setText(String.format("%s %%", humidity));
+        windValue.setText(String.format("%s mps", speed));
         detailsTextView.setText(description.toUpperCase());
     }
 
@@ -244,7 +243,6 @@ public class WeatherInfoFragment extends Fragment {
             long currentTime = new Date().getTime();
             if (currentTime >= sunrise && currentTime < sunset) {
                 icon = "\u2600";
-                //icon = getString(R.string.weather_sunny);
             } else {
                 icon = getString(R.string.weather_clear_night);
             }
@@ -272,7 +270,6 @@ public class WeatherInfoFragment extends Fragment {
                 }
                 case 8: {
                     icon = "\u2601";
-                    // icon = getString(R.string.weather_cloudy);
                     break;
                 }
             }
@@ -284,7 +281,6 @@ public class WeatherInfoFragment extends Fragment {
 
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
-            /* Get service object (binder) */
             mService = (BoundService.ServiceBinder) service;
             isBind = mService != null;
             updateWeatherData(parcel.getCityName());
