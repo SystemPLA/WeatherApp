@@ -11,6 +11,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import java.util.Objects;
+
 import ru.systempla.weatherapp.R;
 
 
@@ -32,8 +34,8 @@ public class SMFragment extends Fragment {
             public void onClick(View view) {
                 String toastText = "<"+emailField.getText().toString()+">"+" : "
                         +messageField.getText().toString()+" "+getString(R.string.is_sent);
-                Toast.makeText(getActivity().getApplicationContext(), toastText,
-                        Toast.LENGTH_LONG).show();
+                Toast.makeText(Objects.requireNonNull(getActivity()).getApplicationContext(), toastText,
+                Toast.LENGTH_LONG).show();
                 clearForms();
             }
         });

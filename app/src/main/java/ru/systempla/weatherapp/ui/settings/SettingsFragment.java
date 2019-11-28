@@ -12,6 +12,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import java.util.Objects;
+
 import ru.systempla.weatherapp.R;
 import ru.systempla.weatherapp.ui.parcel.Parcel;
 import ru.systempla.weatherapp.ui.parcel.SettingsParcel;
@@ -20,7 +22,6 @@ public class SettingsFragment extends Fragment {
 
     private static final String SETTINGS = "parcel";
 
-    private Parcel parcel;
     private CheckBox pressureCB;
     private CheckBox windSpeedCB;
     private CheckBox humidityCB;
@@ -48,8 +49,8 @@ public class SettingsFragment extends Fragment {
         settingsChangeListener = null;
     }
 
-    public Parcel getParcel() {
-        return (Parcel) getArguments().getSerializable(SETTINGS);
+    private Parcel getParcel() {
+        return (Parcel) Objects.requireNonNull(getArguments()).getSerializable(SETTINGS);
     }
 
     @Override
@@ -57,7 +58,7 @@ public class SettingsFragment extends Fragment {
                              Bundle savedInstanceState) {
         View layout = inflater.inflate(R.layout.fragment_settings, container, false);
 
-        parcel = getParcel();
+        Parcel parcel = getParcel();
 
         initView(layout);
         applySettings(parcel);
