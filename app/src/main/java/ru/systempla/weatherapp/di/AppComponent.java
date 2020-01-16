@@ -6,6 +6,7 @@ import dagger.Component;
 import ru.systempla.weatherapp.MainActivity;
 import ru.systempla.weatherapp.di.module.AppModule;
 import ru.systempla.weatherapp.di.module.LocationGetterModule;
+import ru.systempla.weatherapp.di.module.RepoModule;
 import ru.systempla.weatherapp.mvp.presenter.MainPresenter;
 
 @Singleton
