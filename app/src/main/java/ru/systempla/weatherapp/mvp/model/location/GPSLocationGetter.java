@@ -8,37 +8,34 @@ import android.location.LocationManager;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.concurrent.Callable;
 
 import io.reactivex.Single;
 import ru.systempla.weatherapp.mvp.App;
 
+import static ru.systempla.weatherapp.mvp.model.final_groups.FinalGroups.messages.MSG_NO_DATA;
+
 public class GPSLocationGetter implements ILocationGetter {
 
-    private LocationManager mLocManager;
+    private LocationManager locManager;
 
     public GPSLocationGetter() {
-        mLocManager = (LocationManager) App.getInstance().getApplicationContext().getSystemService(Context.LOCATION_SERVICE);
+        locManager = (LocationManager) App.getInstance().getApplicationContext().getSystemService(Context.LOCATION_SERVICE);
     }
 
-    public GPSLocationGetter(LocationManager mLocManager) {
-        this.mLocManager = mLocManager;
+    public GPSLocationGetter(LocationManager locManager) {
+        this.locManager = locManager;
     }
 
+    @SuppressWarnings("MissingPermission")
     @Override
     public Single<String> getCity() {
-        return Single.fromCallable(new Callable<String>() {
-            @Override
-            public String call() throws Exception {
-                return getAddressByLoc
-                        (mLocManager.getLastKnownLocation(LocationManager.PASSIVE_PROVIDER));
-            }
-        });
+        return Single.fromCallable(() -> getAddressByLoc
+                (locManager.getLastKnownLocation(LocationManager.PASSIVE_PROVIDER)));
     }
 
     private String getAddressByLoc(Location loc) {
         if (loc == null) return MSG_NO_DATA;
-        final Geocoder geo = new Geocoder(this);
+        final Geocoder geo = new Geocoder(App.getInstance());
         List<Address> list;
         try {
             list = geo.getFromLocation(loc.getLatitude(), loc.getLongitude(), 1);
@@ -55,17 +52,4 @@ public class GPSLocationGetter implements ILocationGetter {
     }
 
 }
-
-
-//    private Location getLocation() {
-//        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
-//                != PackageManager.PERMISSION_GRANTED
-//                && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
-//                != PackageManager.PERMISSION_GRANTED) {
-//
-//            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION,
-//                    Manifest.permission.ACCESS_COARSE_LOCATION}, 100);
-//        }
-//        return mLocManager.getLastKnownLocation(LocationManager.PASSIVE_PROVIDER);
-//    }
 

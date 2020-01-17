@@ -1,9 +1,8 @@
 package ru.systempla.weatherapp.mvp.model.permissions;
 
+import android.app.Activity;
 import android.content.pm.PackageManager;
 import androidx.core.app.ActivityCompat;
-
-import java.lang.reflect.Array;
 
 import ru.systempla.weatherapp.mvp.App;
 
@@ -25,12 +24,12 @@ public class PermissionManager implements IPermissionManager {
     }
 
     @Override
-    public void getPermission(String permission) {
-        (, new String[]{permission}, 100);
+    public void getPermission(Activity activity, String permission) {
+        ActivityCompat.requestPermissions(activity, new String[]{permission}, 100);
     }
 
     @Override
-    public void getPermission(String ... permissions){
-        ActivityCompat.requestPermissions(this, permissions,100);
+    public void getPermission(Activity activity, String ... permissions){
+        ActivityCompat.requestPermissions(activity, permissions,100);
     }
 }
