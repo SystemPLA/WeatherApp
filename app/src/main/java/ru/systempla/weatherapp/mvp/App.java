@@ -3,6 +3,7 @@ package ru.systempla.weatherapp.mvp;
 import android.app.Application;
 
 import ru.systempla.weatherapp.di.AppComponent;
+import ru.systempla.weatherapp.di.module.AppModule;
 import timber.log.Timber;
 
 public class App extends Application {
@@ -14,6 +15,7 @@ public class App extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        instance = this;
         Timber.plant(new Timber.DebugTree());
 
         appComponent = DaggerAppComponent.builder()

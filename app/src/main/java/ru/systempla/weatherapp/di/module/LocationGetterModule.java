@@ -2,8 +2,8 @@ package ru.systempla.weatherapp.di.module;
 
 import dagger.Module;
 import dagger.Provides;
-import ru.systempla.weatherapp.mvp.location_getter.GPSLocationGetter;
-import ru.systempla.weatherapp.mvp.location_getter.ILocationGetter;
+import ru.systempla.weatherapp.mvp.model.location.GPSLocationGetter;
+import ru.systempla.weatherapp.mvp.model.location.ILocationGetter;
 
 @Module
 public class LocationGetterModule {
