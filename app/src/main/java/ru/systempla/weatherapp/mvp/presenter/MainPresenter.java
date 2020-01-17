@@ -20,9 +20,10 @@ public class MainPresenter extends MvpPresenter<MainView> {
     @Override
     protected void onFirstViewAttach() {
         super.onFirstViewAttach();
+        loadData(locationGetter.getCity());
     }
 
-    public void loadData() {
+    public void loadData(String city) {
 //        getViewState().showLoading();
         weatherRepo.loadWeather()
     }
