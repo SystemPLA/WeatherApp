@@ -16,9 +16,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <service android:name=".service.BoundService" />
+        <service android:name=".service.BoundService"/>
 
-        <activity android:name=".MainActivity"
+        <activity android:name=".mvp.view.ui.MainActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -27,7 +27,7 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".ui.history.HistoryActivity"/>
+<!--        <activity android:name=".ui.history.HistoryActivity"/>-->
 
         <meta-data
             android:name="preloaded_fonts"

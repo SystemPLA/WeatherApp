@@ -1,6 +1,7 @@
 package ru.systempla.weatherapp.mvp.view.ui;
 
 import android.app.Activity;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.view.View;
@@ -14,6 +15,7 @@ import androidx.annotation.Nullable;
 import java.util.Date;
 import java.util.Locale;
 
+import butterknife.BindDrawable;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -57,6 +59,30 @@ public class MainActivity extends MvpAppCompatActivity implements MainView {
 
     @BindView(R.id.n_temperature_value)
     TextView temperatureValue;
+
+    @BindDrawable(R.drawable.ic_sun)
+    Bitmap iconSun;
+
+    @BindDrawable(R.drawable.ic_moon)
+    Bitmap iconMoon;
+
+    @BindDrawable(R.drawable.ic_snow)
+    Bitmap iconSnow;
+
+    @BindDrawable(R.drawable.ic_fog)
+    Bitmap iconFog;
+
+    @BindDrawable(R.drawable.ic_rain)
+    Bitmap iconRain;
+
+    @BindDrawable(R.drawable.ic_cloud)
+    Bitmap iconCloud;
+
+    @BindDrawable(R.drawable.ic_thunderstorm)
+    Bitmap iconThunderstorm;
+
+    @BindDrawable(R.drawable.ic_drizzle)
+    Bitmap iconDrizzle;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState, @Nullable PersistableBundle persistentState) {
@@ -128,44 +154,44 @@ public class MainActivity extends MvpAppCompatActivity implements MainView {
     @Override
     public void setWeatherIcon(int actualId, long sunrise, long sunset) {
         int id = actualId / 100;
-        String icon = "";
+        Bitmap icon = null;
 
         if (actualId == 800) {
             long currentTime = new Date().getTime();
             if (currentTime >= sunrise && currentTime < sunset) {
-                icon = "\u2600";
+                icon = iconSun;
             } else {
-                icon = getString(R.string.weather_clear_night);
+                icon = iconMoon;
             }
         } else {
             switch (id) {
                 case 2: {
-                    icon = getString(R.string.weather_thunder);
+                    icon = iconThunderstorm;
                     break;
                 }
                 case 3: {
-                    icon = getString(R.string.weather_drizzle);
+                    icon = iconDrizzle;
                     break;
                 }
                 case 5: {
-                    icon = getString(R.string.weather_rainy);
+                    icon = iconRain;
                     break;
                 }
                 case 6: {
-                    icon = getString(R.string.weather_snowy);
+                    icon = iconSnow;
                     break;
                 }
                 case 7: {
-                    icon = getString(R.string.weather_foggy);
+                    icon = iconFog;
                     break;
                 }
                 case 8: {
-                    icon = "\u2601";
+                    icon = iconCloud;
                     break;
                 }
             }
         }
-        weatherIconTextView.setText(icon);
+        weatherImage.setImageBitmap(icon);
     }
 
     @Override

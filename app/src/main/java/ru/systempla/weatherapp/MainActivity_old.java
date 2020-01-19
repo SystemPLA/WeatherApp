@@ -54,7 +54,7 @@ import ru.systempla.weatherapp.ui.parcel.SettingsParcel;
 import ru.systempla.weatherapp.ui.settings.SettingsChangeListener;
 import ru.systempla.weatherapp.ui.settings.SettingsFragment;
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener,
+public class MainActivity_old extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener,
         SettingsChangeListener {
 
     private final static String LOG_TAG_MAIN = "Main activity";
