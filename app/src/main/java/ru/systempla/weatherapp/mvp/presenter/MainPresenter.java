@@ -5,8 +5,6 @@ import android.annotation.SuppressLint;
 import javax.inject.Inject;
 
 import io.reactivex.Scheduler;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.schedulers.Schedulers;
 import moxy.InjectViewState;
 import moxy.MvpPresenter;
 import ru.systempla.weatherapp.mvp.model.final_groups.FinalGroups;
@@ -60,18 +58,22 @@ public class MainPresenter extends MvpPresenter<MainView> {
                 .subscribeOn(ioThreadScheduler)
                 .observeOn(mainThreadScheduler)
                 .subscribe(model -> {
-                    getViewState().setCityName(model.name, model.sys.country);
-                    getViewState().setCurrentTemperature(model.main.temp);
-                    getViewState().setHumidity(model.main.humidity);
-                    getViewState().setPressure(model.main.pressure);
-                    getViewState().setWeatherDescription(model.weather[0].description);
-                    getViewState().setWeatherIcon(model.weather[0].id,
-                            model.sys.sunrise * 1000,
-                            model.sys.sunset * 1000);
-                    getViewState().setWindSpeed(model.wind.speed);
-//                    C UV индексом нужно повозиться и создать новый репо
-                    getViewState().setUVIndex(0);
-                    getViewState().hideLoading();
+                    if (model==null) {
+                        getViewState().showMessage("Место не найдено");
+                    } else {
+                        getViewState().setCityName(model.name, model.sys.country);
+                        getViewState().setCurrentTemperature(model.main.temp);
+                        getViewState().setHumidity(model.main.humidity);
+                        getViewState().setPressure(model.main.pressure);
+                        getViewState().setWeatherDescription(model.weather[0].description);
+                        getViewState().setWeatherIcon(model.weather[0].id,
+                                model.sys.sunrise * 1000,
+                                model.sys.sunset * 1000);
+                        getViewState().setWindSpeed(model.wind.speed);
+                        //C UV индексом нужно повозиться и создать новый репо
+                        getViewState().setUVIndex(0);
+                        getViewState().hideLoading();
+                    }
                 });
     }
 

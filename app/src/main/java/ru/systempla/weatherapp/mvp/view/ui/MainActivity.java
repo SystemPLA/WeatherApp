@@ -7,8 +7,12 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
+
+import java.util.Date;
+import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -51,10 +55,13 @@ public class MainActivity extends MvpAppCompatActivity implements MainView {
     @BindView(R.id.rl_loading)
     RelativeLayout loadingRelativeLayout;
 
+    @BindView(R.id.n_temperature_value)
+    TextView temperatureValue;
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState, @Nullable PersistableBundle persistentState) {
         super.onCreate(savedInstanceState, persistentState);
-        App.getInstance().getAppComponent(.inject(this);
+        App.getInstance().getAppComponent().inject(this);
         setContentView(R.layout.weather_data);
         ButterKnife.bind(this);
     }
@@ -76,6 +83,12 @@ public class MainActivity extends MvpAppCompatActivity implements MainView {
         loadingRelativeLayout.setVisibility(View.GONE);
     }
 
+
+    @Override
+    public void showMessage(String text) {
+        Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
+    }
+
     @Override
     public Activity getActivity() {
         return this;
@@ -83,41 +96,81 @@ public class MainActivity extends MvpAppCompatActivity implements MainView {
 
     @Override
     public void setCityName(String name, String country) {
-
+        String cityText = name.toUpperCase() + ", " + country;
+        cityLabel.setText(cityText);
     }
 
     @Override
     public void setWeatherDescription(String description) {
-
+        weatherDescValue.setText(description.toUpperCase());
     }
 
     @Override
     public void setUVIndex(int uvIndex) {
-
+        uvValue.setText(uvIndex);
     }
 
     @Override
     public void setPressure(float pressure) {
-
+        pressureValue.setText(String.format("%s hPa", pressure));
     }
 
     @Override
     public void setHumidity(float humidity) {
-
+        humidityValue.setText(String.format("%s %%", humidity));
     }
 
     @Override
     public void setWindSpeed(float speed) {
-
+        windSpeedValue.setText(String.format("%s mps", speed));
     }
 
     @Override
     public void setWeatherIcon(int actualId, long sunrise, long sunset) {
+        int id = actualId / 100;
+        String icon = "";
 
+        if (actualId == 800) {
+            long currentTime = new Date().getTime();
+            if (currentTime >= sunrise && currentTime < sunset) {
+                icon = "\u2600";
+            } else {
+                icon = getString(R.string.weather_clear_night);
+            }
+        } else {
+            switch (id) {
+                case 2: {
+                    icon = getString(R.string.weather_thunder);
+                    break;
+                }
+                case 3: {
+                    icon = getString(R.string.weather_drizzle);
+                    break;
+                }
+                case 5: {
+                    icon = getString(R.string.weather_rainy);
+                    break;
+                }
+                case 6: {
+                    icon = getString(R.string.weather_snowy);
+                    break;
+                }
+                case 7: {
+                    icon = getString(R.string.weather_foggy);
+                    break;
+                }
+                case 8: {
+                    icon = "\u2601";
+                    break;
+                }
+            }
+        }
+        weatherIconTextView.setText(icon);
     }
 
     @Override
     public void setCurrentTemperature(float temp) {
-
+        String currentTextText = String.format(Locale.getDefault(), "%.2f", temp) + " \u2103";
+        temperatureValue.setText(currentTextText);
     }
 }
