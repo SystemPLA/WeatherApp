@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 
 import javax.inject.Inject;
 
+import io.reactivex.Scheduler;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 import moxy.InjectViewState;
@@ -20,6 +21,9 @@ public class MainPresenter extends MvpPresenter<MainView> {
     private static final String OPEN_WEATHER_API_KEY = "bf47d8733b57a7fad0801641fe3dc5cc";
     private static final String METRIC_UNITS = "metric";
 
+    private Scheduler mainThreadScheduler;
+    private Scheduler ioThreadScheduler;
+
     @Inject
     ILocationGetter locationGetter;
 
@@ -28,6 +32,11 @@ public class MainPresenter extends MvpPresenter<MainView> {
 
     @Inject
     IWeatherRepo weatherRepo;
+
+    public MainPresenter(Scheduler mainThreadScheduler,Scheduler ioThreadScheduler) {
+        this.mainThreadScheduler = mainThreadScheduler;
+        this.ioThreadScheduler = ioThreadScheduler;
+    }
 
     @SuppressLint("CheckResult")
     @Override
@@ -48,8 +57,8 @@ public class MainPresenter extends MvpPresenter<MainView> {
     public void loadData(String city) {
         getViewState().showLoading();
         weatherRepo.loadWeather(city, OPEN_WEATHER_API_KEY, METRIC_UNITS)
-                .subscribeOn(/*задавать извне*/Schedulers.io())
-                .observeOn(/*задавать извне*/AndroidSchedulers.mainThread())
+                .subscribeOn(ioThreadScheduler)
+                .observeOn(mainThreadScheduler)
                 .subscribe(model -> {
                     getViewState().setCityName(model.name, model.sys.country);
                     getViewState().setCurrentTemperature(model.main.temp);
