@@ -9,7 +9,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 
 import java.util.Date;
@@ -135,8 +134,9 @@ public class MainActivity extends MvpAppCompatActivity implements MainView {
     }
 
     @Override
-    public void setUVIndex(int uvIndex) {
-        uvValue.setText(Integer.toString(uvIndex));
+    public void setUVIndex(float uvIndex) {
+        String currentTextText = String.format(Locale.getDefault(), "%.2f", uvIndex);
+        uvValue.setText(currentTextText);
     }
 
     @Override

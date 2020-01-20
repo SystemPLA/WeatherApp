@@ -71,7 +71,7 @@ public class MainPresenter extends MvpPresenter<MainView> {
                 .subscribeOn(ioThreadScheduler)
                 .observeOn(mainThreadScheduler)
                 .subscribe(model -> {
-                    if (model==null) {
+                    if (model == null) {
                         getViewState().showMessage("Место не найдено");
                     } else {
                         getViewState().setCityName(model.name);
@@ -83,12 +83,14 @@ public class MainPresenter extends MvpPresenter<MainView> {
                                 model.sys.sunrise * 1000,
                                 model.sys.sunset * 1000);
                         getViewState().setWindSpeed(model.wind.speed);
-                        //C UV индексом нужно повозиться и создать новый репо
-                        getViewState().setUVIndex(0);
-                        getViewState().hideLoading();
+                        weatherRepo.loadUVI(OPEN_WEATHER_API_KEY, model.coordinates.lat, model.coordinates.lon)
+                                .subscribeOn(ioThreadScheduler)
+                                .observeOn(mainThreadScheduler)
+                                .subscribe(uviRequestRestModel -> {
+                                    getViewState().setUVIndex(uviRequestRestModel.uviValue);
+                                    getViewState().hideLoading();
+                                });
                     }
                 });
     }
-
-
 }
