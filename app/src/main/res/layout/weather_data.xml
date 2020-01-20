@@ -24,7 +24,6 @@
         android:layout_marginTop="21dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintb_toEndOf="parent"
         android:src="@drawable/ic_menu" />
 
     <TextView
@@ -284,7 +283,7 @@
 
 
     <RelativeLayout
-        android:id="@+id/rl_loading"
+        android:id="@+id/loading"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#66000000"

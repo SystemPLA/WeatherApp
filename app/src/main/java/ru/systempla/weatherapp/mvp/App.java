@@ -3,6 +3,7 @@ package ru.systempla.weatherapp.mvp;
 import android.app.Application;
 
 import ru.systempla.weatherapp.di.AppComponent;
+import ru.systempla.weatherapp.di.DaggerAppComponent;
 import ru.systempla.weatherapp.di.module.AppModule;
 import timber.log.Timber;
 

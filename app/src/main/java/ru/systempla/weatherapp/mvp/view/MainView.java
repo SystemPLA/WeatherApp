@@ -1,10 +1,7 @@
 package ru.systempla.weatherapp.mvp.view;
 
-import android.app.Activity;
-
 import moxy.MvpView;
 import moxy.viewstate.strategy.AddToEndSingleStrategy;
-import moxy.viewstate.strategy.OneExecutionStateStrategy;
 import moxy.viewstate.strategy.StateStrategyType;
 
 @StateStrategyType(value = AddToEndSingleStrategy.class)
@@ -21,7 +18,8 @@ public interface MainView extends MvpView {
     void setWindSpeed(float speed);
     void setWeatherIcon(int actualId, long sunrise, long sunset);
     void setCurrentTemperature(float temp);
+    void getPermission(String permission);
+    void getPermission(String ... permissions);
 
-    @StateStrategyType(OneExecutionStateStrategy.class)
-    Activity getActivity();
+
 }

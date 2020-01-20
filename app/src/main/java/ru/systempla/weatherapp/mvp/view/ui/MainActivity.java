@@ -1,7 +1,6 @@
 package ru.systempla.weatherapp.mvp.view.ui;
 
-import android.app.Activity;
-import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.view.View;
@@ -11,6 +10,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
 
 import java.util.Date;
 import java.util.Locale;
@@ -54,35 +54,35 @@ public class MainActivity extends MvpAppCompatActivity implements MainView {
     @BindView(R.id.n_wind_speed_value)
     TextView windSpeedValue;
 
-    @BindView(R.id.rl_loading)
+    @BindView(R.id.loading)
     RelativeLayout loadingRelativeLayout;
 
     @BindView(R.id.n_temperature_value)
     TextView temperatureValue;
 
     @BindDrawable(R.drawable.ic_sun)
-    Bitmap iconSun;
+    Drawable iconSun;
 
     @BindDrawable(R.drawable.ic_moon)
-    Bitmap iconMoon;
+    Drawable iconMoon;
 
     @BindDrawable(R.drawable.ic_snow)
-    Bitmap iconSnow;
+    Drawable iconSnow;
 
     @BindDrawable(R.drawable.ic_fog)
-    Bitmap iconFog;
+    Drawable iconFog;
 
     @BindDrawable(R.drawable.ic_rain)
-    Bitmap iconRain;
+    Drawable iconRain;
 
     @BindDrawable(R.drawable.ic_cloud)
-    Bitmap iconCloud;
+    Drawable iconCloud;
 
     @BindDrawable(R.drawable.ic_thunderstorm)
-    Bitmap iconThunderstorm;
+    Drawable iconThunderstorm;
 
     @BindDrawable(R.drawable.ic_drizzle)
-    Bitmap iconDrizzle;
+    Drawable iconDrizzle;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState, @Nullable PersistableBundle persistentState) {
@@ -101,14 +101,13 @@ public class MainActivity extends MvpAppCompatActivity implements MainView {
 
     @Override
     public void showLoading() {
-        loadingRelativeLayout.setVisibility(View.VISIBLE);
+//        loadingRelativeLayout.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void hideLoading() {
-        loadingRelativeLayout.setVisibility(View.GONE);
+//        loadingRelativeLayout.setVisibility(View.GONE);
     }
-
 
     @Override
     public void showMessage(String text) {
@@ -116,8 +115,13 @@ public class MainActivity extends MvpAppCompatActivity implements MainView {
     }
 
     @Override
-    public Activity getActivity() {
-        return this;
+    public void getPermission(String permission) {
+        ActivityCompat.requestPermissions(this, new String[]{permission}, 100);
+    }
+
+    @Override
+    public void getPermission(String ... permissions){
+        ActivityCompat.requestPermissions(this, permissions,100);
     }
 
     @Override
@@ -154,7 +158,7 @@ public class MainActivity extends MvpAppCompatActivity implements MainView {
     @Override
     public void setWeatherIcon(int actualId, long sunrise, long sunset) {
         int id = actualId / 100;
-        Bitmap icon = null;
+        Drawable icon = null;
 
         if (actualId == 800) {
             long currentTime = new Date().getTime();
@@ -191,7 +195,7 @@ public class MainActivity extends MvpAppCompatActivity implements MainView {
                 }
             }
         }
-        weatherImage.setImageBitmap(icon);
+        weatherImage.setImageDrawable(icon);
     }
 
     @Override
