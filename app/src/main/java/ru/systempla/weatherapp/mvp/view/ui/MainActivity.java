@@ -101,12 +101,12 @@ public class MainActivity extends MvpAppCompatActivity implements MainView {
 
     @Override
     public void showLoading() {
-//        loadingRelativeLayout.setVisibility(View.VISIBLE);
+        loadingRelativeLayout.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void hideLoading() {
-//        loadingRelativeLayout.setVisibility(View.GONE);
+        loadingRelativeLayout.setVisibility(View.GONE);
     }
 
     @Override
