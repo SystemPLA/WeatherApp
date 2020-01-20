@@ -53,15 +53,15 @@ public class MainPresenter extends MvpPresenter<MainView> {
     @Override
     protected void onFirstViewAttach() {
         super.onFirstViewAttach();
-        if (checkPermission(FinalGroups.permission.ACCESS_COARSE_LOCATION,
-                FinalGroups.permission.ACCESS_COARSE_LOCATION)) {
-            locationGetter.getCity().subscribe(this::loadData);
-        } else {
-            getViewState().getPermission(FinalGroups.permission.ACCESS_FINE_LOCATION,
-                    FinalGroups.permission.ACCESS_COARSE_LOCATION);
-            locationGetter.getCity().subscribe(this::loadData);
-        }
-
+//        if (checkPermission(FinalGroups.permission.ACCESS_COARSE_LOCATION,
+//                FinalGroups.permission.ACCESS_COARSE_LOCATION)) {
+//            locationGetter.getCity().subscribe(this::loadData);
+//        } else {
+//            getViewState().getPermission(FinalGroups.permission.ACCESS_FINE_LOCATION,
+//                    FinalGroups.permission.ACCESS_COARSE_LOCATION);
+//            locationGetter.getCity().subscribe(this::loadData);
+//        }
+        loadData("Реутов");
     }
 
     @SuppressLint("CheckResult")
@@ -74,7 +74,7 @@ public class MainPresenter extends MvpPresenter<MainView> {
                     if (model==null) {
                         getViewState().showMessage("Место не найдено");
                     } else {
-                        getViewState().setCityName(model.name, model.sys.country);
+                        getViewState().setCityName(model.name);
                         getViewState().setCurrentTemperature(model.main.temp);
                         getViewState().setHumidity(model.main.humidity);
                         getViewState().setPressure(model.main.pressure);

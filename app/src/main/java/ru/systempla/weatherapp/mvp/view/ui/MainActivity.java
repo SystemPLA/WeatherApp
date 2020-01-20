@@ -85,8 +85,8 @@ public class MainActivity extends MvpAppCompatActivity implements MainView {
     Drawable iconDrizzle;
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState, @Nullable PersistableBundle persistentState) {
-        super.onCreate(savedInstanceState, persistentState);
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         App.getInstance().getAppComponent().inject(this);
         setContentView(R.layout.weather_data);
         ButterKnife.bind(this);
@@ -125,19 +125,18 @@ public class MainActivity extends MvpAppCompatActivity implements MainView {
     }
 
     @Override
-    public void setCityName(String name, String country) {
-        String cityText = name.toUpperCase() + ", " + country;
-        cityLabel.setText(cityText);
+    public void setCityName(String name) {
+        cityLabel.setText(name);
     }
 
     @Override
     public void setWeatherDescription(String description) {
-        weatherDescValue.setText(description.toUpperCase());
+        weatherDescValue.setText(description.toLowerCase());
     }
 
     @Override
     public void setUVIndex(int uvIndex) {
-        uvValue.setText(uvIndex);
+        uvValue.setText(Integer.toString(uvIndex));
     }
 
     @Override
@@ -200,7 +199,7 @@ public class MainActivity extends MvpAppCompatActivity implements MainView {
 
     @Override
     public void setCurrentTemperature(float temp) {
-        String currentTextText = String.format(Locale.getDefault(), "%.2f", temp) + " \u2103";
+        String currentTextText = String.format(Locale.getDefault(), "%.0f", temp);
         temperatureValue.setText(currentTextText);
     }
 }

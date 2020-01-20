@@ -10,7 +10,7 @@ public interface MainView extends MvpView {
     void showLoading();
     void hideLoading();
     void showMessage(String text);
-    void setCityName(String name, String country);
+    void setCityName(String name);
     void setWeatherDescription(String description);
     void setUVIndex (int uvIndex);
     void setPressure(float pressure);
