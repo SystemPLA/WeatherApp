@@ -1,5 +1,7 @@
 package ru.systempla.weatherapp.mvp.view.ui;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.PersistableBundle;
@@ -114,16 +116,6 @@ public class MainActivity extends MvpAppCompatActivity implements MainView {
     }
 
     @Override
-    public void getPermission(String permission) {
-        ActivityCompat.requestPermissions(this, new String[]{permission}, 100);
-    }
-
-    @Override
-    public void getPermission(String ... permissions){
-        ActivityCompat.requestPermissions(this, permissions,100);
-    }
-
-    @Override
     public void setCityName(String name) {
         cityLabel.setText(name);
     }
@@ -201,5 +193,33 @@ public class MainActivity extends MvpAppCompatActivity implements MainView {
     public void setCurrentTemperature(float temp) {
         String currentTextText = String.format(Locale.getDefault(), "%.0f", temp);
         temperatureValue.setText(currentTextText);
+    }
+
+    @Override
+    public void checkGeolocationPermission() {
+        if (!(checkPermission(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION))) {
+            getPermission(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION);
+        }
+    }
+
+    public boolean checkPermission(String permission) {
+        ActivityCompat.checkSelfPermission(App.getInstance(), permission);
+        return (ActivityCompat.checkSelfPermission(App.getInstance(), permission)== PackageManager.PERMISSION_GRANTED);
+    }
+
+    public boolean checkPermission(String ... permissions){
+        boolean flag = true;
+        for (String permission : permissions ) {
+            flag &= (ActivityCompat.checkSelfPermission(App.getInstance(), permission)== PackageManager.PERMISSION_GRANTED);
+        }
+        return flag;
+    }
+
+    public void getPermission(String permission) {
+        ActivityCompat.requestPermissions(this, new String[]{permission}, 100);
+    }
+
+    public void getPermission(String ... permissions){
+        ActivityCompat.requestPermissions(this, permissions,100);
     }
 }

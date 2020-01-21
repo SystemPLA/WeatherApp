@@ -36,31 +36,11 @@ public class MainPresenter extends MvpPresenter<MainView> {
         this.ioThreadScheduler = ioThreadScheduler;
     }
 
-    public boolean checkPermission(String permission) {
-        ActivityCompat.checkSelfPermission(App.getInstance(), permission);
-        return (ActivityCompat.checkSelfPermission(App.getInstance(), permission)!= PackageManager.PERMISSION_GRANTED);
-    }
-
-    public boolean checkPermission(String ... permissions){
-        boolean flag = true;
-        for (String permission : permissions ) {
-            flag &= (ActivityCompat.checkSelfPermission(App.getInstance(), permission)!= PackageManager.PERMISSION_GRANTED);
-        }
-        return flag;
-    }
-
     @SuppressLint("CheckResult")
     @Override
     protected void onFirstViewAttach() {
         super.onFirstViewAttach();
-//        if (checkPermission(FinalGroups.permission.ACCESS_COARSE_LOCATION,
-//                FinalGroups.permission.ACCESS_COARSE_LOCATION)) {
-//            locationGetter.getCity().subscribe(this::loadData);
-//        } else {
-//            getViewState().getPermission(FinalGroups.permission.ACCESS_FINE_LOCATION,
-//                    FinalGroups.permission.ACCESS_COARSE_LOCATION);
-//            locationGetter.getCity().subscribe(this::loadData);
-//        }
+        getViewState().checkGeolocationPermission();
         loadData("Реутов");
     }
 

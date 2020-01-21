@@ -18,8 +18,7 @@ public interface MainView extends MvpView {
     void setWindSpeed(float speed);
     void setWeatherIcon(int actualId, long sunrise, long sunset);
     void setCurrentTemperature(float temp);
-    void getPermission(String permission);
-    void getPermission(String ... permissions);
+    void checkGeolocationPermission();
 
 
 }
