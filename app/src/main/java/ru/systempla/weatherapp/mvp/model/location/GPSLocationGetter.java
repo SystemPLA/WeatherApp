@@ -1,9 +1,9 @@
 package ru.systempla.weatherapp.mvp.model.location;
 
-import android.content.Context;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
+import android.location.LocationListener;
 import android.location.LocationManager;
 
 import java.io.IOException;
@@ -17,13 +17,11 @@ import static ru.systempla.weatherapp.mvp.model.final_groups.FinalGroups.message
 public class GPSLocationGetter implements ILocationGetter {
 
     private LocationManager locManager;
+    private LocationListener locListener;
 
-    public GPSLocationGetter() {
-        locManager = (LocationManager) App.getInstance().getApplicationContext().getSystemService(Context.LOCATION_SERVICE);
-    }
-
-    public GPSLocationGetter(LocationManager locManager) {
+    public GPSLocationGetter(LocationManager locManager, LocationListener locListener) {
         this.locManager = locManager;
+        this.locListener = locListener;
     }
 
     @SuppressWarnings("MissingPermission")
@@ -51,5 +49,17 @@ public class GPSLocationGetter implements ILocationGetter {
         }
     }
 
+    @SuppressWarnings("MissingPermission")
+    @Override
+    public void startUpdatingLocation(){
+        locManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
+                3000L, 1.0F, locListener);
+    }
+
+    @SuppressWarnings("MissingPermission")
+    @Override
+    public void stopUpdatingLocation(){
+        if (locListener != null) locManager.removeUpdates(locListener);
+    }
 }
 

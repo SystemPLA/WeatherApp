@@ -15,6 +15,7 @@ import ru.systempla.weatherapp.mvp.model.final_groups.FinalGroups;
 import ru.systempla.weatherapp.mvp.model.location.ILocationGetter;
 import ru.systempla.weatherapp.mvp.model.repo.IWeatherRepo;
 import ru.systempla.weatherapp.mvp.view.MainView;
+import timber.log.Timber;
 
 @InjectViewState
 public class MainPresenter extends MvpPresenter<MainView> {
@@ -41,7 +42,7 @@ public class MainPresenter extends MvpPresenter<MainView> {
     protected void onFirstViewAttach() {
         super.onFirstViewAttach();
         getViewState().checkGeolocationPermission();
-        loadData("Реутов");
+        locationGetter.getCity().subscribe(this::loadData);
     }
 
     @SuppressLint("CheckResult")
@@ -72,5 +73,13 @@ public class MainPresenter extends MvpPresenter<MainView> {
                                 });
                     }
                 });
+    }
+
+    public void stopGPSUpdate(){
+        locationGetter.stopUpdatingLocation();
+    }
+
+    public void startGPSUpdate(){
+        locationGetter.startUpdatingLocation();
     }
 }

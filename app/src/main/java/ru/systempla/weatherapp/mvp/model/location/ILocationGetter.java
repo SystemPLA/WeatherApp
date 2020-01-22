@@ -4,4 +4,6 @@ import io.reactivex.Single;
 
 public interface ILocationGetter {
     Single<String> getCity();
+    void startUpdatingLocation();
+    void stopUpdatingLocation();
 }

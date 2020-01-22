@@ -3,8 +3,8 @@ package ru.systempla.weatherapp.mvp.view.ui;
 import android.Manifest;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
+
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -91,6 +91,18 @@ public class MainActivity extends MvpAppCompatActivity implements MainView {
         App.getInstance().getAppComponent().inject(this);
         setContentView(R.layout.weather_data);
         ButterKnife.bind(this);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        presenter.startGPSUpdate();
+    }
+
+    @Override
+    protected void onStop() {
+        presenter.stopGPSUpdate();
+        super.onStop();
     }
 
     @ProvidePresenter
