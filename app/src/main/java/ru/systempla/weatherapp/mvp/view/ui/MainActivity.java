@@ -19,6 +19,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.widget.PopupMenu;
 import androidx.core.app.ActivityCompat;
 
 import java.util.Date;
@@ -101,8 +102,27 @@ public class MainActivity extends MvpAppCompatActivity implements MainView {
     Drawable iconDrizzle;
 
     @OnClick(R.id.n_popup_menu)
-    private void showMenu(){
-        openOptionsMenu();
+    public void showMenu(View v){
+        showPopupMenu(v);
+    }
+
+    private void showPopupMenu(View v){
+        PopupMenu popupMenu = new PopupMenu(this, v);
+        popupMenu.inflate(R.menu.location_change_menu);
+        popupMenu.setOnMenuItemClickListener(item -> {
+            switch (item.getItemId()) {
+                case R.id.change_city:
+                    showInputDialog();
+                    return true;
+                case R.id.change_to_gps:
+                    presenter.setSetting("gps");
+                    presenter.loadAccordingToSettings();
+                    return true;
+                default:
+                    return false;
+            }
+        });
+        popupMenu.show();
     }
 
     @Override
@@ -132,26 +152,6 @@ public class MainActivity extends MvpAppCompatActivity implements MainView {
         return true;
     }
 
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        handleMenuItemClick(item);
-        return super.onOptionsItemSelected(item);
-    }
-
-    private void handleMenuItemClick(MenuItem item) {
-        int id = item.getItemId();
-        switch (id) {
-            case R.id.change_city: {
-                showInputDialog();
-                break;
-            }
-            case R.id.change_to_gps: {
-                presenter.setSetting("gps");
-                break;
-            }
-        }
-    }
-
     private void showInputDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(R.string.change_city);
@@ -163,6 +163,7 @@ public class MainActivity extends MvpAppCompatActivity implements MainView {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 presenter.setSetting(input.getText().toString());
+                presenter.loadAccordingToSettings();
             }
         });
         builder.show();
