@@ -9,7 +9,6 @@ import android.os.Bundle;
 import android.text.InputType;
 import android.view.Menu;
 import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -17,7 +16,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.PopupMenu;
 import androidx.core.app.ActivityCompat;
@@ -38,9 +36,6 @@ import ru.systempla.weatherapp.R;
 import ru.systempla.weatherapp.mvp.App;
 import ru.systempla.weatherapp.mvp.presenter.MainPresenter;
 import ru.systempla.weatherapp.mvp.view.MainView;
-import ru.systempla.weatherapp.ui.main_weather.WeatherInfoFragment;
-import ru.systempla.weatherapp.ui.parcel.Parcel;
-import ru.systempla.weatherapp.ui.settings.SettingsFragment;
 
 public class MainActivity extends MvpAppCompatActivity implements MainView {
 
