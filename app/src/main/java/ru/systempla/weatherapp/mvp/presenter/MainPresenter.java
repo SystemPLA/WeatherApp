@@ -54,12 +54,18 @@ public class MainPresenter extends MvpPresenter<MainView> {
     @SuppressLint("CheckResult")
     public void loadAccordingToSettings(){
         settings.getSetting().subscribe(res ->{
-            if (res.equals("gps")) {
-                locationGetter.getCity().subscribe(this::loadData);
-            } else {
-                loadData(res);
+                if (res.equals("gps")) {
+                    locationGetter.getCity().subscribe(this::loadData);
+                } else {
+                    loadData(res);
+                }
             }
-        });
+        );
+    }
+
+    @SuppressLint("CheckResult")
+    private void checkSettings(){
+        settings.getSetting().subscribe(res->{},t->settings.resetSetting());
     }
 
     @SuppressLint("CheckResult")
@@ -90,15 +96,6 @@ public class MainPresenter extends MvpPresenter<MainView> {
                                 });
                     }
                 });
-    }
-
-    @SuppressLint("CheckResult")
-    private void checkSettings(){
-        settings.getSetting().subscribe(res->{
-            if (res==null) {
-                settings.resetSetting();
-            }
-        });
     }
 
     public void setSetting (String setting) {
