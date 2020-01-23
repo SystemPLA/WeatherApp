@@ -8,12 +8,14 @@ import androidx.core.app.ActivityCompat;
 import javax.inject.Inject;
 
 import io.reactivex.Scheduler;
+import io.reactivex.Single;
 import moxy.InjectViewState;
 import moxy.MvpPresenter;
 import ru.systempla.weatherapp.mvp.App;
 import ru.systempla.weatherapp.mvp.model.final_groups.FinalGroups;
 import ru.systempla.weatherapp.mvp.model.location.ILocationGetter;
 import ru.systempla.weatherapp.mvp.model.repo.IWeatherRepo;
+import ru.systempla.weatherapp.mvp.model.settings.ISettings;
 import ru.systempla.weatherapp.mvp.view.MainView;
 import timber.log.Timber;
 
@@ -32,6 +34,9 @@ public class MainPresenter extends MvpPresenter<MainView> {
     @Inject
     IWeatherRepo weatherRepo;
 
+    @Inject
+    ISettings settings;
+
     public MainPresenter(Scheduler mainThreadScheduler,Scheduler ioThreadScheduler) {
         this.mainThreadScheduler = mainThreadScheduler;
         this.ioThreadScheduler = ioThreadScheduler;
@@ -42,11 +47,23 @@ public class MainPresenter extends MvpPresenter<MainView> {
     protected void onFirstViewAttach() {
         super.onFirstViewAttach();
         getViewState().checkGeolocationPermission();
-        locationGetter.getCity().subscribe(this::loadData);
+        checkSettings();
+        loadAccordingToSettings();
     }
 
     @SuppressLint("CheckResult")
-    public void loadData(String city) {
+    public void loadAccordingToSettings(){
+        settings.getSetting().subscribe(res ->{
+            if (res.equals("gps")) {
+                locationGetter.getCity().subscribe(this::loadData);
+            } else {
+                loadData(res);
+            }
+        });
+    }
+
+    @SuppressLint("CheckResult")
+    private void loadData(String city) {
         getViewState().showLoading();
         weatherRepo.loadWeather(city, OPEN_WEATHER_API_KEY, METRIC_UNITS)
                 .subscribeOn(ioThreadScheduler)
@@ -73,6 +90,19 @@ public class MainPresenter extends MvpPresenter<MainView> {
                                 });
                     }
                 });
+    }
+
+    @SuppressLint("CheckResult")
+    private void checkSettings(){
+        settings.getSetting().subscribe(res->{
+            if (res==null) {
+                settings.resetSetting();
+            }
+        });
+    }
+
+    public void setSetting (String setting) {
+        settings.saveSetting(setting);
     }
 
     public void stopGPSUpdate(){

@@ -7,6 +7,7 @@ import dagger.Component;
 import ru.systempla.weatherapp.di.module.AppModule;
 import ru.systempla.weatherapp.di.module.LocationGetterModule;
 import ru.systempla.weatherapp.di.module.RepoModule;
+import ru.systempla.weatherapp.di.module.SettingsModule;
 import ru.systempla.weatherapp.mvp.presenter.MainPresenter;
 import ru.systempla.weatherapp.mvp.view.ui.MainActivity;
 
@@ -14,7 +15,8 @@ import ru.systempla.weatherapp.mvp.view.ui.MainActivity;
 @Component(modules = {
         RepoModule.class,
         AppModule.class,
-        LocationGetterModule.class
+        LocationGetterModule.class,
+        SettingsModule.class
 })
 
 public interface AppComponent {
