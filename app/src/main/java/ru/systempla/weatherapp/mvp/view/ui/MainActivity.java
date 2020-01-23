@@ -1,16 +1,24 @@
 package ru.systempla.weatherapp.mvp.view.ui;
 
 import android.Manifest;
+import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
 
 import android.os.Bundle;
+import android.text.InputType;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.core.app.ActivityCompat;
 
 import java.util.Date;
@@ -19,6 +27,7 @@ import java.util.Locale;
 import butterknife.BindDrawable;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 import moxy.MvpAppCompatActivity;
@@ -28,11 +37,17 @@ import ru.systempla.weatherapp.R;
 import ru.systempla.weatherapp.mvp.App;
 import ru.systempla.weatherapp.mvp.presenter.MainPresenter;
 import ru.systempla.weatherapp.mvp.view.MainView;
+import ru.systempla.weatherapp.ui.main_weather.WeatherInfoFragment;
+import ru.systempla.weatherapp.ui.parcel.Parcel;
+import ru.systempla.weatherapp.ui.settings.SettingsFragment;
 
 public class MainActivity extends MvpAppCompatActivity implements MainView {
 
     @InjectPresenter
     MainPresenter presenter;
+
+    @BindView(R.id.n_popup_menu)
+    ImageView popupMenuButton;
 
     @BindView(R.id.n_city_label)
     TextView cityLabel;
@@ -85,6 +100,11 @@ public class MainActivity extends MvpAppCompatActivity implements MainView {
     @BindDrawable(R.drawable.ic_drizzle)
     Drawable iconDrizzle;
 
+    @OnClick(R.id.n_popup_menu)
+    private void showMenu(){
+        openOptionsMenu();
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -103,6 +123,49 @@ public class MainActivity extends MvpAppCompatActivity implements MainView {
     protected void onStop() {
         presenter.stopGPSUpdate();
         super.onStop();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.location_change_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        handleMenuItemClick(item);
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void handleMenuItemClick(MenuItem item) {
+        int id = item.getItemId();
+        switch (id) {
+            case R.id.change_city: {
+                showInputDialog();
+                break;
+            }
+            case R.id.change_to_gps: {
+                presenter.setSetting("gps");
+                break;
+            }
+        }
+    }
+
+    private void showInputDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(R.string.change_city);
+
+        final EditText input = new EditText(this);
+        input.setInputType(InputType.TYPE_CLASS_TEXT);
+        builder.setView(input);
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                presenter.setSetting(input.getText().toString());
+            }
+        });
+        builder.show();
     }
 
     @ProvidePresenter

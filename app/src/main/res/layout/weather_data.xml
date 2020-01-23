@@ -7,7 +7,7 @@
     android:background="@color/colorBackground">
 
     <ImageView
-        android:id="@+id/imageView3"
+        android:id="@+id/n_popup_menu"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="21dp"
@@ -37,7 +37,7 @@
         android:text="-"
         android:textColor="@color/textColor"
         android:textSize="40sp"
-        app:layout_constraintEnd_toStartOf="@+id/imageView3"
+        app:layout_constraintEnd_toStartOf="@+id/n_popup_menu"
         app:layout_constraintStart_toEndOf="@+id/imageView2"
         app:layout_constraintTop_toTopOf="parent" />
 
