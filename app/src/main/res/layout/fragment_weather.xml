@@ -148,7 +148,7 @@
                     card_view:layout_constraintTop_toBottomOf="@+id/wind_label" />
 
                 <TextView
-                    android:id="@+id/humidity_value"
+                    android:id="@+id/forecast_temp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
