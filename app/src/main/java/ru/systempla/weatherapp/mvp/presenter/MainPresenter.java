@@ -17,6 +17,7 @@ import ru.systempla.weatherapp.mvp.model.location.ILocationGetter;
 import ru.systempla.weatherapp.mvp.model.repo.IWeatherRepo;
 import ru.systempla.weatherapp.mvp.model.settings.ISettings;
 import ru.systempla.weatherapp.mvp.view.MainView;
+import ru.systempla.weatherapp.navigation.Screens;
 import ru.terrakok.cicerone.Router;
 import timber.log.Timber;
 
@@ -42,5 +43,14 @@ public class MainPresenter extends MvpPresenter<MainView> {
 
     public void startGPSUpdate(){
         locationGetter.startUpdatingLocation();
+    }
+
+    public void navigateToWeatherData() {
+        router.navigateTo(new Screens.WeatherDataScreen());
+    }
+
+
+    public void navigateToForecast() {
+        router.navigateTo(new Screens.WeekForcastScreen());
     }
 }

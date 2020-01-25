@@ -7,4 +7,5 @@ import moxy.viewstate.strategy.StateStrategyType;
 @StateStrategyType(value = AddToEndSingleStrategy.class)
 public interface MainView extends MvpView {
     void checkGeolocationPermission();
+    void openNavDrawer();
 }

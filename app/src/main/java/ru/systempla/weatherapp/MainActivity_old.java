@@ -285,19 +285,19 @@ public class MainActivity_old extends AppCompatActivity implements NavigationVie
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-        int id = menuItem.getItemId();
-
-        if (id == R.id.nav_home) {
-            currentParcel = new Parcel(last_city, settingsParcel);
-            weatherFragment = WeatherInfoFragment.create(currentParcel);
-            replaceFragment(weatherFragment);
-        } else if (id == R.id.nav_tools) {
-            replaceFragment(developerInfoFragment);
-        } else if (id == R.id.nav_send) {
-            replaceFragment(sendMessageFragment);
-        }
-
-        drawer.closeDrawer(GravityCompat.START);
+//        int id = menuItem.getItemId();
+//
+//        if (id == R.id.nav_home) {
+//            currentParcel = new Parcel(last_city, settingsParcel);
+//            weatherFragment = WeatherInfoFragment.create(currentParcel);
+//            replaceFragment(weatherFragment);
+//        } else if (id == R.id.nav_tools) {
+//            replaceFragment(developerInfoFragment);
+//        } else if (id == R.id.nav_send) {
+//            replaceFragment(sendMessageFragment);
+//        }
+//
+//        drawer.closeDrawer(GravityCompat.START);
         return true;
     }
 

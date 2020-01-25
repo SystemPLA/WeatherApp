@@ -23,6 +23,8 @@ import androidx.appcompat.widget.PopupMenu;
 import java.util.Date;
 import java.util.Locale;
 
+import javax.inject.Inject;
+
 import butterknife.BindDrawable;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -37,6 +39,7 @@ import moxy.presenter.ProvidePresenter;
 import ru.systempla.weatherapp.R;
 import ru.systempla.weatherapp.mvp.App;
 import ru.systempla.weatherapp.mvp.presenter.WeatherDataPresenter;
+import ru.systempla.weatherapp.mvp.view.MainView;
 import ru.systempla.weatherapp.mvp.view.WeatherDataView;
 
 public class WeatherDataFragment extends MvpAppCompatFragment implements WeatherDataView {
