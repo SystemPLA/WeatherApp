@@ -1,6 +1,7 @@
 package ru.systempla.weatherapp.mvp.model.repo;
 
 import io.reactivex.Single;
+import ru.systempla.weatherapp.mvp.model.entity.ForecastRequestRestModel;
 import ru.systempla.weatherapp.mvp.model.entity.UVIRequestRestModel;
 import ru.systempla.weatherapp.mvp.model.entity.WeatherRequestRestModel;
 
@@ -10,4 +11,7 @@ public interface IWeatherRepo {
                                                 String units);
 
     Single<UVIRequestRestModel> loadUVI(String keyApi, float latitude, float longitude);
+
+    Single<ForecastRequestRestModel> loadForecast(String city, String keyApi,
+                                                  String units);
 }
