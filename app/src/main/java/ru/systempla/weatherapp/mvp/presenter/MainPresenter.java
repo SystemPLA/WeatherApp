@@ -33,6 +33,7 @@ public class MainPresenter extends MvpPresenter<MainView> {
     @Override
     protected void onFirstViewAttach() {
         super.onFirstViewAttach();
+        getViewState().checkGeolocationPermission();
     }
 
     public void stopGPSUpdate(){

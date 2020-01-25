@@ -5,12 +5,14 @@ import android.annotation.SuppressLint;
 import javax.inject.Inject;
 
 import io.reactivex.Scheduler;
+import moxy.InjectViewState;
 import moxy.MvpPresenter;
 import ru.systempla.weatherapp.mvp.model.location.ILocationGetter;
 import ru.systempla.weatherapp.mvp.model.repo.IWeatherRepo;
 import ru.systempla.weatherapp.mvp.model.settings.ISettings;
 import ru.systempla.weatherapp.mvp.view.WeatherDataView;
 
+@InjectViewState
 public class WeatherDataPresenter extends MvpPresenter<WeatherDataView> {
 
     private static final String OPEN_WEATHER_API_KEY = "bf47d8733b57a7fad0801641fe3dc5cc";
@@ -31,13 +33,6 @@ public class WeatherDataPresenter extends MvpPresenter<WeatherDataView> {
     public WeatherDataPresenter(Scheduler mainThreadScheduler, Scheduler ioThreadScheduler) {
         this.mainThreadScheduler = mainThreadScheduler;
         this.ioThreadScheduler = ioThreadScheduler;
-    }
-
-    @SuppressLint("CheckResult")
-    @Override
-    protected void onFirstViewAttach() {
-        super.onFirstViewAttach();
-        getViewState().checkGeolocationPermission();
     }
 
     @SuppressLint("CheckResult")
@@ -90,7 +85,6 @@ public class WeatherDataPresenter extends MvpPresenter<WeatherDataView> {
                     getViewState().hideLoading();
                 });
     }
-
 
     public void setSetting (String setting) {
         settings.saveSetting(setting);

@@ -1,6 +1,10 @@
 package ru.systempla.weatherapp.mvp.view.ui;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+
+import androidx.core.app.ActivityCompat;
 
 import javax.inject.Inject;
 
@@ -20,11 +24,11 @@ import ru.terrakok.cicerone.android.support.SupportAppNavigator;
 
 public class MainActivity extends MvpAppCompatActivity implements MainView {
 
-    @Inject
-    Router router;
-
     @InjectPresenter
     MainPresenter presenter;
+
+    @Inject
+    Router router;
 
     @Inject
     NavigatorHolder navigatorHolder;
@@ -74,5 +78,32 @@ public class MainActivity extends MvpAppCompatActivity implements MainView {
         super.onPause();
     }
 
+    @Override
+    public void checkGeolocationPermission() {
+        if (!(checkPermission(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION))) {
+            getPermission(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION);
+        }
+    }
+
+    public boolean checkPermission(String permission) {
+        ActivityCompat.checkSelfPermission(App.getInstance(), permission);
+        return (ActivityCompat.checkSelfPermission(App.getInstance(), permission)== PackageManager.PERMISSION_GRANTED);
+    }
+
+    public boolean checkPermission(String ... permissions){
+        boolean flag = true;
+        for (String permission : permissions ) {
+            flag &= (ActivityCompat.checkSelfPermission(App.getInstance(), permission)== PackageManager.PERMISSION_GRANTED);
+        }
+        return flag;
+    }
+
+    public void getPermission(String permission) {
+        ActivityCompat.requestPermissions(this, new String[]{permission}, 100);
+    }
+
+    public void getPermission(String ... permissions){
+        ActivityCompat.requestPermissions(this, permissions,100);
+    }
 
 }

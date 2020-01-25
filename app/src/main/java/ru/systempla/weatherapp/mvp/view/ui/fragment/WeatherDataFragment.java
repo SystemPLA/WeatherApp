@@ -1,8 +1,6 @@
 package ru.systempla.weatherapp.mvp.view.ui.fragment;
 
-import android.Manifest;
 import android.content.DialogInterface;
-import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.InputType;
@@ -21,7 +19,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.PopupMenu;
-import androidx.core.app.ActivityCompat;
 
 import java.util.Date;
 import java.util.Locale;
@@ -30,19 +27,21 @@ import butterknife.BindDrawable;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import butterknife.Unbinder;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
+import moxy.InjectViewState;
 import moxy.MvpAppCompatFragment;
 import moxy.presenter.InjectPresenter;
 import moxy.presenter.ProvidePresenter;
 import ru.systempla.weatherapp.R;
 import ru.systempla.weatherapp.mvp.App;
-import ru.systempla.weatherapp.mvp.presenter.MainPresenter;
 import ru.systempla.weatherapp.mvp.presenter.WeatherDataPresenter;
-import ru.systempla.weatherapp.mvp.view.MainView;
 import ru.systempla.weatherapp.mvp.view.WeatherDataView;
 
 public class WeatherDataFragment extends MvpAppCompatFragment implements WeatherDataView {
+
+    Unbinder unbinder;
 
     public static WeatherDataFragment newInstance(){
         return new WeatherDataFragment();
@@ -144,11 +143,17 @@ public class WeatherDataFragment extends MvpAppCompatFragment implements Weather
 
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable android.view.ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_weather_data, container, false);
-        ButterKnife.bind(this, view);
+        unbinder = ButterKnife.bind(this, view);
         App.getInstance().getAppComponent().inject(this);
         return view;
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
     }
 
     @Override
@@ -264,34 +269,6 @@ public class WeatherDataFragment extends MvpAppCompatFragment implements Weather
     public void setCurrentTemperature(float temp) {
         String currentTextText = String.format(Locale.getDefault(), "%.0f", temp);
         temperatureValue.setText(currentTextText);
-    }
-
-    @Override
-    public void checkGeolocationPermission() {
-        if (!(checkPermission(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION))) {
-            getPermission(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION);
-        }
-    }
-
-    public boolean checkPermission(String permission) {
-        ActivityCompat.checkSelfPermission(App.getInstance(), permission);
-        return (ActivityCompat.checkSelfPermission(App.getInstance(), permission)== PackageManager.PERMISSION_GRANTED);
-    }
-
-    public boolean checkPermission(String ... permissions){
-        boolean flag = true;
-        for (String permission : permissions ) {
-            flag &= (ActivityCompat.checkSelfPermission(App.getInstance(), permission)== PackageManager.PERMISSION_GRANTED);
-        }
-        return flag;
-    }
-
-    public void getPermission(String permission) {
-        ActivityCompat.requestPermissions(this.getActivity(), new String[]{permission}, 100);
-    }
-
-    public void getPermission(String ... permissions){
-        ActivityCompat.requestPermissions(this.getActivity(), permissions,100);
     }
 
     @Override

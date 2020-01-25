@@ -29,5 +29,5 @@ public interface AppComponent {
     void inject(MainActivity mainActivity);
     void inject(WeatherDataPresenter weatherDataPresenter);
     void inject(WeatherDataFragment weatherDataFragment);
-    void inject(ForecastFragment forcastFragment);
+    void inject(ForecastFragment forecastFragment);
 }
