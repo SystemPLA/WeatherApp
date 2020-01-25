@@ -19,6 +19,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.PopupMenu;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 
 import java.util.Date;
 import java.util.Locale;
@@ -45,6 +47,7 @@ import ru.systempla.weatherapp.mvp.view.WeatherDataView;
 public class WeatherDataFragment extends MvpAppCompatFragment implements WeatherDataView {
 
     Unbinder unbinder;
+    DrawerLayout drawer;
 
     public static WeatherDataFragment newInstance(){
         return new WeatherDataFragment();
@@ -83,6 +86,9 @@ public class WeatherDataFragment extends MvpAppCompatFragment implements Weather
     @BindView(R.id.n_temperature_value)
     TextView temperatureValue;
 
+    @BindView(R.id.drawer_button)
+    ImageView drawerButton;
+
     @BindDrawable(R.drawable.ic_sun)
     Drawable iconSun;
 
@@ -111,6 +117,9 @@ public class WeatherDataFragment extends MvpAppCompatFragment implements Weather
     public void showMenu(View v){
         showPopupMenu(v);
     }
+
+    @OnClick(R.id.drawer_button)
+    public void showDrawer(){drawer.openDrawer(GravityCompat.START);}
 
     private void showPopupMenu(View v){
         PopupMenu popupMenu = new PopupMenu(this.getContext(), v);
@@ -150,6 +159,7 @@ public class WeatherDataFragment extends MvpAppCompatFragment implements Weather
         View view = inflater.inflate(R.layout.fragment_weather_data, container, false);
         unbinder = ButterKnife.bind(this, view);
         App.getInstance().getAppComponent().inject(this);
+        drawer = (DrawerLayout) getActivity().findViewById(R.id.main_drawer_layout);
         return view;
     }
 
