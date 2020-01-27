@@ -134,7 +134,7 @@ public class WeatherInfoFragment extends Fragment {
         windValue = layout.findViewById(R.id.wind_value);
 
         humidityLabel = layout.findViewById(R.id.humidity_label);
-        humidityValue = layout.findViewById(R.id.humidity_value);
+        humidityValue = layout.findViewById(R.id.humidity_label);
 
         temperatureValue = layout.findViewById(R.id.temperature_value);
 

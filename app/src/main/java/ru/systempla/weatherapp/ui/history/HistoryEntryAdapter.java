@@ -29,7 +29,7 @@ class HistoryEntryAdapter extends RecyclerView.Adapter<HistoryEntryAdapter.ViewH
         ViewHolder(View view) {
             super(view);
 
-            date = view.findViewById(R.id.date_tv);
+            date = view.findViewById(R.id.rv_date_time);
             cityCountry = view.findViewById((R.id.city_country));
             temperatureValue = view.findViewById(R.id.temperature_value);
             pressureValue = view.findViewById(R.id.pressure_value);

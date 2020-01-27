@@ -27,13 +27,13 @@
                 android:textSize="24sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/date_tv"
+                app:layout_constraintTop_toBottomOf="@+id/rv_date_time"
                 card_view:layout_constraintEnd_toEndOf="parent"
                 card_view:layout_constraintStart_toStartOf="parent"
                 card_view:layout_constraintTop_toBottomOf="@+id/date_tv" />
 
             <TextView
-                android:id="@+id/date_tv"
+                android:id="@+id/rv_date_time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
@@ -117,7 +117,7 @@
                 card_view:layout_constraintTop_toBottomOf="@+id/wind_label" />
 
             <TextView
-                android:id="@+id/forecast_temp"
+                android:id="@+id/rv_forecast_temp"
                 android:layout_width="wrap_content"
                 android:layout_height="24dp"
                 android:layout_marginTop="16dp"
