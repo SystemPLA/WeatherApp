@@ -9,6 +9,7 @@ import ru.systempla.weatherapp.di.module.CiceroneModule;
 import ru.systempla.weatherapp.di.module.LocationGetterModule;
 import ru.systempla.weatherapp.di.module.RepoModule;
 import ru.systempla.weatherapp.di.module.SettingsModule;
+import ru.systempla.weatherapp.mvp.presenter.ForecastPresenter;
 import ru.systempla.weatherapp.mvp.presenter.MainPresenter;
 import ru.systempla.weatherapp.mvp.presenter.WeatherDataPresenter;
 import ru.systempla.weatherapp.mvp.view.ui.MainActivity;
@@ -29,5 +30,6 @@ public interface AppComponent {
     void inject(MainActivity mainActivity);
     void inject(WeatherDataPresenter weatherDataPresenter);
     void inject(WeatherDataFragment weatherDataFragment);
+    void inject(ForecastPresenter forecastPresenter);
     void inject(ForecastFragment forecastFragment);
 }

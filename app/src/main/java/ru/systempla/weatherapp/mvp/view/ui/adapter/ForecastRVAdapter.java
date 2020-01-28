@@ -116,13 +116,12 @@ public class ForecastRVAdapter extends RecyclerView.Adapter<ForecastRVAdapter.Vi
 
 
         @Override
-        public void setWeatherIcon(int actualId, long sunrise, long sunset) {
+        public void setWeatherIcon(int actualId, String iconCode) {
             int id = actualId / 100;
             Drawable icon = null;
 
             if (actualId == 800) {
-                long currentTime = new Date().getTime();
-                if (currentTime >= sunrise && currentTime < sunset) {
+                if (iconCode.contains("d")) {
                     icon = iconSun;
                 } else {
                     icon = iconMoon;

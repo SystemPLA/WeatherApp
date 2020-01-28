@@ -6,5 +6,5 @@ public interface ForecastItemView {
     void setDateTime(long dt);
     void setTemperature(float temp);
     void setWeatherDescription(String description);
-    void setWeatherIcon(int actualId, long sunrise, long sunset);
+    void setWeatherIcon(int actualId, String icon);
 }
