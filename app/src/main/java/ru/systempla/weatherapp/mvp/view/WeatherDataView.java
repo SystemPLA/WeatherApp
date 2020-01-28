@@ -13,7 +13,7 @@ public interface WeatherDataView extends MvpView {
     void setUVIndex (float uvIndex);
     void setPressure(float pressure);
     void setHumidity(float humidity);
-    void setWindSpeed(float speed);
+    void setWindSpeed(double speed);
     void setWeatherIcon(int actualId, long sunrise, long sunset);
     void setCurrentTemperature(float temp);
     void showLoading();

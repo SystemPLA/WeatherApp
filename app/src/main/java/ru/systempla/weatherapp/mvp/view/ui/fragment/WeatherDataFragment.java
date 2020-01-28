@@ -231,7 +231,7 @@ public class WeatherDataFragment extends MvpAppCompatFragment implements Weather
     }
 
     @Override
-    public void setWindSpeed(float speed) {
+    public void setWindSpeed(double speed) {
         windSpeedValue.setText(String.format("%s mps", speed));
     }
 

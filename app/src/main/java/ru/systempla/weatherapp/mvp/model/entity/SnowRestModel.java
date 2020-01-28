@@ -3,8 +3,8 @@ package ru.systempla.weatherapp.mvp.model.entity;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class CloudsRestModel {
-    @SerializedName("all")
+public class SnowRestModel {
+    @SerializedName("3h")
     @Expose
-    public Integer all;
+    public Double _3h;
 }

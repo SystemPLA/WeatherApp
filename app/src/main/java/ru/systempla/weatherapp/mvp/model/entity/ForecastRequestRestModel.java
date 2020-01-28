@@ -1,13 +1,26 @@
 package ru.systempla.weatherapp.mvp.model.entity;
 
 import com.google.gson.annotations.SerializedName;
+import com.google.gson.annotations.Expose;
 
 import java.util.List;
 
 public class ForecastRequestRestModel {
-    @SerializedName("cod") public int cod;
-    @SerializedName("message") public float message;
-    @SerializedName("cnt") public int cnt;
-    @SerializedName("list") public List<ForecastEntityRestModel> forecasts;
-    @SerializedName("city") public CityRestModel cityRestModel;
+
+    @SerializedName("cod")
+    @Expose
+    public String cod;
+    @SerializedName("message")
+    @Expose
+    public Integer message;
+    @SerializedName("cnt")
+    @Expose
+    public Integer cnt;
+    @SerializedName("list")
+    @Expose
+    public List<ForecastEntityRestModel> list = null;
+    @SerializedName("city")
+    @Expose
+    public CityRestModel city;
+
 }

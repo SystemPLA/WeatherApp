@@ -1,10 +1,19 @@
 package ru.systempla.weatherapp.mvp.model.entity;
 
+import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 public class WeatherRestModel {
-    @SerializedName("id") public int id;
-    @SerializedName("main") public String main;
-    @SerializedName("description") public String description;
-    @SerializedName("icon") public String icon;
+    @SerializedName("id")
+    @Expose
+    public Integer id;
+    @SerializedName("main")
+    @Expose
+    public String main;
+    @SerializedName("description")
+    @Expose
+    public String description;
+    @SerializedName("icon")
+    @Expose
+    public String icon;
 }

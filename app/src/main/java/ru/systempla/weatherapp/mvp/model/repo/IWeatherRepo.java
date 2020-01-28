@@ -10,7 +10,7 @@ public interface IWeatherRepo {
     Single<WeatherRequestRestModel> loadWeather(String city, String keyApi,
                                                 String units);
 
-    Single<UVIRequestRestModel> loadUVI(String keyApi, float latitude, float longitude);
+    Single<UVIRequestRestModel> loadUVI(String keyApi, double latitude, double longitude);
 
     Single<ForecastRequestRestModel> loadForecast(String city, String keyApi,
                                                   String units);

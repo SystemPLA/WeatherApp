@@ -49,7 +49,6 @@ public class MainPresenter extends MvpPresenter<MainView> {
         router.navigateTo(new Screens.WeatherDataScreen());
     }
 
-
     public void navigateToForecast() {
         router.navigateTo(new Screens.WeekForcastScreen());
     }

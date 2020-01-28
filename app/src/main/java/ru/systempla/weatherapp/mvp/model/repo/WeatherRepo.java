@@ -21,7 +21,7 @@ public class WeatherRepo implements IWeatherRepo{
     }
 
     @Override
-    public Single<UVIRequestRestModel> loadUVI(String keyApi, float latitude, float longitude) {
+    public Single<UVIRequestRestModel> loadUVI(String keyApi, double latitude, double longitude) {
 
         return api.loadUVI(keyApi, latitude, longitude);
     }

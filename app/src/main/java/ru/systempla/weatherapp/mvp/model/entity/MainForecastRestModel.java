@@ -1,14 +1,34 @@
 package ru.systempla.weatherapp.mvp.model.entity;
 
+import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 public class MainForecastRestModel {
-    @SerializedName("temp") public float temp;
-    @SerializedName("temp_min") public float temp_min;
-    @SerializedName("temp_max") public float temp_max;
-    @SerializedName("pressure") public float pressure;
-    @SerializedName("sea_level") public float sea_level;
-    @SerializedName("grnd_level") public float grnd_level;
-    @SerializedName("humidity") public int humidity;
-    @SerializedName("temp_kf") public float temp_kf;
+    @SerializedName("temp")
+    @Expose
+    public Double temp;
+    @SerializedName("feels_like")
+    @Expose
+    public Double feelsLike;
+    @SerializedName("temp_min")
+    @Expose
+    public Double tempMin;
+    @SerializedName("temp_max")
+    @Expose
+    public Double tempMax;
+    @SerializedName("pressure")
+    @Expose
+    public Integer pressure;
+    @SerializedName("sea_level")
+    @Expose
+    public Integer seaLevel;
+    @SerializedName("grnd_level")
+    @Expose
+    public Integer grndLevel;
+    @SerializedName("humidity")
+    @Expose
+    public Integer humidity;
+    @SerializedName("temp_kf")
+    @Expose
+    public Double tempKf;
 }

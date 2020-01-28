@@ -30,10 +30,10 @@ public class ForecastPresenter extends MvpPresenter<ForecastView> {
         public void bind(ForecastItemView view) {
 
             view.setDateTime(forecastBlocks.get(view.getPos()).dt);
-            view.setTemperature(forecastBlocks.get(view.getPos()).mainForecastRestModel.temp);
-            view.setWeatherDescription(forecastBlocks.get(view.getPos()).weatherRestModel.description);
-            view.setWeatherIcon(forecastBlocks.get(view.getPos()).weatherRestModel.id,
-                    forecastBlocks.get(view.getPos()).weatherRestModel.icon);
+            view.setTemperature(forecastBlocks.get(view.getPos()).main.temp);
+            view.setWeatherDescription(forecastBlocks.get(view.getPos()).weather.get(0).description);
+            view.setWeatherIcon(forecastBlocks.get(view.getPos()).weather.get(0).id,
+                    forecastBlocks.get(view.getPos()).weather.get(0).icon);
         }
 
         @Override
@@ -109,9 +109,9 @@ public class ForecastPresenter extends MvpPresenter<ForecastView> {
                 .subscribeOn(ioThreadScheduler)
                 .observeOn(mainThreadScheduler)
                 .subscribe(model -> {
-                    getViewState().setCity(model.cityRestModel.name);
+                    getViewState().setCity(model.city.name);
                     forecastListPresenter.forecastBlocks.clear();
-                    forecastListPresenter.forecastBlocks.addAll(model.forecasts);
+                    forecastListPresenter.forecastBlocks.addAll(model.list);
                     getViewState().updateList();
                     getViewState().hideLoading();
                 }, t -> {

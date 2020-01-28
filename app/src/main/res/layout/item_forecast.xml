@@ -24,7 +24,7 @@
                 android:id="@+id/rv_c_sign"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="12dp"
+                android:layout_marginStart="8dp"
                 android:fontFamily="sans-serif-thin"
                 android:text="C"
                 android:textColor="@color/textColor"
@@ -36,7 +36,6 @@
                 android:id="@+id/rv_0_sign"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="4dp"
                 android:fontFamily="sans-serif-thin"
                 android:text="°"
                 android:textColor="@color/textColor"
@@ -51,7 +50,7 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="8dp"
-                android:fontFamily="sans-serif-thin"
+                android:fontFamily="sans-serif-light"
                 android:text="@string/dateLabel"
                 android:textColor="@color/textColor"
                 android:textSize="25sp"
@@ -101,18 +100,16 @@
 
             <ImageView
                 android:id="@+id/rv_forecast_icon"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_marginStart="16dp"
+                android:layout_width="75dp"
+                android:layout_height="75dp"
                 android:layout_marginTop="24dp"
                 android:layout_marginEnd="24dp"
                 android:layout_marginBottom="24dp"
                 android:scaleType="fitEnd"
+                android:src="@drawable/ic_sun"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/rv_description"
-                app:layout_constraintTop_toTopOf="parent"
-                android:src="@drawable/ic_sun" />
+                app:layout_constraintTop_toTopOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>

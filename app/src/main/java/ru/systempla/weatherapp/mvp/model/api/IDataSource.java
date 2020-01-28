@@ -16,8 +16,8 @@ public interface IDataSource {
 
     @GET("data/2.5/uvi")
     Single<UVIRequestRestModel> loadUVI(@Query("appid") String keyApi,
-                                        @Query("lat") float latitude,
-                                        @Query("lon") float longitude);
+                                        @Query("lat") double latitude,
+                                        @Query("lon") double longitude);
 
     @GET("data/2.5/forecast")
     Single<ForecastRequestRestModel> loadForecast(@Query("q") String city,
