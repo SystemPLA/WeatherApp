@@ -14,6 +14,7 @@ import ru.systempla.weatherapp.mvp.App;
 
 import static ru.systempla.weatherapp.mvp.model.final_groups.FinalGroups.messages.MSG_NO_DATA;
 
+@SuppressWarnings("MissingPermission")
 public class GPSLocationGetter implements ILocationGetter {
 
     private LocationManager locManager;
@@ -24,7 +25,6 @@ public class GPSLocationGetter implements ILocationGetter {
         this.locListener = locListener;
     }
 
-    @SuppressWarnings("MissingPermission")
     @Override
     public Single<String> getCity() {
         return Single.fromCallable(() -> getAddressByLoc
@@ -49,14 +49,12 @@ public class GPSLocationGetter implements ILocationGetter {
         }
     }
 
-    @SuppressWarnings("MissingPermission")
     @Override
     public void startUpdatingLocation(){
         locManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
                 3000L, 1.0F, locListener);
     }
 
-    @SuppressWarnings("MissingPermission")
     @Override
     public void stopUpdatingLocation(){
         if (locListener != null) locManager.removeUpdates(locListener);

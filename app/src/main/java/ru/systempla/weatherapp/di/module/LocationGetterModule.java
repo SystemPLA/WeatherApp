@@ -13,6 +13,7 @@ import ru.systempla.weatherapp.mvp.model.location.ILocationGetter;
 
 import static android.content.Context.LOCATION_SERVICE;
 
+@SuppressWarnings("WeakerAccess")
 @Module(includes = {LocationListenerModule.class})
 public class LocationGetterModule {
 

@@ -1,6 +1,5 @@
 package ru.systempla.weatherapp.mvp.view.ui.fragment;
 
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.text.InputType;
 import android.view.LayoutInflater;
@@ -35,10 +34,10 @@ import moxy.presenter.ProvidePresenter;
 import ru.systempla.weatherapp.R;
 import ru.systempla.weatherapp.mvp.App;
 import ru.systempla.weatherapp.mvp.presenter.ForecastPresenter;
-import ru.systempla.weatherapp.mvp.presenter.WeatherDataPresenter;
 import ru.systempla.weatherapp.mvp.view.ForecastView;
 import ru.systempla.weatherapp.mvp.view.ui.adapter.ForecastRVAdapter;
 
+@SuppressWarnings({"unused","ConstantConditions"})
 public class ForecastFragment extends MvpAppCompatFragment implements ForecastView {
 
     @InjectPresenter
@@ -59,18 +58,21 @@ public class ForecastFragment extends MvpAppCompatFragment implements ForecastVi
     @BindView(R.id.n_popup_menu)
     ImageView popupMenuIcon;
 
+    @SuppressWarnings("WeakerAccess")
     @OnClick(R.id.n_popup_menu)
     public void showMenu(View v){
         showPopupMenu(v);
     }
 
+    @SuppressWarnings("WeakerAccess")
     @OnClick(R.id.drawer_button)
     public void showDrawer(){drawer.openDrawer(GravityCompat.START);}
 
-    ForecastRVAdapter adapter;
-    Unbinder unbinder;
-    DrawerLayout drawer;
+    private ForecastRVAdapter adapter;
+    private Unbinder unbinder;
+    private DrawerLayout drawer;
 
+    @SuppressWarnings("WeakerAccess")
     @ProvidePresenter
     public ForecastPresenter providePresenter() {
         ForecastPresenter presenter = new ForecastPresenter(AndroidSchedulers.mainThread(), Schedulers.io());
@@ -108,12 +110,9 @@ public class ForecastFragment extends MvpAppCompatFragment implements ForecastVi
         final EditText input = new EditText(this.getContext());
         input.setInputType(InputType.TYPE_CLASS_TEXT);
         builder.setView(input);
-        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                presenter.setSetting(input.getText().toString());
-                presenter.loadAccordingToSettings();
-            }
+        builder.setPositiveButton("OK", (dialog, which) -> {
+            presenter.setSetting(input.getText().toString());
+            presenter.loadAccordingToSettings();
         });
         builder.show();
     }
@@ -130,7 +129,7 @@ public class ForecastFragment extends MvpAppCompatFragment implements ForecastVi
         View view = inflater.inflate(R.layout.fragment_forcast, container, false);
         unbinder = ButterKnife.bind(this, view);
         App.getInstance().getAppComponent().inject(this);
-        drawer = (DrawerLayout) getActivity().findViewById(R.id.main_drawer_layout);
+        drawer = getActivity().findViewById(R.id.main_drawer_layout);
         return view;
     }
 

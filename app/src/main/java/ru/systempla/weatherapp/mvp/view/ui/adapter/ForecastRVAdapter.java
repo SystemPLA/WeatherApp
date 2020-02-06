@@ -11,6 +11,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.jakewharton.rxbinding2.view.RxView;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.text.DateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -29,6 +31,7 @@ public class ForecastRVAdapter extends RecyclerView.Adapter<ForecastRVAdapter.Vi
         this.presenter = presenter;
     }
 
+    @NotNull
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_forecast, parent, false));
@@ -86,7 +89,7 @@ public class ForecastRVAdapter extends RecyclerView.Adapter<ForecastRVAdapter.Vi
         @BindDrawable(R.drawable.ic_drizzle)
         Drawable iconDrizzle;
 
-        public ViewHolder(View itemView) {
+        private ViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
         }

@@ -1,6 +1,5 @@
 package ru.systempla.weatherapp.mvp.view.ui.fragment;
 
-import android.content.DialogInterface;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.InputType;
@@ -8,7 +7,6 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -25,8 +23,6 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import java.util.Date;
 import java.util.Locale;
 
-import javax.inject.Inject;
-
 import butterknife.BindDrawable;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -34,20 +30,19 @@ import butterknife.OnClick;
 import butterknife.Unbinder;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
-import moxy.InjectViewState;
 import moxy.MvpAppCompatFragment;
 import moxy.presenter.InjectPresenter;
 import moxy.presenter.ProvidePresenter;
 import ru.systempla.weatherapp.R;
 import ru.systempla.weatherapp.mvp.App;
 import ru.systempla.weatherapp.mvp.presenter.WeatherDataPresenter;
-import ru.systempla.weatherapp.mvp.view.MainView;
 import ru.systempla.weatherapp.mvp.view.WeatherDataView;
 
+@SuppressWarnings({"unused","ConstantConditions"})
 public class WeatherDataFragment extends MvpAppCompatFragment implements WeatherDataView {
 
-    Unbinder unbinder;
-    DrawerLayout drawer;
+    private Unbinder unbinder;
+    private DrawerLayout drawer;
 
     public static WeatherDataFragment newInstance(){
         return new WeatherDataFragment();
@@ -113,11 +108,13 @@ public class WeatherDataFragment extends MvpAppCompatFragment implements Weather
     @BindDrawable(R.drawable.ic_drizzle)
     Drawable iconDrizzle;
 
+    @SuppressWarnings("WeakerAccess")
     @OnClick(R.id.n_popup_menu)
     public void showMenu(View v){
         showPopupMenu(v);
     }
 
+    @SuppressWarnings("WeakerAccess")
     @OnClick(R.id.drawer_button)
     public void showDrawer(){drawer.openDrawer(GravityCompat.START);}
 
@@ -159,7 +156,7 @@ public class WeatherDataFragment extends MvpAppCompatFragment implements Weather
         View view = inflater.inflate(R.layout.fragment_weather_data, container, false);
         unbinder = ButterKnife.bind(this, view);
         App.getInstance().getAppComponent().inject(this);
-        drawer = (DrawerLayout) getActivity().findViewById(R.id.main_drawer_layout);
+        drawer = getActivity().findViewById(R.id.main_drawer_layout);
         return view;
     }
 
@@ -182,16 +179,14 @@ public class WeatherDataFragment extends MvpAppCompatFragment implements Weather
         final EditText input = new EditText(this.getContext());
         input.setInputType(InputType.TYPE_CLASS_TEXT);
         builder.setView(input);
-        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                presenter.setSetting(input.getText().toString());
-                presenter.loadAccordingToSettings();
-            }
+        builder.setPositiveButton("OK", (dialog, which) -> {
+            presenter.setSetting(input.getText().toString());
+            presenter.loadAccordingToSettings();
         });
         builder.show();
     }
 
+    @SuppressWarnings("WeakerAccess")
     @ProvidePresenter
     public WeatherDataPresenter providePresenter() {
         WeatherDataPresenter presenter = new WeatherDataPresenter(AndroidSchedulers.mainThread(), Schedulers.io());

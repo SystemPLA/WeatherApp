@@ -12,6 +12,7 @@ import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 import ru.systempla.weatherapp.mvp.model.api.IDataSource;
 
+@SuppressWarnings({"unused", "WeakerAccess"})
 @Module
 public class ApiModule {
 
@@ -30,9 +31,10 @@ public class ApiModule {
     @Provides
     public HttpLoggingInterceptor loggingInterceptor() {
         HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
-        interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+        interceptor.level(HttpLoggingInterceptor.Level.BODY);
         return interceptor;
     }
+
 
     @Named("clientLogging")
     @Singleton

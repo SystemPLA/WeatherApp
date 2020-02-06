@@ -7,6 +7,7 @@ import dagger.Provides;
 import ru.systempla.weatherapp.mvp.model.settings.ISettings;
 import ru.systempla.weatherapp.mvp.model.settings.PaperBasedSetting;
 
+@SuppressWarnings("WeakerAccess")
 @Module
 public class SettingsModule {
 

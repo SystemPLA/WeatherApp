@@ -8,6 +8,7 @@ import ru.systempla.weatherapp.di.DaggerAppComponent;
 import ru.systempla.weatherapp.di.module.AppModule;
 import timber.log.Timber;
 
+@SuppressWarnings("deprecation")
 public class App extends Application {
 
     static private App instance;

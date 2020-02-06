@@ -8,6 +8,7 @@ import dagger.Module;
 import dagger.Provides;
 import ru.systempla.weatherapp.mvp.model.location.BlankLocationListener;
 
+@SuppressWarnings("WeakerAccess")
 @Module
 public class LocationListenerModule {
 

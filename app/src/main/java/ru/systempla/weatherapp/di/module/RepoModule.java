@@ -8,7 +8,7 @@ import ru.systempla.weatherapp.mvp.model.api.IDataSource;
 import ru.systempla.weatherapp.mvp.model.repo.IWeatherRepo;
 import ru.systempla.weatherapp.mvp.model.repo.WeatherRepo;
 
-
+@SuppressWarnings("WeakerAccess")
 @Module(includes = {ApiModule.class})
 public class RepoModule {
 

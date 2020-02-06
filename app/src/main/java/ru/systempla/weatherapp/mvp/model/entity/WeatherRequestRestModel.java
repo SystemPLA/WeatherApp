@@ -2,7 +2,9 @@ package ru.systempla.weatherapp.mvp.model.entity;
 
 import com.google.gson.annotations.SerializedName;
 
+@SuppressWarnings("unused")
 public class WeatherRequestRestModel {
+
     @SerializedName("coord") public CoordRestModel coordinates;
     @SerializedName("weather") public WeatherRestModel[] weather;
     @SerializedName("base") public String base;

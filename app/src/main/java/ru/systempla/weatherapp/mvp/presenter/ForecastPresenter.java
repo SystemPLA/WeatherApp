@@ -1,13 +1,12 @@
 package ru.systempla.weatherapp.mvp.presenter;
 
-import android.annotation.SuppressLint;
-
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
 
 import io.reactivex.Scheduler;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.subjects.PublishSubject;
 import moxy.InjectViewState;
 import moxy.MvpPresenter;
@@ -15,9 +14,10 @@ import ru.systempla.weatherapp.mvp.model.entity.ForecastEntityRestModel;
 import ru.systempla.weatherapp.mvp.model.location.ILocationGetter;
 import ru.systempla.weatherapp.mvp.model.repo.IWeatherRepo;
 import ru.systempla.weatherapp.mvp.model.settings.ISettings;
-import ru.systempla.weatherapp.mvp.view.list.ForecastItemView;
 import ru.systempla.weatherapp.mvp.view.ForecastView;
+import ru.systempla.weatherapp.mvp.view.list.ForecastItemView;
 
+@SuppressWarnings({"CheckResult","unused"})
 @InjectViewState
 public class ForecastPresenter extends MvpPresenter<ForecastView> {
 
@@ -73,23 +73,16 @@ public class ForecastPresenter extends MvpPresenter<ForecastView> {
     @Inject
     ISettings settings;
 
-    @SuppressLint("CheckResult")
     @Override
     protected void onFirstViewAttach() {
         super.onFirstViewAttach();
         getViewState().init();
-//        forecastListPresenter.getClickSubject().subscribe(itemView -> {
-//            ForecastEntityRestModel forecastEntityRestModel = forecastListPresenter.forecastBlocks.get(itemView.getPos());
-//            router.navigateTo(new Screens.DetailsScreen(repository));
-//        });
-
     }
 
-    @SuppressLint("CheckResult")
     public void loadAccordingToSettings(){
-        settings.getSetting().subscribe(res ->{
+        Disposable disposable = settings.getSetting().subscribe(res ->{
                     if (res.equals("gps")) {
-                        locationGetter.getCity().subscribe(this::loadData);
+                        Disposable disposableSup = locationGetter.getCity().subscribe(this::loadData);
                     } else {
                         loadData(res);
                     }
@@ -97,15 +90,13 @@ public class ForecastPresenter extends MvpPresenter<ForecastView> {
         );
     }
 
-    @SuppressLint("CheckResult")
     public void checkSettings(){
-        settings.getSetting().subscribe(res->{},t->settings.resetSetting());
+        Disposable disposable = settings.getSetting().subscribe(res->{}, t->settings.resetSetting());
     }
 
-    @SuppressLint("CheckResult")
     private void loadData(String city) {
         getViewState().showLoading();
-        weatherRepo.loadForecast(city, OPEN_WEATHER_API_KEY, METRIC_UNITS)
+        Disposable disposable = weatherRepo.loadForecast(city, OPEN_WEATHER_API_KEY, METRIC_UNITS)
                 .subscribeOn(ioThreadScheduler)
                 .observeOn(mainThreadScheduler)
                 .subscribe(model -> {

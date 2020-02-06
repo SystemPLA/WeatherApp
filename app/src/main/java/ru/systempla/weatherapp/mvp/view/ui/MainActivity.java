@@ -3,7 +3,6 @@ package ru.systempla.weatherapp.mvp.view.ui;
 import android.Manifest;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.view.Gravity;
 import android.view.MenuItem;
 
 import androidx.annotation.NonNull;
@@ -31,6 +30,7 @@ import ru.terrakok.cicerone.NavigatorHolder;
 import ru.terrakok.cicerone.Router;
 import ru.terrakok.cicerone.android.support.SupportAppNavigator;
 
+@SuppressWarnings("unused")
 public class MainActivity extends MvpAppCompatActivity implements MainView, NavigationView.OnNavigationItemSelectedListener {
 
     @InjectPresenter

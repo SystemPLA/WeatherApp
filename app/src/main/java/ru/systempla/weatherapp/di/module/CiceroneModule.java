@@ -8,10 +8,11 @@ import ru.terrakok.cicerone.Cicerone;
 import ru.terrakok.cicerone.NavigatorHolder;
 import ru.terrakok.cicerone.Router;
 
+@SuppressWarnings("WeakerAccess")
 @Module
 public class CiceroneModule {
 
-    Cicerone<Router> cicerone = Cicerone.create();
+    private Cicerone<Router> cicerone = Cicerone.create();
 
     @Singleton
     @Provides

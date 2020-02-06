@@ -5,6 +5,7 @@ import android.annotation.SuppressLint;
 import javax.inject.Inject;
 
 import io.reactivex.Scheduler;
+import io.reactivex.disposables.Disposable;
 import moxy.InjectViewState;
 import moxy.MvpPresenter;
 import ru.systempla.weatherapp.mvp.model.location.ILocationGetter;
@@ -12,6 +13,7 @@ import ru.systempla.weatherapp.mvp.model.repo.IWeatherRepo;
 import ru.systempla.weatherapp.mvp.model.settings.ISettings;
 import ru.systempla.weatherapp.mvp.view.WeatherDataView;
 
+@SuppressWarnings({"CheckResult","unused"})
 @InjectViewState
 public class WeatherDataPresenter extends MvpPresenter<WeatherDataView> {
 
@@ -35,11 +37,10 @@ public class WeatherDataPresenter extends MvpPresenter<WeatherDataView> {
         this.ioThreadScheduler = ioThreadScheduler;
     }
 
-    @SuppressLint("CheckResult")
     public void loadAccordingToSettings(){
-        settings.getSetting().subscribe(res ->{
+        Disposable disposable = settings.getSetting().subscribe(res ->{
                     if (res.equals("gps")) {
-                        locationGetter.getCity().subscribe(this::loadData);
+                        Disposable disposable1Sup = locationGetter.getCity().subscribe(this::loadData);
                     } else {
                         loadData(res);
                     }
@@ -47,15 +48,14 @@ public class WeatherDataPresenter extends MvpPresenter<WeatherDataView> {
         );
     }
 
-    @SuppressLint("CheckResult")
     public void checkSettings(){
-        settings.getSetting().subscribe(res->{},t->settings.resetSetting());
+        Disposable disposable = settings.getSetting().subscribe(res->{},t->settings.resetSetting());
     }
 
     @SuppressLint("CheckResult")
     private void loadData(String city) {
         getViewState().showLoading();
-        weatherRepo.loadWeather(city, OPEN_WEATHER_API_KEY, METRIC_UNITS)
+        Disposable disposable = weatherRepo.loadWeather(city, OPEN_WEATHER_API_KEY, METRIC_UNITS)
                 .subscribeOn(ioThreadScheduler)
                 .observeOn(mainThreadScheduler)
                 .subscribe(model -> {
@@ -68,7 +68,7 @@ public class WeatherDataPresenter extends MvpPresenter<WeatherDataView> {
                                     model.sys.sunrise * 1000,
                                     model.sys.sunset * 1000);
                             getViewState().setWindSpeed(model.wind.speed);
-                            weatherRepo.loadUVI(OPEN_WEATHER_API_KEY, model.coordinates.lat, model.coordinates.lon)
+                            Disposable disposableSup = weatherRepo.loadUVI(OPEN_WEATHER_API_KEY, model.coordinates.lat, model.coordinates.lon)
                                     .subscribeOn(ioThreadScheduler)
                                     .observeOn(mainThreadScheduler)
                                     .subscribe(uviRequestRestModel -> {
