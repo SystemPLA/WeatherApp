@@ -7,11 +7,11 @@
         <item
             android:id="@+id/nav_weather_data"
             android:icon="@drawable/ic_thunderstorm_small"
-            android:title="Погода сегодня" />
+            android:title="@string/drawer_today_text" />
         <item
             android:id="@+id/nav_forecast"
             android:icon="@drawable/ic_umbrella"
-            android:title="Погода на 5 дней" />
+            android:title="@string/drawer_forecast_text" />
     </group>
 
 </menu>

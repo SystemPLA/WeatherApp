@@ -32,7 +32,7 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:fontFamily="sans-serif-thin"
-        android:text="-"
+        android:text="@string/forecast_cty_label"
         android:textColor="@color/textColor"
         android:textSize="40sp"
         app:layout_constraintEnd_toStartOf="@+id/n_popup_menu"
