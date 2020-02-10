@@ -1,10 +1,10 @@
 <resources>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="change_city">Изменить город</string>
-    <string name="dateLabel">Дата</string>
-    <string name="app_name">Погода</string>
-    <string name="gps_city">Город по GPS</string>
+    <string name="change_city">Change city</string>
+    <string name="dateLabel">Date</string>
+    <string name="app_name">Weather</string>
+    <string name="gps_city">According to GPS</string>
     <string name="forecast_cty_label">-</string>
     <string name="weatherdata_city_label">-</string>
     <string name="data_temperature_label">-</string>
@@ -22,6 +22,6 @@
     <string name="forecast_degree_sign">°</string>
     <string name="forecast_temperature_value">-13</string>
     <string name="forecast_description_text">clear sky</string>
-    <string name="drawer_today_text">Погода сегодня</string>
-    <string name="drawer_forecast_text">Погода на 5 дней</string>
+    <string name="drawer_today_text">Weather on today</string>
+    <string name="drawer_forecast_text">5 days forecast</string>
 </resources>

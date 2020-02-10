@@ -1,6 +1,6 @@
 <resources>
-    <string name="navigation_drawer_open">Open navigation drawer</string>
-    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="navigation_drawer_open">Открыть навигейшен дровер</string>
+    <string name="navigation_drawer_close">Закрыть навигейшен дровер</string>
     <string name="change_city">Изменить город</string>
     <string name="dateLabel">Дата</string>
     <string name="app_name">Погода</string>
@@ -10,14 +10,14 @@
     <string name="data_temperature_label">-</string>
     <string name="degree_sign">°</string>
     <string name="celsius_sign">C</string>
-    <string name="data_details_label">Details</string>
-    <string name="data_wind_label">W</string>
-    <string name="data_pressure_label">PRESSURE</string>
-    <string name="data_uv_index_label">UV INDEX</string>
-    <string name="data_humidity_label">HUMIDITY</string>
-    <string name="data_wind_value">- km/h</string>
+    <string name="data_details_label">Детали</string>
+    <string name="data_wind_label">Ветер</string>
+    <string name="data_pressure_label">Давление</string>
+    <string name="data_uv_index_label">UV индекс</string>
+    <string name="data_humidity_label">Влажность</string>
+    <string name="data_wind_value">- км/ч</string>
     <string name="data_humidity_value">- %</string>
-    <string name="data_pressure_value">- mb</string>
+    <string name="data_pressure_value">- мм. р. ст</string>
     <string name="forecast_celsius_sign">C</string>
     <string name="forecast_degree_sign">°</string>
     <string name="forecast_temperature_value">-13</string>
