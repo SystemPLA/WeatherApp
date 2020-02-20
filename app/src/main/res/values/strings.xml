@@ -24,4 +24,5 @@
     <string name="forecast_description_text">clear sky</string>
     <string name="drawer_today_text">Погода сегодня</string>
     <string name="drawer_forecast_text">Погода на 5 дней</string>
+    <string name="navigation_bottom_text">Создатель SystemPLA</string>
 </resources>
