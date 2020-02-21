@@ -1,68 +1,28 @@
 <resources>
-    <string name="app_name">Погода</string>
-    <string name="app_textView">Погода</string>
-    <string name="dateLabel">Дата</string>
-    <string name="temperatureLabel">Температура</string>
-    <string name="pressureLabel">Давление</string>
-    <string name="windLabel">Ветер</string>
-    <string name="humidityLabel">Влажность</string>
-    <string name="temperatureValue">+16,4</string>
-    <string name="pressureValue">743 мм.рт.ст.</string>
-    <string name="windValue">0 м/с</string>
-    <string name="humidityValue">77 %</string>
-    <string name="pressureCBoxLabel">@string/pressureLabel</string>
-    <string name="windCBoxLabel">@string/windLabel</string>
-    <string name="humidityCBoxLabel">@string/humidityLabel</string>
-    <string name="buttonRequestLabel">Узнать погоду</string>
-    <string name="cityLabel">Город</string>
-    <string name="cityValue">Город</string>
-    <string name="empty">Список городов пуст</string>
-    <string name="view">TextView</string>
-    <string name="settings_button_text">Настройки</string>
-    <string name="settings_label">@string/settings_button_text</string>
-    <string name="history_bt_label">Погодная история</string>
-    <string name="weather_history_header_label">@string/history_bt_label</string>
-    <string name="add_to_rv_bt_label">Очистить</string>
-    <string name="settings_tm">Настройки</string>
+    <string name="navigation_drawer_open">Открыть навигейшен дровер</string>
+    <string name="navigation_drawer_close">Закрыть навигейшен дровер</string>
     <string name="change_city">Изменить город</string>
-    <string name="action_not_found">Действие не найдено</string>
-    <string name="send_mes">Написать</string>
-    <string name="about_dev">О разработчике</string>
-    <string name="communicate">Обратная связь</string>
-    <string name="home_page">Главная страница</string>
-
-    <string name="navigation_drawer_open">Open navigation drawer</string>
-    <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="nav_header_title">Android Studio</string>
-    <string name="nav_header_subtitle">android.studio@android.com</string>
-    <string name="nav_header_desc">Navigation header</string>
-    <string name="action_settings">@string/settings_tm</string>
-    <string name="dev_title_label">@string/about_dev</string>
-    <string name="systempla">SystemPLA</string>
-    <string name="send_us_message">Напишите нам</string>
-    <string name="message_text">текст сообщения</string>
-    <string name="e_mail">e-mail</string>
-    <string name="send">Отправить</string>
-
-    <string name="place_not_found">Место не найдено</string>
-
-    <string name="weather_sunny">&#xf00d;</string>
-    <string name="weather_clear_night">&#xf02e;</string>
-    <string name="weather_foggy">&#xf014;</string>
-    <string name="weather_cloudy">&#xf013;</string>
-    <string name="weather_rainy">&#xf019;</string>
-    <string name="weather_snowy">&#xf01b;</string>
-    <string name="weather_thunder">&#xf01e;</string>
-    <string name="weather_drizzle">&#xf01c;</string>
-
-    <string name="is_sent"> отправлено</string>
-
-    <string-array name="Cities">
-        <item>Москва</item>
-        <item>Санкт-Петербург</item>
-        <item>Екатеринбург</item>
-        <item>Новосибирск</item>
-        <item>Самара</item>
-    </string-array>
-
+    <string name="dateLabel">Дата</string>
+    <string name="app_name">Погода</string>
+    <string name="gps_city">Город по GPS</string>
+    <string name="forecast_cty_label">-</string>
+    <string name="weatherdata_city_label">-</string>
+    <string name="data_temperature_label">-</string>
+    <string name="degree_sign">°</string>
+    <string name="celsius_sign">C</string>
+    <string name="data_details_label">Детали</string>
+    <string name="data_wind_label">Ветер</string>
+    <string name="data_pressure_label">Давление</string>
+    <string name="data_uv_index_label">UV индекс</string>
+    <string name="data_humidity_label">Влажность</string>
+    <string name="data_wind_value">- км/ч</string>
+    <string name="data_humidity_value">- %</string>
+    <string name="data_pressure_value">- мм. р. ст</string>
+    <string name="forecast_celsius_sign">C</string>
+    <string name="forecast_degree_sign">°</string>
+    <string name="forecast_temperature_value">-13</string>
+    <string name="forecast_description_text">clear sky</string>
+    <string name="drawer_today_text">Погода сегодня</string>
+    <string name="drawer_forecast_text">Погода на 5 дней</string>
+    <string name="navigation_bottom_text">Создатель SystemPLA</string>
 </resources>

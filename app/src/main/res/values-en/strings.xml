@@ -1,68 +1,28 @@
 <resources>
-    <string name="app_name">Weather</string>
-    <string name="app_textView">Weather</string>
-    <string name="dateLabel">Date</string>
-    <string name="temperatureLabel">Temperature</string>
-    <string name="pressureLabel">Pressure</string>
-    <string name="windLabel">Wind speed</string>
-    <string name="humidityLabel">Humidity</string>
-    <string name="temperatureValue">+16,4</string>
-    <string name="pressureValue">743 mb</string>
-    <string name="windValue">0 m/s</string>
-    <string name="humidityValue">77 %</string>
-    <string name="pressureCBoxLabel">@string/pressureLabel</string>
-    <string name="windCBoxLabel">@string/windLabel</string>
-    <string name="humidityCBoxLabel">@string/humidityLabel</string>
-    <string name="buttonRequestLabel">Check the weather</string>
-    <string name="cityLabel">City</string>
-    <string name="cityValue">City</string>
-    <string name="empty">The list of cities is empty</string>
-    <string name="view">TextView</string>
-    <string name="settings_button_text">Settings</string>
-    <string name="settings_label">@string/settings_button_text</string>
-    <string name="history_bt_label">Weather history</string>
-    <string name="weather_history_header_label">@string/history_bt_label</string>
-    <string name="add_to_rv_bt_label">Clear</string>
-    <string name="settings_tm">@string/settings_button_text</string>
-    <string name="change_city">Change city</string>
-    <string name="action_not_found">Action not found</string>
-    <string name="send_mes">Send</string>
-    <string name="about_dev">About developer</string>
-    <string name="communicate">Communicate</string>
-    <string name="home_page">Main page</string>
-
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="nav_header_title">Android Studio</string>
-    <string name="nav_header_subtitle">android.studio@android.com</string>
-    <string name="nav_header_desc">Navigation header</string>
-    <string name="action_settings">Settings</string>
-    <string name="dev_title_label">@string/about_dev</string>
-    <string name="systempla">SystemPLA</string>
-    <string name="send_us_message">Send us message</string>
-    <string name="message_text">message text</string>
-    <string name="e_mail">e-mail</string>
-    <string name="send">Send</string>
-
-    <string name="place_not_found">Place not found</string>
-
-    <string name="weather_sunny">&#xf00d;</string>
-    <string name="weather_clear_night">&#xf02e;</string>
-    <string name="weather_foggy">&#xf014;</string>
-    <string name="weather_cloudy">&#xf013;</string>
-    <string name="weather_rainy">&#xf019;</string>
-    <string name="weather_snowy">&#xf01b;</string>
-    <string name="weather_thunder">&#xf01e;</string>
-    <string name="weather_drizzle">&#xf01c;</string>
-
-    <string name="is_sent">message is sent</string>
-
-    <string-array name="Cities">
-        <item>Moscow</item>
-        <item>Saint Petersburg</item>
-        <item>Yekaterinburg</item>
-        <item>Novosibirsk</item>
-        <item>Samara</item>
-    </string-array>
-
+    <string name="change_city">Change city</string>
+    <string name="dateLabel">Date</string>
+    <string name="app_name">Weather</string>
+    <string name="gps_city">According to GPS</string>
+    <string name="forecast_cty_label">-</string>
+    <string name="weatherdata_city_label">-</string>
+    <string name="data_temperature_label">-</string>
+    <string name="degree_sign">°</string>
+    <string name="celsius_sign">C</string>
+    <string name="data_details_label">Details</string>
+    <string name="data_wind_label">W</string>
+    <string name="data_pressure_label">PRESSURE</string>
+    <string name="data_uv_index_label">UV INDEX</string>
+    <string name="data_humidity_label">HUMIDITY</string>
+    <string name="data_wind_value">- km/h</string>
+    <string name="data_humidity_value">- %</string>
+    <string name="data_pressure_value">- mb</string>
+    <string name="forecast_celsius_sign">C</string>
+    <string name="forecast_degree_sign">°</string>
+    <string name="forecast_temperature_value">-13</string>
+    <string name="forecast_description_text">clear sky</string>
+    <string name="drawer_today_text">Weather on today</string>
+    <string name="drawer_forecast_text">5 days forecast</string>
+    <string name="navigation_bottom_text">Created by SystemPLA</string>
 </resources>
