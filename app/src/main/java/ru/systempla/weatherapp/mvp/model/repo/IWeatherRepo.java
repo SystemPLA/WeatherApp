@@ -8,10 +8,10 @@ import ru.systempla.weatherapp.mvp.model.entity.WeatherRequestRestModel;
 
 public interface IWeatherRepo {
     Single<WeatherRequestRestModel> loadWeather(String city, String keyApi,
-                                                String units);
+                                                String units, String language);
 
     Single<UVIRequestRestModel> loadUVI(String keyApi, double latitude, double longitude);
 
     Single<ForecastRequestRestModel> loadForecast(String city, String keyApi,
-                                                  String units);
+                                                  String units, String language);
 }

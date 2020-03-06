@@ -50,6 +50,7 @@ public class ForecastPresenter extends MvpPresenter<ForecastView> {
     private Scheduler ioThreadScheduler;
     private Scheduler mainThreadScheduler;
     private ForecastListPresenter forecastListPresenter;
+    private String language;
 
     public ForecastPresenter(Scheduler mainThreadScheduler, Scheduler ioThreadScheduler) {
         this.mainThreadScheduler = mainThreadScheduler;
@@ -96,7 +97,7 @@ public class ForecastPresenter extends MvpPresenter<ForecastView> {
 
     private void loadData(String city) {
         getViewState().showLoading();
-        Disposable disposable = weatherRepo.loadForecast(city, OPEN_WEATHER_API_KEY, METRIC_UNITS)
+        Disposable disposable = weatherRepo.loadForecast(city, OPEN_WEATHER_API_KEY, METRIC_UNITS, "ru")
                 .subscribeOn(ioThreadScheduler)
                 .observeOn(mainThreadScheduler)
                 .subscribe(model -> {
