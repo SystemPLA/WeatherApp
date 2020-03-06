@@ -24,8 +24,8 @@ public class ForecastPresenter extends MvpPresenter<ForecastView> {
     class ForecastListPresenter implements IForecastListPresenter {
 
         PublishSubject<ForecastItemView> clickSubject = PublishSubject.create();
-        List<ForecastEntityRestModel> forecastBlocks = new ArrayList<>();
 
+        List<ForecastEntityRestModel> forecastBlocks = new ArrayList<>();
         @Override
         public void bind(ForecastItemView view) {
 
@@ -45,13 +45,13 @@ public class ForecastPresenter extends MvpPresenter<ForecastView> {
         public PublishSubject<ForecastItemView> getClickSubject() {
             return clickSubject;
         }
-    }
 
+    }
     private Scheduler ioThreadScheduler;
+
     private Scheduler mainThreadScheduler;
     private ForecastListPresenter forecastListPresenter;
     private String language;
-
     public ForecastPresenter(Scheduler mainThreadScheduler, Scheduler ioThreadScheduler) {
         this.mainThreadScheduler = mainThreadScheduler;
         this.ioThreadScheduler = ioThreadScheduler;
@@ -63,8 +63,8 @@ public class ForecastPresenter extends MvpPresenter<ForecastView> {
     }
 
     private static final String OPEN_WEATHER_API_KEY = "bf47d8733b57a7fad0801641fe3dc5cc";
-    private static final String METRIC_UNITS = "metric";
 
+    private static final String METRIC_UNITS = "metric";
     @Inject
     IWeatherRepo weatherRepo;
 
@@ -97,7 +97,7 @@ public class ForecastPresenter extends MvpPresenter<ForecastView> {
 
     private void loadData(String city) {
         getViewState().showLoading();
-        Disposable disposable = weatherRepo.loadForecast(city, OPEN_WEATHER_API_KEY, METRIC_UNITS, "ru")
+        Disposable disposable = weatherRepo.loadForecast(city, OPEN_WEATHER_API_KEY, METRIC_UNITS, language)
                 .subscribeOn(ioThreadScheduler)
                 .observeOn(mainThreadScheduler)
                 .subscribe(model -> {
@@ -115,6 +115,10 @@ public class ForecastPresenter extends MvpPresenter<ForecastView> {
 
     public void setSetting (String setting) {
         settings.saveSetting(setting);
+    }
+
+    public void setLanguage(String language) {
+        this.language = language;
     }
 
 }

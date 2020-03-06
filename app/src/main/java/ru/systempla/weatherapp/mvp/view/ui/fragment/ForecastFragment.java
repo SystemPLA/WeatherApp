@@ -152,6 +152,7 @@ public class ForecastFragment extends MvpAppCompatFragment implements ForecastVi
     @Override
     public void onResume() {
         super.onResume();
+        presenter.setLanguage(language);
         presenter.checkSettings();
         presenter.loadAccordingToSettings();
     }

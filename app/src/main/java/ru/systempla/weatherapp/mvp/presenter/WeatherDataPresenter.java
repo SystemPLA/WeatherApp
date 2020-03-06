@@ -57,7 +57,7 @@ public class WeatherDataPresenter extends MvpPresenter<WeatherDataView> {
     @SuppressLint("CheckResult")
     private void loadData(String city) {
         getViewState().showLoading();
-        Disposable disposable = weatherRepo.loadWeather(city, OPEN_WEATHER_API_KEY, METRIC_UNITS, "ru")
+        Disposable disposable = weatherRepo.loadWeather(city, OPEN_WEATHER_API_KEY, METRIC_UNITS, language)
                 .subscribeOn(ioThreadScheduler)
                 .observeOn(mainThreadScheduler)
                 .subscribe(model -> {
@@ -90,5 +90,9 @@ public class WeatherDataPresenter extends MvpPresenter<WeatherDataView> {
 
     public void setSetting (String setting) {
         settings.saveSetting(setting);
+    }
+
+    public void setLanguage(String language) {
+        this.language = language;
     }
 }
