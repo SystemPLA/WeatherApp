@@ -18,6 +18,7 @@ import java.util.Date;
 import java.util.Locale;
 
 import butterknife.BindDrawable;
+import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import ru.systempla.weatherapp.R;

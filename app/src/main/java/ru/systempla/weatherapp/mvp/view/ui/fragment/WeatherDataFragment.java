@@ -56,6 +56,12 @@ public class WeatherDataFragment extends MvpAppCompatFragment implements Weather
     @BindString(R.string.language)
     String language;
 
+    @BindString(R.string.wind_speed)
+    String speedUnit;
+
+    @BindString(R.string.pressure_unit)
+    String pressureUnit;
+
     @BindView(R.id.loading)
     RelativeLayout loadingRelativeLayout;
 
@@ -223,7 +229,15 @@ public class WeatherDataFragment extends MvpAppCompatFragment implements Weather
 
     @Override
     public void setPressure(float pressure) {
-        pressureValue.setText(String.format("%s hPa", pressure));
+        if (language.equals("en")) {
+            pressureValue.setText(String.format("%s " + pressureUnit, pressure));
+        }
+        if (language.equals("ru")) {
+            double newPressure = pressure * 0.75006375541921;
+            pressureValue.setText(String.format("%.0f " + pressureUnit, newPressure));
+
+        }
+
     }
 
     @Override
@@ -233,7 +247,7 @@ public class WeatherDataFragment extends MvpAppCompatFragment implements Weather
 
     @Override
     public void setWindSpeed(double speed) {
-        windSpeedValue.setText(String.format("%s mps", speed));
+        windSpeedValue.setText(String.format("%s "+speedUnit, speed));
     }
 
     @Override
