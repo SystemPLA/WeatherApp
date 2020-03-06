@@ -12,6 +12,7 @@ import ru.systempla.weatherapp.mvp.model.location.ILocationGetter;
 import ru.systempla.weatherapp.mvp.model.repo.IWeatherRepo;
 import ru.systempla.weatherapp.mvp.model.settings.ISettings;
 import ru.systempla.weatherapp.mvp.view.WeatherDataView;
+import timber.log.Timber;
 
 @SuppressWarnings({"CheckResult","unused"})
 @InjectViewState
@@ -22,6 +23,7 @@ public class WeatherDataPresenter extends MvpPresenter<WeatherDataView> {
 
     private Scheduler mainThreadScheduler;
     private Scheduler ioThreadScheduler;
+    private String language;
 
     @Inject
     IWeatherRepo weatherRepo;
@@ -55,7 +57,7 @@ public class WeatherDataPresenter extends MvpPresenter<WeatherDataView> {
     @SuppressLint("CheckResult")
     private void loadData(String city) {
         getViewState().showLoading();
-        Disposable disposable = weatherRepo.loadWeather(city, OPEN_WEATHER_API_KEY, METRIC_UNITS)
+        Disposable disposable = weatherRepo.loadWeather(city, OPEN_WEATHER_API_KEY, METRIC_UNITS, "ru")
                 .subscribeOn(ioThreadScheduler)
                 .observeOn(mainThreadScheduler)
                 .subscribe(model -> {

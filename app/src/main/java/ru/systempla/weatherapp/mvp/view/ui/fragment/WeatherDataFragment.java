@@ -24,6 +24,7 @@ import java.util.Date;
 import java.util.Locale;
 
 import butterknife.BindDrawable;
+import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -37,6 +38,7 @@ import ru.systempla.weatherapp.R;
 import ru.systempla.weatherapp.mvp.App;
 import ru.systempla.weatherapp.mvp.presenter.WeatherDataPresenter;
 import ru.systempla.weatherapp.mvp.view.WeatherDataView;
+import timber.log.Timber;
 
 @SuppressWarnings({"unused","ConstantConditions"})
 public class WeatherDataFragment extends MvpAppCompatFragment implements WeatherDataView {
@@ -50,6 +52,9 @@ public class WeatherDataFragment extends MvpAppCompatFragment implements Weather
 
     @InjectPresenter
     WeatherDataPresenter presenter;
+
+    @BindString(R.string.language)
+    String language;
 
     @BindView(R.id.loading)
     RelativeLayout loadingRelativeLayout;

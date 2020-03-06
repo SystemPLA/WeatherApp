@@ -22,6 +22,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -42,6 +43,9 @@ public class ForecastFragment extends MvpAppCompatFragment implements ForecastVi
 
     @InjectPresenter
     ForecastPresenter presenter;
+
+    @BindString(R.string.language)
+    String language;
 
     @BindView(R.id.rl_loading)
     RelativeLayout loadingRelativeLayout;

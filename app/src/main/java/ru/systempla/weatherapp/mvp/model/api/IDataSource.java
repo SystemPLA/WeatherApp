@@ -12,7 +12,8 @@ public interface IDataSource {
     @GET("data/2.5/weather")
     Single<WeatherRequestRestModel> loadWeather(@Query("q") String city,
                                                 @Query("appid") String keyApi,
-                                                @Query("units") String units);
+                                                @Query("units") String units,
+                                                @Query("lang") String language);
 
     @GET("data/2.5/uvi")
     Single<UVIRequestRestModel> loadUVI(@Query("appid") String keyApi,
@@ -22,5 +23,6 @@ public interface IDataSource {
     @GET("data/2.5/forecast")
     Single<ForecastRequestRestModel> loadForecast(@Query("q") String city,
                                                   @Query("appid") String keyApi,
-                                                  @Query("units") String units);
+                                                  @Query("units") String units,
+                                                  @Query("lang") String language);
 }

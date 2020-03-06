@@ -16,8 +16,8 @@ public class WeatherRepo implements IWeatherRepo{
 
     @Override
     public Single<WeatherRequestRestModel> loadWeather(String city, String keyApi,
-                                                       String units) {
-        return api.loadWeather(city, keyApi, units);
+                                                       String units, String language) {
+        return api.loadWeather(city, keyApi, units, language);
     }
 
     @Override
@@ -27,8 +27,9 @@ public class WeatherRepo implements IWeatherRepo{
     }
 
     @Override
-    public Single<ForecastRequestRestModel> loadForecast(String city, String keyApi, String units) {
+    public Single<ForecastRequestRestModel> loadForecast(String city, String keyApi,
+                                                         String units, String language) {
 
-        return api.loadForecast(city, keyApi, units);
+        return api.loadForecast(city, keyApi, units, language);
     }
 }
