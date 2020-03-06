@@ -151,6 +151,7 @@ public class WeatherDataFragment extends MvpAppCompatFragment implements Weather
     @Override
     public void onResume() {
         super.onResume();
+        presenter.setLanguage(language);
         presenter.checkSettings();
         presenter.loadAccordingToSettings();
     }
