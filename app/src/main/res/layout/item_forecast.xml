@@ -90,13 +90,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
-                android:layout_marginTop="20dp"
                 android:fontFamily="sans-serif-thin"
                 android:text="@string/forecast_description_text"
                 android:textColor="@color/textColor"
                 android:textSize="20sp"
-                app:layout_constraintStart_toEndOf="@+id/rv_c_sign"
-                app:layout_constraintTop_toBottomOf="@+id/rv_date_time" />
+                app:layout_constraintBottom_toBottomOf="@+id/rv_forecast_temp"
+                app:layout_constraintStart_toEndOf="@+id/rv_c_sign" />
 
             <ImageView
                 android:id="@+id/rv_forecast_icon"
