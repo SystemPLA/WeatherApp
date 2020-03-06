@@ -65,8 +65,8 @@ public class WeatherDataFragment extends MvpAppCompatFragment implements Weather
     @BindView(R.id.loading)
     RelativeLayout loadingRelativeLayout;
 
-    @BindView(R.id.n_popup_menu)
-    ImageView popupMenuButton;
+    @BindView(R.id.optionHitBoxExtender)
+    View popupMenuButton;
 
     @BindView(R.id.n_city_label)
     TextView cityLabel;
@@ -120,7 +120,7 @@ public class WeatherDataFragment extends MvpAppCompatFragment implements Weather
     Drawable iconDrizzle;
 
     @SuppressWarnings("WeakerAccess")
-    @OnClick(R.id.n_popup_menu)
+    @OnClick(R.id.optionHitBoxExtender)
     public void showMenu(View v){
         showPopupMenu(v);
     }

@@ -59,11 +59,11 @@ public class ForecastFragment extends MvpAppCompatFragment implements ForecastVi
     @BindView(R.id.drawer_button)
     ImageView drawerButton;
 
-    @BindView(R.id.n_popup_menu)
-    ImageView popupMenuIcon;
+    @BindView(R.id.optionHitBoxExtender2)
+    View popupMenuIcon;
 
     @SuppressWarnings("WeakerAccess")
-    @OnClick(R.id.n_popup_menu)
+    @OnClick(R.id.optionHitBoxExtender2)
     public void showMenu(View v){
         showPopupMenu(v);
     }
