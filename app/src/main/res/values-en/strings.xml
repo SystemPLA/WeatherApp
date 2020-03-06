@@ -26,4 +26,6 @@
     <string name="drawer_forecast_text">5 days forecast</string>
     <string name="navigation_bottom_text">Created by SystemPLA</string>
     <string name="language">en</string>
+    <string name="wind_speed">mps</string>
+    <string name="pressure_unit">hPa</string>
 </resources>

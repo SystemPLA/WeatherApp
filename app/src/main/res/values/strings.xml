@@ -26,4 +26,6 @@
     <string name="drawer_forecast_text">Погода на 5 дней</string>
     <string name="navigation_bottom_text">Создатель SystemPLA</string>
     <string name="language">ru</string>
+    <string name="wind_speed">м/с</string>
+    <string name="pressure_unit">мм.рт.ст.</string>
 </resources>
