@@ -6,6 +6,20 @@
     android:layout_height="match_parent"
     android:background="@color/colorBackground">
 
+    <View
+        android:id="@+id/optionHitBoxExtender"
+        android:layout_width="66dp"
+        android:layout_height="65dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <View
+        android:id="@+id/burgerHitBoxExtender"
+        android:layout_width="66dp"
+        android:layout_height="60dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <ImageView
         android:id="@+id/n_popup_menu"
         android:layout_width="wrap_content"
