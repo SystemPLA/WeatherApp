@@ -36,4 +36,10 @@
         <item name="android:textColor">@color/textColor</item>
     </style>
 
+    <style name="NavigationText" parent="@android:style/TextAppearance.Medium">
+        <item name="android:textColor">@color/textNavigationColor</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:fontFamily">@font/montserrat</item>
+    </style>
+
 </resources>

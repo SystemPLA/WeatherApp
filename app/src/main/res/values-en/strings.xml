@@ -23,7 +23,7 @@
     <string name="forecast_temperature_value">-13</string>
     <string name="forecast_description_text">clear sky</string>
     <string name="drawer_today_text">Weather on today</string>
-    <string name="drawer_forecast_text">5 days forecast</string>
+    <string name="drawer_forecast_text">Five days forecast</string>
     <string name="navigation_bottom_text">Created by SystemPLA</string>
     <string name="language">en</string>
     <string name="wind_speed">mps</string>
