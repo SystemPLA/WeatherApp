@@ -56,17 +56,6 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/n_weather_desc_value"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="36dp"
-        android:fontFamily="sans-serif-thin"
-        android:textColor="@color/textColor"
-        android:textSize="25sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView6" />
-
-    <TextView
         android:id="@+id/textView5"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -107,6 +96,18 @@
         app:layout_constraintStart_toEndOf="@+id/n_temperature_value"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.1578125" />
+
+    <TextView
+        android:id="@+id/n_weather_desc_value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="36dp"
+        android:layout_marginTop="5dp"
+        android:fontFamily="sans-serif-thin"
+        android:textColor="@color/textColor"
+        android:textSize="25sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView6" />
 
     <ImageView
         android:id="@+id/n_weather_image"
