@@ -13,10 +13,10 @@ import javax.inject.Inject
 @InjectViewState
 class MainPresenter : MvpPresenter<MainView?>() {
     @Inject
-    var locationGetter: ILocationGetter? = null
+    lateinit var locationGetter: ILocationGetter
 
     @Inject
-    var router: Router? = null
+    lateinit var router: Router
 
     @SuppressLint("CheckResult")
     override fun onFirstViewAttach() {
@@ -33,10 +33,10 @@ class MainPresenter : MvpPresenter<MainView?>() {
     }
 
     fun navigateToWeatherData() {
-        router!!.navigateTo(WeatherDataScreen())
+        router.navigateTo(WeatherDataScreen())
     }
 
     fun navigateToForecast() {
-        router!!.navigateTo(WeekForcastScreen())
+        router.navigateTo(WeekForcastScreen())
     }
 }

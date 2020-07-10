@@ -16,6 +16,10 @@ import javax.inject.Inject
 
 @InjectViewState
 class ForecastPresenter(private val mainThreadScheduler: Scheduler, private val ioThreadScheduler: Scheduler) : MvpPresenter<ForecastView?>() {
+    init {
+        val forecastListPresenter = ForecastListPresenter()
+    }
+
     internal inner class ForecastListPresenter : IForecastListPresenter {
         var clickSubject = PublishSubject.create<ForecastItemView>()
         var forecastBlocks: MutableList<ForecastEntityRestModel> = ArrayList<ForecastEntityRestModel>()
@@ -27,47 +31,41 @@ class ForecastPresenter(private val mainThreadScheduler: Scheduler, private val 
                     forecastBlocks[view.pos].weather.get(0).icon)
         }
 
-        override fun getCount(): Int {
-            return forecastBlocks.size
-        }
+        override val count: Int
+            get() = forecastBlocks.size
 
-        override fun getClickSubject(): PublishSubject<ForecastItemView> {
-            return clickSubject
-        }
+        override val clickSubject: PublishSubject<ForecastItemView>
+            get() = clickSubject
     }
 
-    private val forecastListPresenter: ForecastListPresenter
     private var language: String? = null
-    fun getForecastListPresenter(): IForecastListPresenter {
-        return forecastListPresenter
-    }
 
     @Inject
-    var weatherRepo: IWeatherRepo? = null
+    lateinit var weatherRepo: IWeatherRepo
 
     @Inject
-    var locationGetter: ILocationGetter? = null
+    lateinit var locationGetter: ILocationGetter
 
     @Inject
-    var settings: ISettings? = null
+    lateinit var settings: ISettings
+
     override fun onFirstViewAttach() {
         super.onFirstViewAttach()
         viewState!!.init()
     }
 
     fun loadAccordingToSettings() {
-        val disposable: Disposable = settings.getSetting().subscribe({ res ->
-            if (res.equals("gps")) {
-                val disposableSup: Disposable = locationGetter.getCity().subscribe({ city: String -> loadData(city) })
+        val disposable: Disposable = settings.setting.subscribe { res ->
+            if (res == "gps") {
+                val disposableSup: Disposable = locationGetter.city.subscribe { city: String -> loadData(city) }
             } else {
                 loadData(res)
             }
         }
-        )
     }
 
     fun checkSettings() {
-        val disposable: Disposable = settings.getSetting().subscribe({ res -> }, { t -> settings.resetSetting() })
+        val disposable: Disposable = settings.setting.subscribe({ _ -> }, { _ -> settings.resetSetting() })
     }
 
     private fun loadData(city: String) {
@@ -81,18 +79,18 @@ class ForecastPresenter(private val mainThreadScheduler: Scheduler, private val 
                     forecastListPresenter.forecastBlocks.addAll(model.list)
                     viewState!!.updateList()
                     viewState!!.hideLoading()
-                }, { t ->
+                }, { _ ->
                     viewState!!.showMessage("Место не найдено")
                     settings.resetSetting()
                     viewState!!.hideLoading()
                 })
     }
 
-    fun setSetting(setting: String?) {
+    fun setSetting(setting: String) {
         settings.saveSetting(setting)
     }
 
-    fun setLanguage(language: String?) {
+    fun setLanguage(language: String) {
         this.language = language
     }
 
@@ -101,7 +99,4 @@ class ForecastPresenter(private val mainThreadScheduler: Scheduler, private val 
         private const val METRIC_UNITS = "metric"
     }
 
-    init {
-        forecastListPresenter = ForecastListPresenter()
-    }
 }

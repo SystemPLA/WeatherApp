@@ -12,6 +12,7 @@ import androidx.drawerlayout.widget.DrawerLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import butterknife.*
+import ru.systempla.weatherapp.R
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import moxy.MvpAppCompatFragment
@@ -24,25 +25,25 @@ import ru.systempla.weatherapp.mvp.view.ui.adapter.ForecastRVAdapter
 
 class ForecastFragment : MvpAppCompatFragment(), ForecastView {
     @InjectPresenter
-    var presenter: ForecastPresenter? = null
+    lateinit var presenter: ForecastPresenter
 
     @BindString(R.string.language)
-    var language: String? = null
+    lateinit var language: String
 
     @BindView(R.id.rl_loading)
-    var loadingRelativeLayout: RelativeLayout? = null
+    lateinit var loadingRelativeLayout: RelativeLayout? = null
 
     @BindView(R.id.rv)
-    var recyclerView: RecyclerView? = null
+    lateinit var recyclerView: RecyclerView? = null
 
     @BindView(R.id.n_city_label)
-    var cityText: TextView? = null
+    lateinit var cityText: TextView? = null
 
     @BindView(R.id.drawer_button)
-    var drawerButton: ImageView? = null
+    lateinit var drawerButton: ImageView? = null
 
     @BindView(R.id.optionHitBoxExtender2)
-    var popupMenuIcon: View? = null
+    lateinit var popupMenuIcon: View? = null
 
     @OnClick(R.id.optionHitBoxExtender2)
     fun showMenu(v: View) {
@@ -61,12 +62,12 @@ class ForecastFragment : MvpAppCompatFragment(), ForecastView {
     @ProvidePresenter
     fun providePresenter(): ForecastPresenter {
         val presenter = ForecastPresenter(AndroidSchedulers.mainThread(), Schedulers.io())
-        App.getInstance().getAppComponent().inject(presenter)
+        App.instance.appComponent.inject(presenter)
         return presenter
     }
 
     private fun showPopupMenu(v: View) {
-        val popupMenu = PopupMenu(this.context!!, v)
+        val popupMenu = PopupMenu(this.requireContext(), v)
         popupMenu.inflate(R.menu.location_change_menu)
         popupMenu.setOnMenuItemClickListener { item: MenuItem ->
             when (item.itemId) {
@@ -86,7 +87,7 @@ class ForecastFragment : MvpAppCompatFragment(), ForecastView {
     }
 
     private fun showInputDialog() {
-        val builder = AlertDialog.Builder(this.context!!)
+        val builder = AlertDialog.Builder(this.requireContext())
         builder.setTitle(R.string.change_city)
         val input = EditText(this.context)
         input.inputType = InputType.TYPE_CLASS_TEXT
@@ -106,8 +107,8 @@ class ForecastFragment : MvpAppCompatFragment(), ForecastView {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view: View = inflater.inflate(R.layout.fragment_forcast, container, false)
         unbinder = ButterKnife.bind(this, view)
-        App.getInstance().getAppComponent().inject(this)
-        drawer = activity!!.findViewById(R.id.main_drawer_layout)
+        App.instance.appComponent.inject(this)
+        drawer = activity?.findViewById(R.id.main_drawer_layout)
         return view
     }
 
@@ -128,29 +129,29 @@ class ForecastFragment : MvpAppCompatFragment(), ForecastView {
         presenter.loadAccordingToSettings()
     }
 
-    fun init() {
+    override fun init() {
         recyclerView!!.layoutManager = LinearLayoutManager(activity)
         adapter = ForecastRVAdapter(presenter.getForecastListPresenter())
         recyclerView!!.adapter = adapter
     }
 
-    fun showLoading() {
+    override fun showLoading() {
         loadingRelativeLayout!!.visibility = View.VISIBLE
     }
 
-    fun hideLoading() {
+    override fun hideLoading() {
         loadingRelativeLayout!!.visibility = View.GONE
     }
 
-    fun showMessage(text: String?) {
+    override fun showMessage(text: String?) {
         Toast.makeText(this.context, text, Toast.LENGTH_SHORT).show()
     }
 
-    fun updateList() {
+    override fun updateList() {
         adapter.notifyDataSetChanged()
     }
 
-    fun setCity(city: String?) {
+    override fun setCity(city: String?) {
         cityText!!.text = city
     }
 

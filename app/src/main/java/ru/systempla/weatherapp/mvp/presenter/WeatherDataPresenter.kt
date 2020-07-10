@@ -1,6 +1,7 @@
 package ru.systempla.weatherapp.mvp.presenter
 
 import android.annotation.SuppressLint
+import android.text.TextUtils.equals
 import io.reactivex.Scheduler
 import io.reactivex.disposables.Disposable
 import moxy.InjectViewState
@@ -16,26 +17,26 @@ class WeatherDataPresenter(private val mainThreadScheduler: Scheduler, private v
     private var language: String? = null
 
     @Inject
-    var weatherRepo: IWeatherRepo? = null
+    lateinit var weatherRepo: IWeatherRepo
 
     @Inject
-    var locationGetter: ILocationGetter? = null
+    lateinit var locationGetter: ILocationGetter
 
     @Inject
-    var settings: ISettings? = null
+    lateinit var settings: ISettings
+
     fun loadAccordingToSettings() {
-        val disposable: Disposable = settings.getSetting().subscribe({ res ->
-            if (res.equals("gps")) {
-                val disposable1Sup: Disposable = locationGetter.getCity().subscribe({ city: String -> loadData(city) })
+        val disposable: Disposable = settings.setting.subscribe { res ->
+            if (res == "gps") {
+                val disposable1Sup: Disposable = locationGetter.city.subscribe { city: String -> loadData(city) }
             } else {
                 loadData(res)
             }
         }
-        )
     }
 
     fun checkSettings() {
-        val disposable: Disposable = settings.getSetting().subscribe({ res -> }, { t -> settings.resetSetting() })
+        val disposable: Disposable = settings.setting.subscribe({ res -> }, { t -> settings.resetSetting() })
     }
 
     @SuppressLint("CheckResult")
@@ -72,7 +73,7 @@ class WeatherDataPresenter(private val mainThreadScheduler: Scheduler, private v
                 })
     }
 
-    fun setSetting(setting: String?) {
+    fun setSetting(setting: String) {
         settings.saveSetting(setting)
     }
 

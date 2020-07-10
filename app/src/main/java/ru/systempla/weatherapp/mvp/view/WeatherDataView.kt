@@ -7,8 +7,8 @@ import moxy.viewstate.strategy.StateStrategyType
 
 @StateStrategyType(value = AddToEndSingleStrategy::class)
 interface WeatherDataView : MvpView {
-    fun setCityName(name: String?)
-    fun setWeatherDescription(description: String?)
+    fun setCityName(name: String)
+    fun setWeatherDescription(description: String)
     fun setUVIndex(uvIndex: Float)
     fun setPressure(pressure: Float)
     fun setHumidity(humidity: Float)

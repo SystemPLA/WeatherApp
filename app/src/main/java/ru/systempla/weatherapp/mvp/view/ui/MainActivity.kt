@@ -8,9 +8,9 @@ import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.core.app.ActivityCompat
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
-import butterknife.BindView
-import butterknife.ButterKnife
+import butterknife.BindString
 import com.google.android.material.navigation.NavigationView
+import kotlinx.android.synthetic.main.activity_main.*
 import moxy.MvpAppCompatActivity
 import moxy.presenter.InjectPresenter
 import moxy.presenter.ProvidePresenter
@@ -27,41 +27,38 @@ import javax.inject.Inject
 
 class MainActivity : MvpAppCompatActivity(), MainView, NavigationView.OnNavigationItemSelectedListener {
     @InjectPresenter
-    var presenter: MainPresenter? = null
+    lateinit var presenter: MainPresenter
 
     @Inject
-    var router: Router? = null
+    lateinit var router: Router
 
     @Inject
-    var navigatorHolder: NavigatorHolder? = null
+    lateinit var navigatorHolder: NavigatorHolder
 
-    @BindView(R.id.main_drawer_layout)
-    var drawer: DrawerLayout? = null
+    private val drawer: DrawerLayout = main_drawer_layout
+    private val navigationView: NavigationView = nav_view
+    private val navigator: Navigator = SupportAppNavigator(this, R.id.content)
 
-    @BindView(R.id.nav_view)
-    var navigationView: NavigationView? = null
-    var navigator: Navigator = SupportAppNavigator(this, R.id.content)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        App.getInstance().getAppComponent().inject(this)
+        App.instance.appComponent.inject(this)
         setContentView(R.layout.activity_main)
-        ButterKnife.bind(this)
         initSideMenu()
         if (savedInstanceState == null) {
-            router!!.replaceScreen(WeatherDataScreen())
+            router.replaceScreen(WeatherDataScreen())
         }
     }
 
     @ProvidePresenter
     fun providePresenter(): MainPresenter {
         val presenter = MainPresenter()
-        App.getInstance().getAppComponent().inject(presenter)
+        App.instance.appComponent.inject(presenter)
         return presenter
     }
 
     override fun onResumeFragments() {
         super.onResumeFragments()
-        navigatorHolder!!.setNavigator(navigator)
+        navigatorHolder.setNavigator(navigator)
     }
 
     override fun onResume() {
@@ -75,58 +72,50 @@ class MainActivity : MvpAppCompatActivity(), MainView, NavigationView.OnNavigati
     }
 
     override fun onPause() {
-        navigatorHolder!!.removeNavigator()
+        navigatorHolder.removeNavigator()
         super.onPause()
     }
 
-    fun checkGeolocationPermission() {
+    override fun checkGeolocationPermission() {
         if (!checkPermission(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION)) {
             getPermission(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION)
         }
     }
 
-    fun openNavDrawer() {
-        drawer!!.openDrawer(GravityCompat.START)
+    override fun openNavDrawer() {
+        drawer.openDrawer(GravityCompat.START)
     }
 
     private fun initSideMenu() {
         val toggle = ActionBarDrawerToggle(
                 this, drawer, R.string.navigation_drawer_open,
                 R.string.navigation_drawer_close)
-        drawer!!.addDrawerListener(toggle)
+        drawer.addDrawerListener(toggle)
         toggle.syncState()
-        navigationView!!.setNavigationItemSelectedListener(this)
+        navigationView.setNavigationItemSelectedListener(this)
     }
 
     override fun onNavigationItemSelected(menuItem: MenuItem): Boolean {
         val id = menuItem.itemId
-        if (id == R.id.nav_weather_data) {
-            presenter.navigateToWeatherData()
-        } else if (id == R.id.nav_forecast) {
-            presenter.navigateToForecast()
+        when (menuItem.itemId) {
+            R.id.nav_weather_data -> presenter.navigateToWeatherData()
+            R.id.nav_forecast -> presenter.navigateToForecast()
         }
-        drawer!!.closeDrawer(GravityCompat.START)
+        drawer.closeDrawer(GravityCompat.START)
         return true
     }
 
-    fun checkPermission(permission: String?): Boolean {
-        ActivityCompat.checkSelfPermission(App.getInstance(), permission!!)
-        return ActivityCompat.checkSelfPermission(App.getInstance(), permission) == PackageManager.PERMISSION_GRANTED
-    }
 
-    fun checkPermission(vararg permissions: String?): Boolean {
+    private fun checkPermission(vararg permissions: String): Boolean {
         var flag = true
         for (permission in permissions) {
-            flag = flag and (ActivityCompat.checkSelfPermission(App.getInstance(), permission!!) == PackageManager.PERMISSION_GRANTED)
+            flag = flag and (ActivityCompat.checkSelfPermission(App.instance, permission!!) == PackageManager.PERMISSION_GRANTED)
         }
         return flag
     }
 
-    fun getPermission(permission: String) {
-        ActivityCompat.requestPermissions(this, arrayOf(permission), 100)
-    }
 
-    fun getPermission(vararg permissions: String?) {
+    private fun getPermission(vararg permissions: String) {
         ActivityCompat.requestPermissions(this, permissions, 100)
     }
 }

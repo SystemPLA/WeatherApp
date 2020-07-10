@@ -30,11 +30,11 @@ class ForecastRVAdapter(presenter: IForecastListPresenter) : RecyclerView.Adapte
     }
 
     override fun getItemCount(): Int {
-        return presenter.getCount()
+        return presenter.count
     }
 
     inner class ViewHolder private constructor(itemView: View) : RecyclerView.ViewHolder(itemView), ForecastItemView {
-        var pos = 0
+        override var pos = 0
 
         @BindView(R.id.rv_date_time)
         var rvDateTimeTV: TextView? = null
@@ -72,22 +72,22 @@ class ForecastRVAdapter(presenter: IForecastListPresenter) : RecyclerView.Adapte
         @BindDrawable(R.drawable.ic_drizzle)
         var iconDrizzle: Drawable? = null
 
-        fun setDateTime(dt: Long) {
+        override fun setDateTime(dt: Long) {
             val dateFormat = DateFormat.getDateTimeInstance()
             val updateOn = dateFormat.format(Date(dt * 1000))
             rvDateTimeTV!!.text = updateOn
         }
 
-        fun setTemperature(temp: Float) {
+        override fun setTemperature(temp: Float) {
             val currentTextText = String.format(Locale.getDefault(), "%.0f", temp)
             rvTemperatureTV!!.text = currentTextText
         }
 
-        fun setWeatherDescription(description: String) {
+        override fun setWeatherDescription(description: String) {
             rvDescriptionTV!!.text = description.toLowerCase()
         }
 
-        fun setWeatherIcon(actualId: Int, iconCode: String) {
+        override fun setWeatherIcon(actualId: Int, iconCode: String) {
             val id = actualId / 100
             var icon: Drawable? = null
             if (actualId == 800) {

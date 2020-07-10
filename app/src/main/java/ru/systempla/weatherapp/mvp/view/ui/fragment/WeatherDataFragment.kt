@@ -7,105 +7,80 @@ import android.text.InputType
 import android.view.*
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.widget.PopupMenu
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
-import butterknife.*
+import butterknife.BindDrawable
+import butterknife.BindString
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
+import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.fragment_weather_data.*
 import moxy.MvpAppCompatFragment
 import moxy.presenter.InjectPresenter
 import moxy.presenter.ProvidePresenter
+import ru.systempla.weatherapp.R
 import ru.systempla.weatherapp.mvp.App
 import ru.systempla.weatherapp.mvp.presenter.WeatherDataPresenter
 import ru.systempla.weatherapp.mvp.view.WeatherDataView
 import java.util.*
 
 class WeatherDataFragment : MvpAppCompatFragment(), WeatherDataView {
-    private var unbinder: Unbinder? = null
-    private var drawer: DrawerLayout? = null
+
+    companion object {
+        fun newInstance(): WeatherDataFragment = WeatherDataFragment()
+    }
+
+    private lateinit var drawer: DrawerLayout
+    private lateinit var loadingRelativeLayout: RelativeLayout
+    private lateinit var popupMenuButton: View
+    private lateinit var cityLabel: TextView
+    private lateinit var humidityValue: TextView
+    private lateinit var pressureValue: TextView
+    private lateinit var uvValue: TextView
+    private lateinit var weatherDescValue: TextView
+    private lateinit var weatherImage: ImageView
+    private lateinit var windSpeedValue: TextView
+    private lateinit var temperatureValue: TextView
+    private lateinit var drawerButton: ImageView
 
     @InjectPresenter
-    var presenter: WeatherDataPresenter? = null
+    lateinit var presenter: WeatherDataPresenter
 
     @BindString(R.string.language)
-    var language: String? = null
+    lateinit var language: String
 
     @BindString(R.string.wind_speed)
-    var speedUnit: String? = null
+    lateinit var speedUnit: String
 
     @BindString(R.string.pressure_unit)
-    var pressureUnit: String? = null
-
-    @BindView(R.id.loading)
-    var loadingRelativeLayout: RelativeLayout? = null
-
-    @BindView(R.id.optionHitBoxExtender)
-    var popupMenuButton: View? = null
-
-    @BindView(R.id.n_city_label)
-    var cityLabel: TextView? = null
-
-    @BindView(R.id.n_humidity_value)
-    var humidityValue: TextView? = null
-
-    @BindView(R.id.n_pressure_value)
-    var pressureValue: TextView? = null
-
-    @BindView(R.id.n_uv_value)
-    var uvValue: TextView? = null
-
-    @BindView(R.id.n_weather_desc_value)
-    var weatherDescValue: TextView? = null
-
-    @BindView(R.id.n_weather_image)
-    var weatherImage: ImageView? = null
-
-    @BindView(R.id.n_wind_speed_value)
-    var windSpeedValue: TextView? = null
-
-    @BindView(R.id.n_temperature_value)
-    var temperatureValue: TextView? = null
-
-    @BindView(R.id.drawer_button)
-    var drawerButton: ImageView? = null
+    lateinit var pressureUnit: String
 
     @BindDrawable(R.drawable.ic_sun)
-    var iconSun: Drawable? = null
+    lateinit var iconSun: Drawable
 
     @BindDrawable(R.drawable.ic_moon)
-    var iconMoon: Drawable? = null
+    lateinit var iconMoon: Drawable
 
     @BindDrawable(R.drawable.ic_snow)
-    var iconSnow: Drawable? = null
+    lateinit var iconSnow: Drawable
 
     @BindDrawable(R.drawable.ic_fog)
-    var iconFog: Drawable? = null
+    lateinit var iconFog: Drawable
 
     @BindDrawable(R.drawable.ic_rain)
-    var iconRain: Drawable? = null
+    lateinit var iconRain: Drawable
 
     @BindDrawable(R.drawable.ic_cloud)
-    var iconCloud: Drawable? = null
+    lateinit var iconCloud: Drawable
 
     @BindDrawable(R.drawable.ic_thunderstorm)
-    var iconThunderstorm: Drawable? = null
+    lateinit var iconThunderstorm: Drawable
 
     @BindDrawable(R.drawable.ic_drizzle)
-    var iconDrizzle: Drawable? = null
+    lateinit var iconDrizzle: Drawable
 
-    @OnClick(R.id.optionHitBoxExtender)
-    fun showMenu(v: View) {
-        showPopupMenu(v)
-    }
-
-    @OnClick(R.id.drawer_button)
-    fun showDrawer() {
-        drawer!!.openDrawer(GravityCompat.START)
-    }
-
-    private fun showPopupMenu(v: View) {
-        val popupMenu = PopupMenu(this.context!!, v)
+    private fun showPopupMenu(view: View) {
+        val popupMenu = PopupMenu(context, view)
         popupMenu.inflate(R.menu.location_change_menu)
         popupMenu.setOnMenuItemClickListener { item: MenuItem ->
             when (item.itemId) {
@@ -129,6 +104,24 @@ class WeatherDataFragment : MvpAppCompatFragment(), WeatherDataView {
         setHasOptionsMenu(true)
     }
 
+    private fun setup() {
+        optionHitBoxExtender.setOnClickListener {view -> showPopupMenu(view)}
+        drawer_button.setOnClickListener {drawer.openDrawer(GravityCompat.START)}
+
+        loadingRelativeLayout = loading
+        popupMenuButton = optionHitBoxExtender
+        cityLabel = n_city_label
+        humidityValue = n_humidity_value
+        pressureValue = n_pressure_value
+        uvValue = n_uv_value
+        weatherDescValue = n_weather_desc_value
+        weatherImage = n_weather_image
+        windSpeedValue = n_wind_speed_value
+        temperatureValue = n_temperature_value
+        drawerButton = drawer_button
+        drawer = main_drawer_layout
+    }
+
     override fun onResume() {
         super.onResume()
         presenter.setLanguage(language)
@@ -138,15 +131,9 @@ class WeatherDataFragment : MvpAppCompatFragment(), WeatherDataView {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view: View = inflater.inflate(R.layout.fragment_weather_data, container, false)
-        unbinder = ButterKnife.bind(this, view)
-        App.getInstance().getAppComponent().inject(this)
-        drawer = activity!!.findViewById(R.id.main_drawer_layout)
+        App.instance.appComponent.inject(this)
+        setup()
         return view
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        unbinder!!.unbind()
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -155,12 +142,12 @@ class WeatherDataFragment : MvpAppCompatFragment(), WeatherDataView {
     }
 
     private fun showInputDialog() {
-        val builder = AlertDialog.Builder(this.context!!)
+        val builder = AlertDialog.Builder(this.requireContext())
         builder.setTitle(R.string.change_city)
         val input = EditText(this.context)
         input.inputType = InputType.TYPE_CLASS_TEXT
         builder.setView(input)
-        builder.setPositiveButton("OK") { dialog: DialogInterface?, which: Int ->
+        builder.setPositiveButton("OK") { _: DialogInterface?, _: Int ->
             presenter.setSetting(input.text.toString())
             presenter.loadAccordingToSettings()
         }
@@ -170,51 +157,51 @@ class WeatherDataFragment : MvpAppCompatFragment(), WeatherDataView {
     @ProvidePresenter
     fun providePresenter(): WeatherDataPresenter {
         val presenter = WeatherDataPresenter(AndroidSchedulers.mainThread(), Schedulers.io())
-        App.getInstance().getAppComponent().inject(presenter)
+        App.instance.appComponent.inject(presenter)
         return presenter
     }
 
-    fun showMessage(text: String?) {
+    override fun showMessage(text: String?) {
         Toast.makeText(this.context, text, Toast.LENGTH_SHORT).show()
     }
 
-    fun setCityName(name: String?) {
-        cityLabel!!.text = name
+    override fun setCityName(name: String) {
+        cityLabel.text = name
     }
 
-    fun setWeatherDescription(description: String) {
-        weatherDescValue!!.text = description.toLowerCase()
+    override fun setWeatherDescription(description: String) {
+        weatherDescValue.text = description.toLowerCase(Locale.ROOT)
     }
 
-    fun setUVIndex(uvIndex: Float) {
+    override fun setUVIndex(uvIndex: Float) {
         val currentTextText = String.format(Locale.getDefault(), "%.2f", uvIndex)
-        uvValue!!.text = currentTextText
+        uvValue.text = currentTextText
     }
 
-    fun setPressure(pressure: Float) {
+    override fun setPressure(pressure: Float) {
         if (language == "en") {
-            pressureValue!!.text = String.format("%s $pressureUnit", pressure)
+            pressureValue.text = String.format("%s $pressureUnit", pressure)
         }
         if (language == "ru") {
             val newPressure = pressure * 0.75006375541921
-            pressureValue!!.text = String.format("%.0f $pressureUnit", newPressure)
+            pressureValue.text = String.format("%.0f $pressureUnit", newPressure)
         }
     }
 
-    fun setHumidity(humidity: Float) {
-        humidityValue!!.text = String.format("%s %%", humidity)
+    override fun setHumidity(humidity: Float) {
+        humidityValue.text = String.format("%s %%", humidity)
     }
 
-    fun setWindSpeed(speed: Double) {
-        windSpeedValue!!.text = String.format("%s $speedUnit", speed)
+    override fun setWindSpeed(speed: Double) {
+        windSpeedValue.text = String.format("%s $speedUnit", speed)
     }
 
-    fun setWeatherIcon(actualId: Int, sunrise: Long, sunset: Long) {
+    override fun setWeatherIcon(actualId: Int, sunrise: Long, sunset: Long) {
         val id = actualId / 100
         var icon: Drawable? = null
         if (actualId == 800) {
             val currentTime = Date().time
-            icon = if (currentTime >= sunrise && currentTime < sunset) {
+            icon = if (currentTime in sunrise until sunset) {
                 iconSun
             } else {
                 iconMoon
@@ -241,25 +228,19 @@ class WeatherDataFragment : MvpAppCompatFragment(), WeatherDataView {
                 }
             }
         }
-        weatherImage!!.setImageDrawable(icon)
+        weatherImage.setImageDrawable(icon)
     }
 
-    fun setCurrentTemperature(temp: Float) {
+    override fun setCurrentTemperature(temp: Float) {
         val currentTextText = String.format(Locale.getDefault(), "%.0f", temp)
-        temperatureValue!!.text = currentTextText
+        temperatureValue.text = currentTextText
     }
 
-    fun showLoading() {
-        loadingRelativeLayout!!.visibility = View.VISIBLE
+    override fun showLoading() {
+        loadingRelativeLayout.visibility = View.VISIBLE
     }
 
-    fun hideLoading() {
-        loadingRelativeLayout!!.visibility = View.GONE
-    }
-
-    companion object {
-        fun newInstance(): WeatherDataFragment {
-            return WeatherDataFragment()
-        }
+    override fun hideLoading() {
+        loadingRelativeLayout.visibility = View.GONE
     }
 }
