@@ -31,19 +31,19 @@ class ForecastFragment : MvpAppCompatFragment(), ForecastView {
     lateinit var language: String
 
     @BindView(R.id.rl_loading)
-    lateinit var loadingRelativeLayout: RelativeLayout? = null
+    lateinit var loadingRelativeLayout: RelativeLayout
 
     @BindView(R.id.rv)
-    lateinit var recyclerView: RecyclerView? = null
+    lateinit var recyclerView: RecyclerView
 
     @BindView(R.id.n_city_label)
-    lateinit var cityText: TextView? = null
+    lateinit var cityText: TextView
 
     @BindView(R.id.drawer_button)
-    lateinit var drawerButton: ImageView? = null
+    lateinit var drawerButton: ImageView
 
     @BindView(R.id.optionHitBoxExtender2)
-    lateinit var popupMenuIcon: View? = null
+    lateinit var popupMenuIcon: View
 
     @OnClick(R.id.optionHitBoxExtender2)
     fun showMenu(v: View) {
@@ -55,8 +55,8 @@ class ForecastFragment : MvpAppCompatFragment(), ForecastView {
         drawer!!.openDrawer(GravityCompat.START)
     }
 
-    private var adapter: ForecastRVAdapter? = null
-    private var unbinder: Unbinder? = null
+    lateinit var adapter: ForecastRVAdapter
+    lateinit var unbinder: Unbinder
     private var drawer: DrawerLayout? = null
 
     @ProvidePresenter
@@ -114,7 +114,7 @@ class ForecastFragment : MvpAppCompatFragment(), ForecastView {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        unbinder!!.unbind()
+        unbinder.unbind()
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -130,17 +130,17 @@ class ForecastFragment : MvpAppCompatFragment(), ForecastView {
     }
 
     override fun init() {
-        recyclerView!!.layoutManager = LinearLayoutManager(activity)
-        adapter = ForecastRVAdapter(presenter.getForecastListPresenter())
-        recyclerView!!.adapter = adapter
+        recyclerView.layoutManager = LinearLayoutManager(activity)
+        adapter = ForecastRVAdapter(presenter.forecastListPresenter)
+        recyclerView.adapter = adapter
     }
 
     override fun showLoading() {
-        loadingRelativeLayout!!.visibility = View.VISIBLE
+        loadingRelativeLayout.visibility = View.VISIBLE
     }
 
     override fun hideLoading() {
-        loadingRelativeLayout!!.visibility = View.GONE
+        loadingRelativeLayout.visibility = View.GONE
     }
 
     override fun showMessage(text: String?) {
@@ -152,7 +152,7 @@ class ForecastFragment : MvpAppCompatFragment(), ForecastView {
     }
 
     override fun setCity(city: String?) {
-        cityText!!.text = city
+        cityText.text = city
     }
 
     companion object {

@@ -9,12 +9,9 @@ import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
-import butterknife.BindDrawable
-import butterknife.BindString
+import butterknife.*
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
-import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.fragment_weather_data.*
 import moxy.MvpAppCompatFragment
 import moxy.presenter.InjectPresenter
 import moxy.presenter.ProvidePresenter
@@ -24,27 +21,51 @@ import ru.systempla.weatherapp.mvp.presenter.WeatherDataPresenter
 import ru.systempla.weatherapp.mvp.view.WeatherDataView
 import java.util.*
 
+
 class WeatherDataFragment : MvpAppCompatFragment(), WeatherDataView {
 
     companion object {
         fun newInstance(): WeatherDataFragment = WeatherDataFragment()
     }
 
-    private lateinit var drawer: DrawerLayout
-    private lateinit var loadingRelativeLayout: RelativeLayout
-    private lateinit var popupMenuButton: View
-    private lateinit var cityLabel: TextView
-    private lateinit var humidityValue: TextView
-    private lateinit var pressureValue: TextView
-    private lateinit var uvValue: TextView
-    private lateinit var weatherDescValue: TextView
-    private lateinit var weatherImage: ImageView
-    private lateinit var windSpeedValue: TextView
-    private lateinit var temperatureValue: TextView
-    private lateinit var drawerButton: ImageView
+    lateinit var unbinder: Unbinder
+    private val drawer: DrawerLayout? = null
 
     @InjectPresenter
     lateinit var presenter: WeatherDataPresenter
+
+    @BindView(R.id.loading)
+    lateinit var loadingRelativeLayout: RelativeLayout
+
+    @BindView(R.id.optionHitBoxExtender)
+    lateinit var popupMenuButton: View
+
+    @BindView(R.id.n_city_label)
+    lateinit var cityLabel: TextView
+
+    @BindView(R.id.n_humidity_value)
+    lateinit var humidityValue: TextView
+
+    @BindView(R.id.n_pressure_value)
+    lateinit var pressureValue: TextView
+
+    @BindView(R.id.n_uv_value)
+    lateinit var uvValue: TextView
+
+    @BindView(R.id.n_weather_desc_value)
+    lateinit var weatherDescValue: TextView
+
+    @BindView(R.id.n_weather_image)
+    lateinit var weatherImage: ImageView
+
+    @BindView(R.id.n_wind_speed_value)
+    lateinit var windSpeedValue: TextView
+
+    @BindView(R.id.n_temperature_value)
+    lateinit var temperatureValue: TextView
+
+    @BindView(R.id.drawer_button)
+    lateinit var drawerButton: ImageView
 
     @BindString(R.string.language)
     lateinit var language: String
@@ -79,6 +100,17 @@ class WeatherDataFragment : MvpAppCompatFragment(), WeatherDataView {
     @BindDrawable(R.drawable.ic_drizzle)
     lateinit var iconDrizzle: Drawable
 
+    @OnClick(R.id.optionHitBoxExtender)
+    fun showMenu(v: View?) {
+        showPopupMenu(v!!)
+    }
+
+    @OnClick(R.id.drawer_button)
+    fun showDrawer() {
+        drawer!!.openDrawer(GravityCompat.START)
+    }
+
+
     private fun showPopupMenu(view: View) {
         val popupMenu = PopupMenu(context, view)
         popupMenu.inflate(R.menu.location_change_menu)
@@ -104,24 +136,6 @@ class WeatherDataFragment : MvpAppCompatFragment(), WeatherDataView {
         setHasOptionsMenu(true)
     }
 
-    private fun setup() {
-        optionHitBoxExtender.setOnClickListener {view -> showPopupMenu(view)}
-        drawer_button.setOnClickListener {drawer.openDrawer(GravityCompat.START)}
-
-        loadingRelativeLayout = loading
-        popupMenuButton = optionHitBoxExtender
-        cityLabel = n_city_label
-        humidityValue = n_humidity_value
-        pressureValue = n_pressure_value
-        uvValue = n_uv_value
-        weatherDescValue = n_weather_desc_value
-        weatherImage = n_weather_image
-        windSpeedValue = n_wind_speed_value
-        temperatureValue = n_temperature_value
-        drawerButton = drawer_button
-        drawer = main_drawer_layout
-    }
-
     override fun onResume() {
         super.onResume()
         presenter.setLanguage(language)
@@ -132,8 +146,13 @@ class WeatherDataFragment : MvpAppCompatFragment(), WeatherDataView {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view: View = inflater.inflate(R.layout.fragment_weather_data, container, false)
         App.instance.appComponent.inject(this)
-        setup()
+        unbinder = ButterKnife.bind(this, view);
         return view
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        unbinder.unbind()
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {

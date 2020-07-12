@@ -17,8 +17,7 @@ import ru.systempla.weatherapp.mvp.view.list.ForecastItemView
 import java.text.DateFormat
 import java.util.*
 
-class ForecastRVAdapter(presenter: IForecastListPresenter) : RecyclerView.Adapter<ForecastRVAdapter.ViewHolder>() {
-    private val presenter: IForecastListPresenter
+class ForecastRVAdapter(private val presenter: IForecastListPresenter) : RecyclerView.Adapter<ForecastRVAdapter.ViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_forecast, parent, false))
     }
@@ -126,7 +125,4 @@ class ForecastRVAdapter(presenter: IForecastListPresenter) : RecyclerView.Adapte
         }
     }
 
-    init {
-        this.presenter = presenter
-    }
 }

@@ -8,9 +8,9 @@ import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.core.app.ActivityCompat
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
-import butterknife.BindString
+import butterknife.BindView
+import butterknife.ButterKnife
 import com.google.android.material.navigation.NavigationView
-import kotlinx.android.synthetic.main.activity_main.*
 import moxy.MvpAppCompatActivity
 import moxy.presenter.InjectPresenter
 import moxy.presenter.ProvidePresenter
@@ -25,6 +25,7 @@ import ru.terrakok.cicerone.Router
 import ru.terrakok.cicerone.android.support.SupportAppNavigator
 import javax.inject.Inject
 
+
 class MainActivity : MvpAppCompatActivity(), MainView, NavigationView.OnNavigationItemSelectedListener {
     @InjectPresenter
     lateinit var presenter: MainPresenter
@@ -35,14 +36,19 @@ class MainActivity : MvpAppCompatActivity(), MainView, NavigationView.OnNavigati
     @Inject
     lateinit var navigatorHolder: NavigatorHolder
 
-    private val drawer: DrawerLayout = main_drawer_layout
-    private val navigationView: NavigationView = nav_view
+    @BindView(R.id.main_drawer_layout)
+    lateinit var drawer: DrawerLayout
+
+    @BindView(R.id.nav_view)
+    lateinit var navigationView: NavigationView
+
     private val navigator: Navigator = SupportAppNavigator(this, R.id.content)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         App.instance.appComponent.inject(this)
         setContentView(R.layout.activity_main)
+        ButterKnife.bind(this);
         initSideMenu()
         if (savedInstanceState == null) {
             router.replaceScreen(WeatherDataScreen())
@@ -109,7 +115,7 @@ class MainActivity : MvpAppCompatActivity(), MainView, NavigationView.OnNavigati
     private fun checkPermission(vararg permissions: String): Boolean {
         var flag = true
         for (permission in permissions) {
-            flag = flag and (ActivityCompat.checkSelfPermission(App.instance, permission!!) == PackageManager.PERMISSION_GRANTED)
+            flag = flag and (ActivityCompat.checkSelfPermission(App.instance, permission) == PackageManager.PERMISSION_GRANTED)
         }
         return flag
     }

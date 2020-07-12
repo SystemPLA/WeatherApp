@@ -16,13 +16,16 @@ import javax.inject.Inject
 
 @InjectViewState
 class ForecastPresenter(private val mainThreadScheduler: Scheduler, private val ioThreadScheduler: Scheduler) : MvpPresenter<ForecastView?>() {
+
+    var forecastListPresenter: IForecastListPresenter
+
     init {
-        val forecastListPresenter = ForecastListPresenter()
+        forecastListPresenter = ForecastListPresenter()
     }
 
     internal inner class ForecastListPresenter : IForecastListPresenter {
         var clickSubject = PublishSubject.create<ForecastItemView>()
-        var forecastBlocks: MutableList<ForecastEntityRestModel> = ArrayList<ForecastEntityRestModel>()
+        var forecastBlocks: MutableList<ForecastEntityRestModel> = ArrayList()
         override fun bind(view: ForecastItemView) {
             view.setDateTime(forecastBlocks[view.pos].dt)
             view.setTemperature(forecastBlocks[view.pos].main.temp)
