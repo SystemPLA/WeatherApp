@@ -29,7 +29,7 @@ class WeatherDataFragment : MvpAppCompatFragment(), WeatherDataView {
     }
 
     lateinit var unbinder: Unbinder
-    private val drawer: DrawerLayout? = null
+    private lateinit var drawer: DrawerLayout
 
     @InjectPresenter
     lateinit var presenter: WeatherDataPresenter
@@ -107,7 +107,7 @@ class WeatherDataFragment : MvpAppCompatFragment(), WeatherDataView {
 
     @OnClick(R.id.drawer_button)
     fun showDrawer() {
-        drawer!!.openDrawer(GravityCompat.START)
+        drawer.openDrawer(GravityCompat.START)
     }
 
 
@@ -147,6 +147,7 @@ class WeatherDataFragment : MvpAppCompatFragment(), WeatherDataView {
         val view: View = inflater.inflate(R.layout.fragment_weather_data, container, false)
         App.instance.appComponent.inject(this)
         unbinder = ButterKnife.bind(this, view);
+        drawer = requireActivity().findViewById(R.id.main_drawer_layout);
         return view
     }
 

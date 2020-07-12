@@ -25,70 +25,70 @@ class ForecastRVAdapter(private val presenter: IForecastListPresenter) : Recycle
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.pos = position
         presenter.bind(holder)
-        RxView.clicks(holder.itemView).map<Any> { o: Any? -> holder }.subscribe(presenter.getClickSubject())
+        RxView.clicks(holder.itemView).map{ holder }.subscribe(presenter.clickSubject)
     }
 
     override fun getItemCount(): Int {
         return presenter.count
     }
 
-    inner class ViewHolder private constructor(itemView: View) : RecyclerView.ViewHolder(itemView), ForecastItemView {
+    inner class ViewHolder constructor(itemView: View) : RecyclerView.ViewHolder(itemView), ForecastItemView {
         override var pos = 0
 
         @BindView(R.id.rv_date_time)
-        var rvDateTimeTV: TextView? = null
+        lateinit var rvDateTimeTV: TextView
 
         @BindView(R.id.rv_description)
-        var rvDescriptionTV: TextView? = null
+        lateinit var  rvDescriptionTV: TextView
 
         @BindView(R.id.rv_forecast_temp)
-        var rvTemperatureTV: TextView? = null
+        lateinit var  rvTemperatureTV: TextView
 
         @BindView(R.id.rv_forecast_icon)
-        var rvIconIV: ImageView? = null
+        lateinit var  rvIconIV: ImageView
 
         @BindDrawable(R.drawable.ic_sun)
-        var iconSun: Drawable? = null
+        lateinit var  iconSun: Drawable
 
         @BindDrawable(R.drawable.ic_moon)
-        var iconMoon: Drawable? = null
+        lateinit var  iconMoon: Drawable
 
         @BindDrawable(R.drawable.ic_snow)
-        var iconSnow: Drawable? = null
+        lateinit var  iconSnow: Drawable
 
         @BindDrawable(R.drawable.ic_fog)
-        var iconFog: Drawable? = null
+        lateinit var  iconFog: Drawable
 
         @BindDrawable(R.drawable.ic_rain)
-        var iconRain: Drawable? = null
+        lateinit var  iconRain: Drawable
 
         @BindDrawable(R.drawable.ic_cloud)
-        var iconCloud: Drawable? = null
+        lateinit var  iconCloud: Drawable
 
         @BindDrawable(R.drawable.ic_thunderstorm)
-        var iconThunderstorm: Drawable? = null
+        lateinit var  iconThunderstorm: Drawable
 
         @BindDrawable(R.drawable.ic_drizzle)
-        var iconDrizzle: Drawable? = null
+        lateinit var  iconDrizzle: Drawable
 
         override fun setDateTime(dt: Long) {
             val dateFormat = DateFormat.getDateTimeInstance()
             val updateOn = dateFormat.format(Date(dt * 1000))
-            rvDateTimeTV!!.text = updateOn
+            rvDateTimeTV.text = updateOn
         }
 
         override fun setTemperature(temp: Float) {
             val currentTextText = String.format(Locale.getDefault(), "%.0f", temp)
-            rvTemperatureTV!!.text = currentTextText
+            rvTemperatureTV.text = currentTextText
         }
 
         override fun setWeatherDescription(description: String) {
-            rvDescriptionTV!!.text = description.toLowerCase()
+            rvDescriptionTV.text = description.toLowerCase(Locale.ROOT)
         }
 
         override fun setWeatherIcon(actualId: Int, iconCode: String) {
             val id = actualId / 100
-            var icon: Drawable? = null
+            lateinit var icon: Drawable
             if (actualId == 800) {
                 icon = if (iconCode.contains("d")) {
                     iconSun
@@ -117,7 +117,7 @@ class ForecastRVAdapter(private val presenter: IForecastListPresenter) : Recycle
                     }
                 }
             }
-            rvIconIV!!.setImageDrawable(icon)
+            rvIconIV.setImageDrawable(icon)
         }
 
         init {

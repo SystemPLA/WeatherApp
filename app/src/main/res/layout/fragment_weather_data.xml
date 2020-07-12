@@ -84,20 +84,6 @@
         app:layout_constraintVertical_bias="0.146875" />
 
     <TextView
-        android:id="@+id/n_temperature_value"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:fontFamily="sans-serif-thin"
-        android:text="@string/data_temperature_label"
-        android:textColor="@color/textColor"
-        android:textSize="50sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.146875" />
-
-    <TextView
         android:id="@+id/textView6"
         android:layout_width="31dp"
         android:layout_height="48dp"

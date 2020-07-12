@@ -24,24 +24,25 @@ class ForecastPresenter(private val mainThreadScheduler: Scheduler, private val 
     }
 
     internal inner class ForecastListPresenter : IForecastListPresenter {
-        var clickSubject = PublishSubject.create<ForecastItemView>()
-        var forecastBlocks: MutableList<ForecastEntityRestModel> = ArrayList()
+        override var clickSubject: PublishSubject<ForecastItemView> = PublishSubject.create()
+        override var forecastBlocks: MutableList<ForecastEntityRestModel> = ArrayList()
         override fun bind(view: ForecastItemView) {
-            view.setDateTime(forecastBlocks[view.pos].dt)
-            view.setTemperature(forecastBlocks[view.pos].main.temp)
-            view.setWeatherDescription(forecastBlocks[view.pos].weather.get(0).description)
-            view.setWeatherIcon(forecastBlocks[view.pos].weather.get(0).id,
-                    forecastBlocks[view.pos].weather.get(0).icon)
+            forecastBlocks[view.pos].dt?.let { view.setDateTime(it) }
+            view.setTemperature(forecastBlocks[view.pos].main!!.temp)
+            forecastBlocks[view.pos].weather!![0].description?.let { view.setWeatherDescription(it) }
+            forecastBlocks[view.pos].weather!![0].id?.let {
+                forecastBlocks[view.pos].weather!![0].icon?.let { it1 ->
+                    view.setWeatherIcon(it,
+                            it1)
+                }
+            }
         }
 
         override val count: Int
             get() = forecastBlocks.size
-
-        override val clickSubject: PublishSubject<ForecastItemView>
-            get() = clickSubject
     }
 
-    private var language: String? = null
+    private lateinit var language: String
 
     @Inject
     lateinit var weatherRepo: IWeatherRepo
@@ -68,7 +69,7 @@ class ForecastPresenter(private val mainThreadScheduler: Scheduler, private val 
     }
 
     fun checkSettings() {
-        val disposable: Disposable = settings.setting.subscribe({ _ -> }, { _ -> settings.resetSetting() })
+        val disposable: Disposable = settings.setting.subscribe({}, { settings.resetSetting() })
     }
 
     private fun loadData(city: String) {
@@ -77,12 +78,12 @@ class ForecastPresenter(private val mainThreadScheduler: Scheduler, private val 
                 .subscribeOn(ioThreadScheduler)
                 .observeOn(mainThreadScheduler)
                 .subscribe({ model ->
-                    viewState!!.setCity(model.city.name)
+                    viewState!!.setCity(model.city!!.name)
                     forecastListPresenter.forecastBlocks.clear()
-                    forecastListPresenter.forecastBlocks.addAll(model.list)
+                    model.list?.let { forecastListPresenter.forecastBlocks.addAll(it) }
                     viewState!!.updateList()
                     viewState!!.hideLoading()
-                }, { _ ->
+                }, {
                     viewState!!.showMessage("Место не найдено")
                     settings.resetSetting()
                     viewState!!.hideLoading()
