@@ -32,17 +32,21 @@ class MainActivity : MvpAppCompatActivity(), MainView, NavigationView.OnNavigati
 
     @Inject
     lateinit var router: Router
-
     @Inject
     lateinit var navigatorHolder: NavigatorHolder
-
     @BindView(R.id.main_drawer_layout)
     lateinit var drawer: DrawerLayout
-
     @BindView(R.id.nav_view)
     lateinit var navigationView: NavigationView
 
     private val navigator: Navigator = SupportAppNavigator(this, R.id.content)
+
+    @ProvidePresenter
+    fun providePresenter(): MainPresenter {
+        val presenter = MainPresenter()
+        App.instance.appComponent.inject(presenter)
+        return presenter
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,13 +57,6 @@ class MainActivity : MvpAppCompatActivity(), MainView, NavigationView.OnNavigati
         if (savedInstanceState == null) {
             router.replaceScreen(WeatherDataScreen())
         }
-    }
-
-    @ProvidePresenter
-    fun providePresenter(): MainPresenter {
-        val presenter = MainPresenter()
-        App.instance.appComponent.inject(presenter)
-        return presenter
     }
 
     override fun onResumeFragments() {

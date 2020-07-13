@@ -13,7 +13,6 @@ import javax.inject.Singleton
 @Singleton
 @Component(modules =
     [RepoModule::class,
-    MyAppModule::class,
     LocationGetterModule::class,
     SettingsModule::class,
     CiceroneModule::class]
