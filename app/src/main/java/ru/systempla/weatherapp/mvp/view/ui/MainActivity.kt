@@ -2,10 +2,14 @@ package ru.systempla.weatherapp.mvp.view.ui
 
 import android.Manifest
 import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
 import android.view.MenuItem
+import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
+import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import butterknife.BindView
@@ -16,6 +20,8 @@ import moxy.presenter.InjectPresenter
 import moxy.presenter.ProvidePresenter
 import ru.systempla.weatherapp.R
 import ru.systempla.weatherapp.mvp.App
+import ru.systempla.weatherapp.mvp.model.final_groups.FinalGroups
+import ru.systempla.weatherapp.mvp.model.final_groups.FinalGroups.Messages.GEOLOCATION_REQUEST_CODE
 import ru.systempla.weatherapp.mvp.presenter.MainPresenter
 import ru.systempla.weatherapp.mvp.view.MainView
 import ru.systempla.weatherapp.navigation.Screens.WeatherDataScreen
@@ -27,15 +33,19 @@ import javax.inject.Inject
 
 
 class MainActivity : MvpAppCompatActivity(), MainView, NavigationView.OnNavigationItemSelectedListener {
+
     @InjectPresenter
     lateinit var presenter: MainPresenter
 
     @Inject
     lateinit var router: Router
+
     @Inject
     lateinit var navigatorHolder: NavigatorHolder
+
     @BindView(R.id.main_drawer_layout)
     lateinit var drawer: DrawerLayout
+
     @BindView(R.id.nav_view)
     lateinit var navigationView: NavigationView
 
@@ -54,9 +64,16 @@ class MainActivity : MvpAppCompatActivity(), MainView, NavigationView.OnNavigati
         setContentView(R.layout.activity_main)
         ButterKnife.bind(this);
         initSideMenu()
-        if (savedInstanceState == null) {
-            router.replaceScreen(WeatherDataScreen())
-        }
+        if (savedInstanceState == null) router.replaceScreen(WeatherDataScreen())
+    }
+
+    private fun initSideMenu() {
+        val toggle = ActionBarDrawerToggle(
+                this, drawer, R.string.navigation_drawer_open,
+                R.string.navigation_drawer_close)
+        drawer.addDrawerListener(toggle)
+        toggle.syncState()
+        navigationView.setNavigationItemSelectedListener(this)
     }
 
     override fun onResumeFragments() {
@@ -79,7 +96,52 @@ class MainActivity : MvpAppCompatActivity(), MainView, NavigationView.OnNavigati
         super.onPause()
     }
 
+//    Code from tutorial (should be reformed to meet weatherapp needs)
+    private fun checkForPermission(permission: String, name: String, requestCode: Int) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            when {
+                ContextCompat.checkSelfPermission(applicationContext, permission) == PackageManager.PERMISSION_GRANTED
+                -> Toast.makeText(applicationContext, "$name permission granted", Toast.LENGTH_SHORT).show()
+                shouldShowRequestPermissionRationale(permission) -> showPermissionDialog(permission, name, requestCode)
+                else -> ActivityCompat.requestPermissions(this, arrayOf(permission), requestCode)
+            }
+        }
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        fun innerCheck(name: String) {
+            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                Toast.makeText(applicationContext, "$name permission refused", Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(applicationContext, "$name permission granted", Toast.LENGTH_SHORT).show()
+            }
+        }
+
+        when (requestCode) {
+            GEOLOCATION_REQUEST_CODE -> innerCheck("location")
+        }
+    }
+
+    private fun showPermissionDialog(permission: String, name: String, requestCode: Int) {
+        val builder = AlertDialog.Builder(this)
+
+        builder.apply {
+            setMessage("Permission to access your $name is required to use this app")
+            setTitle("Permission required")
+            setPositiveButton("OK") { dialog, which ->
+                ActivityCompat.requestPermissions(this@MainActivity, arrayOf(permission), requestCode)
+            }
+        }
+        val dialog = builder.create()
+        dialog.show()
+    }
+//    End of the tutorial code block
+
+
     override fun checkGeolocationPermission() {
+
+        TODO("Normal permissions check")
+
         if (!checkPermission(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION)) {
             getPermission(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION)
         }
@@ -87,15 +149,6 @@ class MainActivity : MvpAppCompatActivity(), MainView, NavigationView.OnNavigati
 
     override fun openNavDrawer() {
         drawer.openDrawer(GravityCompat.START)
-    }
-
-    private fun initSideMenu() {
-        val toggle = ActionBarDrawerToggle(
-                this, drawer, R.string.navigation_drawer_open,
-                R.string.navigation_drawer_close)
-        drawer.addDrawerListener(toggle)
-        toggle.syncState()
-        navigationView.setNavigationItemSelectedListener(this)
     }
 
     override fun onNavigationItemSelected(menuItem: MenuItem): Boolean {
@@ -119,6 +172,6 @@ class MainActivity : MvpAppCompatActivity(), MainView, NavigationView.OnNavigati
 
 
     private fun getPermission(vararg permissions: String) {
-        ActivityCompat.requestPermissions(this, permissions, 100)
+        ActivityCompat.requestPermissions(this, permissions, GEOLOCATION_REQUEST_CODE)
     }
 }

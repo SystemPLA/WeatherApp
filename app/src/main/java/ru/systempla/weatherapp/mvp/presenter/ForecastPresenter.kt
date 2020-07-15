@@ -15,7 +15,7 @@ import java.util.*
 import javax.inject.Inject
 
 @InjectViewState
-class ForecastPresenter(private val mainThreadScheduler: Scheduler, private val ioThreadScheduler: Scheduler) : MvpPresenter<ForecastView?>() {
+class ForecastPresenter(private val mainThreadScheduler: Scheduler, private val ioThreadScheduler: Scheduler) : MvpPresenter<ForecastView>() {
 
     var forecastListPresenter: IForecastListPresenter
 
@@ -73,20 +73,20 @@ class ForecastPresenter(private val mainThreadScheduler: Scheduler, private val 
     }
 
     private fun loadData(city: String) {
-        viewState!!.showLoading()
+        viewState.showLoading()
         val disposable: Disposable = weatherRepo.loadForecast(city, OPEN_WEATHER_API_KEY, METRIC_UNITS, language)
                 .subscribeOn(ioThreadScheduler)
                 .observeOn(mainThreadScheduler)
                 .subscribe({ model ->
-                    viewState!!.setCity(model.city!!.name)
+                    viewState.setCity(model.city!!.name)
                     forecastListPresenter.forecastBlocks.clear()
                     model.list?.let { forecastListPresenter.forecastBlocks.addAll(it) }
-                    viewState!!.updateList()
-                    viewState!!.hideLoading()
+                    viewState.updateList()
+                    viewState.hideLoading()
                 }, {
-                    viewState!!.showMessage("Место не найдено")
+                    viewState.showMessage("Место не найдено")
                     settings.resetSetting()
-                    viewState!!.hideLoading()
+                    viewState.hideLoading()
                 })
     }
 

@@ -110,6 +110,13 @@ class WeatherDataFragment : MvpAppCompatFragment(), WeatherDataView {
         drawer.openDrawer(GravityCompat.START)
     }
 
+    @ProvidePresenter
+    fun providePresenter(): WeatherDataPresenter {
+        val presenter = WeatherDataPresenter(AndroidSchedulers.mainThread(), Schedulers.io())
+        App.instance.appComponent.inject(presenter)
+        return presenter
+    }
+
 
     private fun showPopupMenu(view: View) {
         val popupMenu = PopupMenu(context, view)
@@ -172,13 +179,6 @@ class WeatherDataFragment : MvpAppCompatFragment(), WeatherDataView {
             presenter.loadAccordingToSettings()
         }
         builder.show()
-    }
-
-    @ProvidePresenter
-    fun providePresenter(): WeatherDataPresenter {
-        val presenter = WeatherDataPresenter(AndroidSchedulers.mainThread(), Schedulers.io())
-        App.instance.appComponent.inject(presenter)
-        return presenter
     }
 
     override fun showMessage(text: String?) {

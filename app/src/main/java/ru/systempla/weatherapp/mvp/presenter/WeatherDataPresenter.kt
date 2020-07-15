@@ -13,7 +13,7 @@ import ru.systempla.weatherapp.mvp.view.WeatherDataView
 import javax.inject.Inject
 
 @InjectViewState
-class WeatherDataPresenter(private val mainThreadScheduler: Scheduler, private val ioThreadScheduler: Scheduler) : MvpPresenter<WeatherDataView?>() {
+class WeatherDataPresenter(private val mainThreadScheduler: Scheduler, private val ioThreadScheduler: Scheduler) : MvpPresenter<WeatherDataView>() {
     private var language: String? = null
 
     @Inject
@@ -41,19 +41,19 @@ class WeatherDataPresenter(private val mainThreadScheduler: Scheduler, private v
 
     @SuppressLint("CheckResult")
     private fun loadData(city: String) {
-        viewState!!.showLoading()
+        viewState.showLoading()
         val disposable: Disposable = language?.let { it ->
             weatherRepo.loadWeather(city, OPEN_WEATHER_API_KEY, METRIC_UNITS, it)
                     .subscribeOn(ioThreadScheduler)
                     .observeOn(mainThreadScheduler)
                     .subscribe({ model ->
-                        model.name?.let { it1 -> viewState!!.setCityName(it1) }
-                        viewState!!.setCurrentTemperature(model.main!!.temp)
-                        viewState!!.setHumidity(model.main!!.humidity)
-                        viewState!!.setPressure(model.main!!.pressure)
-                        model.weather!![0].description?.let { viewState!!.setWeatherDescription(it) }
+                        model.name?.let { it1 -> viewState.setCityName(it1) }
+                        viewState.setCurrentTemperature(model.main!!.temp)
+                        viewState.setHumidity(model.main!!.humidity)
+                        viewState.setPressure(model.main!!.pressure)
+                        model.weather!![0].description?.let { viewState.setWeatherDescription(it) }
                         model.weather!![0].id?.let {
-                            viewState!!.setWeatherIcon(it,
+                            viewState.setWeatherIcon(it,
                                     model.sys!!.sunrise * 1000,
                                     model.sys!!.sunset * 1000)
                         }
@@ -64,19 +64,19 @@ class WeatherDataPresenter(private val mainThreadScheduler: Scheduler, private v
                                         .subscribeOn(ioThreadScheduler)
                                         .observeOn(mainThreadScheduler)
                                         .subscribe({ uviRequestRestModel ->
-                                            viewState!!.setUVIndex(uviRequestRestModel.uviValue)
-                                            viewState!!.hideLoading()
+                                            viewState.setUVIndex(uviRequestRestModel.uviValue)
+                                            viewState.hideLoading()
                                         }, {
-                                            viewState!!.showMessage("ошибка получения UV индекса")
-                                            viewState!!.setUVIndex(0f)
-                                            viewState!!.hideLoading()
+                                            viewState.showMessage("ошибка получения UV индекса")
+                                            viewState.setUVIndex(0f)
+                                            viewState.hideLoading()
                                         })
                             }
                         }!!
                     }, {
-                        viewState!!.showMessage("Место не найдено")
+                        viewState.showMessage("Место не найдено")
                         settings.resetSetting()
-                        viewState!!.hideLoading()
+                        viewState.hideLoading()
                     })
         }!!
     }

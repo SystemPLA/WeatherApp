@@ -1,6 +1,5 @@
 package ru.systempla.weatherapp.mvp.presenter
 
-import android.annotation.SuppressLint
 import moxy.InjectViewState
 import moxy.MvpPresenter
 import ru.systempla.weatherapp.mvp.model.location.ILocationGetter
@@ -11,17 +10,19 @@ import ru.terrakok.cicerone.Router
 import javax.inject.Inject
 
 @InjectViewState
-class MainPresenter : MvpPresenter<MainView?>() {
+class MainPresenter : MvpPresenter<MainView>() {
+
     @Inject
     lateinit var locationGetter: ILocationGetter
 
     @Inject
     lateinit var router: Router
 
-    @SuppressLint("CheckResult")
+
+//    get rig of it and check permissions at runtime, when the need occurs
     override fun onFirstViewAttach() {
         super.onFirstViewAttach()
-        viewState!!.checkGeolocationPermission()
+        viewState.checkGeolocationPermission()
     }
 
     fun stopGPSUpdate() {
