@@ -15,12 +15,8 @@ import androidx.drawerlayout.widget.DrawerLayout
 import butterknife.BindView
 import butterknife.ButterKnife
 import com.google.android.material.navigation.NavigationView
-import com.karumi.dexter.Dexter
-import com.karumi.dexter.DexterBuilder
-import com.karumi.dexter.MultiplePermissionsReport
-import com.karumi.dexter.PermissionToken
-import com.karumi.dexter.listener.PermissionRequest
-import com.karumi.dexter.listener.multi.MultiplePermissionsListener
+import com.tbruyelle.rxpermissions3.RxPermissions
+import dagger.Provides
 import moxy.MvpAppCompatActivity
 import moxy.presenter.InjectPresenter
 import moxy.presenter.ProvidePresenter
@@ -37,6 +33,7 @@ import ru.terrakok.cicerone.NavigatorHolder
 import ru.terrakok.cicerone.Router
 import ru.terrakok.cicerone.android.support.SupportAppNavigator
 import javax.inject.Inject
+import javax.inject.Singleton
 
 
 class MainActivity : MvpAppCompatActivity(), MainView, NavigationView.OnNavigationItemSelectedListener {
@@ -58,10 +55,7 @@ class MainActivity : MvpAppCompatActivity(), MainView, NavigationView.OnNavigati
 
     private val navigator: Navigator = SupportAppNavigator(this, R.id.content)
 
-    private val permissions = listOf(
-            Manifest.permission.ACCESS_FINE_LOCATION,
-            Manifest.permission.ACCESS_COARSE_LOCATION
-    )
+    private val rxPermissions: RxPermissions = RxPermissions(this)
 
     @ProvidePresenter
     fun providePresenter(): MainPresenter {
@@ -123,68 +117,15 @@ class MainActivity : MvpAppCompatActivity(), MainView, NavigationView.OnNavigati
     }
 
     override fun checkForGPSUpdate() {
-        Dexter.withActivity(this)
-                .withPermissions(permissions)
-                .withListener(object: MultiplePermissionsListener {
-                    override fun onPermissionsChecked(report: MultiplePermissionsReport?) {
-                        if (report?.deniedPermissionResponses.isNullOrEmpty()) presenter.startGPSUpdate()
-                        else Toast.makeText(applicationContext, "Location permission refused", Toast.LENGTH_SHORT).show()
+        rxPermissions.request(Manifest.permission.ACCESS_FINE_LOCATION,
+            Manifest.permission.ACCESS_COARSE_LOCATION)
+                .subscribe { granted ->
+                    if (granted) {
+                        presenter.startGPSUpdate()
+                    } else {
+                        Toast.makeText(this, "Location permission refused", Toast.LENGTH_SHORT).show()
                     }
-
-                    override fun onPermissionRationaleShouldBeShown(permissions: MutableList<PermissionRequest>?, token: PermissionToken?) {
-                        val permissionsToRational : ArrayList<String> = ArrayList()
-                        permissions?.forEach { permissionRequest -> permissionsToRational.add(permissionRequest.name) }
-                        showPermissionDialog(permissionsToRational.toArray(), "location", GEOLOCATION_REQUEST_UPDATE)
-                    }
-                })
-                .check()
+                }
     }
-
-
-
-    //    Code from tutorial (should be reformed to meet weatherapp needs)
-    private fun checkForPermission(permission: String, name: String, requestCode: Int) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            when {
-                ContextCompat.checkSelfPermission(applicationContext, permission) == PackageManager.PERMISSION_GRANTED
-                -> Toast.makeText(applicationContext, "$name permission granted", Toast.LENGTH_SHORT).show()
-                shouldShowRequestPermissionRationale(permission) -> showPermissionDialog(permission, name, requestCode)
-                else -> ActivityCompat.requestPermissions(this, arrayOf(permission), requestCode)
-            }
-        }
-    }
-
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
-        fun innerCheck(name: String): Boolean {
-            return if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                Toast.makeText(applicationContext, "$name permission refused", Toast.LENGTH_SHORT).show()
-                false
-            } else {
-                Toast.makeText(applicationContext, "$name permission granted", Toast.LENGTH_SHORT).show()
-                true
-            }
-        }
-
-        when (requestCode) {
-            GEOLOCATION_REQUEST_UPDATE -> if (innerCheck("location")) presenter.startGPSUpdate()
-            GEOLOCATION_REQUEST_WD -> if (innerCheck("location")) presenter.startGPSUpdate()
-            GEOLOCATION_REQUEST_FR -> if (innerCheck("location")) presenter.startGPSUpdate()
-        }
-    }
-    private fun showPermissionDialog(permission: Array<(out)String>!, name: String, requestCode: Int) {
-        val builder = AlertDialog.Builder(this)
-
-        builder.apply {
-            setMessage("Permission to access your $name is required to use this app")
-            setTitle("Permission required")
-            setPositiveButton("OK") { dialog, which ->
-                ActivityCompat.requestPermissions(this@MainActivity, permission, requestCode)
-            }
-        }
-        val dialog = builder.create()
-        dialog.show()
-    }
-
-//    End of the tutorial code block
 
 }

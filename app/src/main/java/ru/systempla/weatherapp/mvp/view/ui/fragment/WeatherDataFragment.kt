@@ -10,6 +10,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import butterknife.*
+import com.tbruyelle.rxpermissions3.RxPermissions
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import moxy.MvpAppCompatFragment
@@ -27,9 +28,6 @@ class WeatherDataFragment : MvpAppCompatFragment(), WeatherDataView {
     companion object {
         fun newInstance(): WeatherDataFragment = WeatherDataFragment()
     }
-
-    lateinit var unbinder: Unbinder
-    private lateinit var drawer: DrawerLayout
 
     @InjectPresenter
     lateinit var presenter: WeatherDataPresenter
@@ -117,6 +115,10 @@ class WeatherDataFragment : MvpAppCompatFragment(), WeatherDataView {
         return presenter
     }
 
+//    private val rxPermissions: RxPermissions = RxPermissions(this)
+    private lateinit var unbinder: Unbinder
+    private lateinit var drawer: DrawerLayout
+
 
     private fun showPopupMenu(view: View) {
         val popupMenu = PopupMenu(context, view)
@@ -153,8 +155,8 @@ class WeatherDataFragment : MvpAppCompatFragment(), WeatherDataView {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view: View = inflater.inflate(R.layout.fragment_weather_data, container, false)
         App.instance.appComponent.inject(this)
-        unbinder = ButterKnife.bind(this, view);
-        drawer = requireActivity().findViewById(R.id.main_drawer_layout);
+        unbinder = ButterKnife.bind(this, view)
+        drawer = requireActivity().findViewById(R.id.main_drawer_layout)
         return view
     }
 

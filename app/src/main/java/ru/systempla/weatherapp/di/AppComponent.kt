@@ -1,5 +1,6 @@
 package ru.systempla.weatherapp.di
 
+import com.tbruyelle.rxpermissions3.RxPermissions
 import dagger.Component
 import ru.systempla.weatherapp.di.module.*
 import ru.systempla.weatherapp.mvp.presenter.ForecastPresenter

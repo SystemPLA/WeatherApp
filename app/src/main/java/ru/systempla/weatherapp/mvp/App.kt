@@ -1,12 +1,13 @@
 package ru.systempla.weatherapp.mvp
 
 import android.app.Application
+import androidx.multidex.MultiDexApplication
 import io.paperdb.Paper
 import ru.systempla.weatherapp.di.AppComponent
 import ru.systempla.weatherapp.di.DaggerAppComponent
 import timber.log.Timber
 
-class App: Application() {
+class App: MultiDexApplication() {
     companion object {
         lateinit var instance: App private set
     }

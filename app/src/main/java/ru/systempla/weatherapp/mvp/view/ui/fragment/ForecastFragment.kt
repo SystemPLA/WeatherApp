@@ -12,6 +12,7 @@ import androidx.drawerlayout.widget.DrawerLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import butterknife.*
+import com.tbruyelle.rxpermissions3.RxPermissions
 import ru.systempla.weatherapp.R
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -55,8 +56,9 @@ class ForecastFragment : MvpAppCompatFragment(), ForecastView {
         drawer!!.openDrawer(GravityCompat.START)
     }
 
-    lateinit var adapter: ForecastRVAdapter
-    lateinit var unbinder: Unbinder
+//    private val rxPermissions: RxPermissions = RxPermissions(this)
+    private lateinit var adapter: ForecastRVAdapter
+    private lateinit var unbinder: Unbinder
     private var drawer: DrawerLayout? = null
 
     @ProvidePresenter
@@ -92,7 +94,7 @@ class ForecastFragment : MvpAppCompatFragment(), ForecastView {
         val input = EditText(this.context)
         input.inputType = InputType.TYPE_CLASS_TEXT
         builder.setView(input)
-        builder.setPositiveButton("OK") { dialog: DialogInterface?, which: Int ->
+        builder.setPositiveButton("OK") { _: DialogInterface?, _: Int ->
             presenter.setSetting(input.text.toString())
             presenter.loadAccordingToSettings()
         }
