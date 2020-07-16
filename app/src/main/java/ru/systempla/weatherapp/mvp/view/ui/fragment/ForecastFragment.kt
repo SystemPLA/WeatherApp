@@ -140,13 +140,14 @@ class ForecastFragment : MvpAppCompatFragment(), ForecastView {
     }
 
     override fun checkForGPSUpdate() {
-        rxPermissions.request(Manifest.permission.ACCESS_FINE_LOCATION,
+        rxPermissions.requestEachCombined(Manifest.permission.ACCESS_FINE_LOCATION,
                 Manifest.permission.ACCESS_COARSE_LOCATION)
-                .subscribe { granted ->
-                    if (granted) {
-                        presenter.loadGPSData()
-                    } else {
-                        Toast.makeText(context, "Location permission refused", Toast.LENGTH_SHORT).show()
+                .subscribe { permission ->
+                    when {
+                        permission.granted -> presenter.loadGPSData()
+                        permission.shouldShowRequestPermissionRationale ->
+                            showMessage("Location permission refused temporally")
+                        else -> showMessage("Location permission refused permanently")
                     }
                 }
     }

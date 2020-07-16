@@ -106,13 +106,14 @@ class MainActivity : MvpAppCompatActivity(), MainView, NavigationView.OnNavigati
     }
 
     override fun checkForGPSUpdate() {
-        rxPermissions.request(Manifest.permission.ACCESS_FINE_LOCATION,
+        rxPermissions.requestEachCombined(Manifest.permission.ACCESS_FINE_LOCATION,
             Manifest.permission.ACCESS_COARSE_LOCATION)
-                .subscribe { granted ->
-                    if (granted) {
-                        presenter.startGPSUpdate()
-                    } else {
-                        Toast.makeText(this, "Location permission refused", Toast.LENGTH_SHORT).show()
+                .subscribe { permission ->
+                    when {
+                        permission.granted -> presenter.startGPSUpdate()
+                        permission.shouldShowRequestPermissionRationale ->
+                            Toast.makeText(this, "Location permission refused temporally", Toast.LENGTH_SHORT).show()
+                        else -> Toast.makeText(this, "Location permission refused permanently", Toast.LENGTH_SHORT).show()
                     }
                 }
     }
