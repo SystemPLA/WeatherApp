@@ -1,30 +1,21 @@
 package ru.systempla.weatherapp.mvp.view.ui
 
 import android.Manifest
-import android.content.pm.PackageManager
-import android.os.Build
 import android.os.Bundle
 import android.view.MenuItem
 import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
-import androidx.appcompat.app.AlertDialog
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import butterknife.BindView
 import butterknife.ButterKnife
 import com.google.android.material.navigation.NavigationView
 import com.tbruyelle.rxpermissions3.RxPermissions
-import dagger.Provides
 import moxy.MvpAppCompatActivity
 import moxy.presenter.InjectPresenter
 import moxy.presenter.ProvidePresenter
 import ru.systempla.weatherapp.R
 import ru.systempla.weatherapp.mvp.App
-import ru.systempla.weatherapp.mvp.model.final_groups.FinalGroups.Messages.GEOLOCATION_REQUEST_FR
-import ru.systempla.weatherapp.mvp.model.final_groups.FinalGroups.Messages.GEOLOCATION_REQUEST_UPDATE
-import ru.systempla.weatherapp.mvp.model.final_groups.FinalGroups.Messages.GEOLOCATION_REQUEST_WD
 import ru.systempla.weatherapp.mvp.presenter.MainPresenter
 import ru.systempla.weatherapp.mvp.view.MainView
 import ru.systempla.weatherapp.navigation.Screens.WeatherDataScreen
@@ -33,7 +24,6 @@ import ru.terrakok.cicerone.NavigatorHolder
 import ru.terrakok.cicerone.Router
 import ru.terrakok.cicerone.android.support.SupportAppNavigator
 import javax.inject.Inject
-import javax.inject.Singleton
 
 
 class MainActivity : MvpAppCompatActivity(), MainView, NavigationView.OnNavigationItemSelectedListener {
@@ -68,7 +58,7 @@ class MainActivity : MvpAppCompatActivity(), MainView, NavigationView.OnNavigati
         super.onCreate(savedInstanceState)
         App.instance.appComponent.inject(this)
         setContentView(R.layout.activity_main)
-        ButterKnife.bind(this);
+        ButterKnife.bind(this)
         initSideMenu()
         if (savedInstanceState == null) router.replaceScreen(WeatherDataScreen())
     }
@@ -107,7 +97,6 @@ class MainActivity : MvpAppCompatActivity(), MainView, NavigationView.OnNavigati
     }
 
     override fun onNavigationItemSelected(menuItem: MenuItem): Boolean {
-        val id = menuItem.itemId
         when (menuItem.itemId) {
             R.id.nav_weather_data -> presenter.navigateToWeatherData()
             R.id.nav_forecast -> presenter.navigateToForecast()

@@ -1,5 +1,6 @@
 package ru.systempla.weatherapp.mvp.view.ui.fragment
 
+import android.Manifest
 import android.content.DialogInterface
 import android.graphics.drawable.Drawable
 import android.os.Bundle
@@ -115,7 +116,7 @@ class WeatherDataFragment : MvpAppCompatFragment(), WeatherDataView {
         return presenter
     }
 
-//    private val rxPermissions: RxPermissions = RxPermissions(this)
+    private lateinit var rxPermissions: RxPermissions
     private lateinit var unbinder: Unbinder
     private lateinit var drawer: DrawerLayout
 
@@ -156,6 +157,7 @@ class WeatherDataFragment : MvpAppCompatFragment(), WeatherDataView {
         val view: View = inflater.inflate(R.layout.fragment_weather_data, container, false)
         App.instance.appComponent.inject(this)
         unbinder = ButterKnife.bind(this, view)
+        rxPermissions = RxPermissions(this)
         drawer = requireActivity().findViewById(R.id.main_drawer_layout)
         return view
     }
@@ -181,6 +183,18 @@ class WeatherDataFragment : MvpAppCompatFragment(), WeatherDataView {
             presenter.loadAccordingToSettings()
         }
         builder.show()
+    }
+
+    override fun checkForGPSUpdate() {
+        rxPermissions.request(Manifest.permission.ACCESS_FINE_LOCATION,
+                Manifest.permission.ACCESS_COARSE_LOCATION)
+                .subscribe { granted ->
+                    if (granted) {
+                        presenter.loadGPSData()
+                    } else {
+                        Toast.makeText(context, "Location permission refused", Toast.LENGTH_SHORT).show()
+                    }
+                }
     }
 
     override fun showMessage(text: String?) {

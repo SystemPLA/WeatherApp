@@ -17,6 +17,7 @@ interface WeatherDataView : MvpView {
     fun setCurrentTemperature(temp: Float)
     fun showLoading()
     fun hideLoading()
+    fun checkForGPSUpdate()
 
     @StateStrategyType(value = OneExecutionStateStrategy::class)
     fun showMessage(text: String?)

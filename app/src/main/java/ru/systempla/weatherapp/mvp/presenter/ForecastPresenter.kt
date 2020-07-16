@@ -1,7 +1,7 @@
 package ru.systempla.weatherapp.mvp.presenter
 
+import android.annotation.SuppressLint
 import io.reactivex.Scheduler
-import io.reactivex.disposables.Disposable
 import io.reactivex.subjects.PublishSubject
 import moxy.InjectViewState
 import moxy.MvpPresenter
@@ -58,23 +58,31 @@ class ForecastPresenter(private val mainThreadScheduler: Scheduler, private val 
         viewState!!.init()
     }
 
+    @SuppressLint("CheckResult")
     fun loadAccordingToSettings() {
-        val disposable: Disposable = settings.setting.subscribe { res ->
+        settings.setting.subscribe { res ->
             if (res == "gps") {
-                val disposableSup: Disposable = locationGetter.city.subscribe { city: String -> loadData(city) }
+                viewState.checkForGPSUpdate()
             } else {
                 loadData(res)
             }
         }
     }
 
+    @SuppressLint("CheckResult")
     fun checkSettings() {
-        val disposable: Disposable = settings.setting.subscribe({}, { settings.resetSetting() })
+       settings.setting.subscribe({}, { settings.resetSetting() })
     }
 
+    @SuppressLint("CheckResult")
+    fun loadGPSData(){
+        locationGetter.city.subscribe { city: String -> loadData(city) }
+    }
+
+    @SuppressLint("CheckResult")
     private fun loadData(city: String) {
         viewState.showLoading()
-        val disposable: Disposable = weatherRepo.loadForecast(city, OPEN_WEATHER_API_KEY, METRIC_UNITS, language)
+        weatherRepo.loadForecast(city, OPEN_WEATHER_API_KEY, METRIC_UNITS, language)
                 .subscribeOn(ioThreadScheduler)
                 .observeOn(mainThreadScheduler)
                 .subscribe({ model ->

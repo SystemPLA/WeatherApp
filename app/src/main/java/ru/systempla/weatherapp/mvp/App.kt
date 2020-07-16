@@ -1,6 +1,5 @@
 package ru.systempla.weatherapp.mvp
 
-import android.app.Application
 import androidx.multidex.MultiDexApplication
 import io.paperdb.Paper
 import ru.systempla.weatherapp.di.AppComponent

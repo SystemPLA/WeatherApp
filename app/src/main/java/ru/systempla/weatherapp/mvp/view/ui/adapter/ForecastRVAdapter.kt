@@ -86,11 +86,11 @@ class ForecastRVAdapter(private val presenter: IForecastListPresenter) : Recycle
             rvDescriptionTV.text = description.toLowerCase(Locale.ROOT)
         }
 
-        override fun setWeatherIcon(actualId: Int, iconCode: String) {
+        override fun setWeatherIcon(actualId: Int, code: String) {
             val id = actualId / 100
             lateinit var icon: Drawable
             if (actualId == 800) {
-                icon = if (iconCode.contains("d")) {
+                icon = if (code.contains("d")) {
                     iconSun
                 } else {
                     iconMoon

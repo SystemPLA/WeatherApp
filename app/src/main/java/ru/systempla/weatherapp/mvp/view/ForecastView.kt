@@ -12,6 +12,7 @@ interface ForecastView : MvpView {
     fun setCity(city: String?)
     fun showLoading()
     fun hideLoading()
+    fun checkForGPSUpdate()
 
     @StateStrategyType(value = OneExecutionStateStrategy::class)
     fun showMessage(text: String?)

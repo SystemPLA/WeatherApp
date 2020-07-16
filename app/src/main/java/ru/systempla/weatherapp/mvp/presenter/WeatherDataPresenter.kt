@@ -1,9 +1,7 @@
 package ru.systempla.weatherapp.mvp.presenter
 
 import android.annotation.SuppressLint
-import android.text.TextUtils.equals
 import io.reactivex.Scheduler
-import io.reactivex.disposables.Disposable
 import moxy.InjectViewState
 import moxy.MvpPresenter
 import ru.systempla.weatherapp.mvp.model.location.ILocationGetter
@@ -25,24 +23,31 @@ class WeatherDataPresenter(private val mainThreadScheduler: Scheduler, private v
     @Inject
     lateinit var settings: ISettings
 
+    @SuppressLint("CheckResult")
     fun loadAccordingToSettings() {
-        val disposable: Disposable = settings.setting.subscribe { res ->
+        settings.setting.subscribe { res ->
             if (res == "gps") {
-                val disposable1Sup: Disposable = locationGetter.city.subscribe { city: String -> loadData(city) }
+                viewState.checkForGPSUpdate()
             } else {
                 loadData(res)
             }
         }
     }
 
+    @SuppressLint("CheckResult")
     fun checkSettings() {
-        val disposable: Disposable = settings.setting.subscribe({  }, { settings.resetSetting() })
+        settings.setting.subscribe({  }, { settings.resetSetting() })
+    }
+
+    @SuppressLint("CheckResult")
+    fun loadGPSData(){
+        locationGetter.city.subscribe { city: String -> loadData(city) }
     }
 
     @SuppressLint("CheckResult")
     private fun loadData(city: String) {
         viewState.showLoading()
-        val disposable: Disposable = language?.let { it ->
+        language?.let { it ->
             weatherRepo.loadWeather(city, OPEN_WEATHER_API_KEY, METRIC_UNITS, it)
                     .subscribeOn(ioThreadScheduler)
                     .observeOn(mainThreadScheduler)
@@ -58,7 +63,7 @@ class WeatherDataPresenter(private val mainThreadScheduler: Scheduler, private v
                                     model.sys!!.sunset * 1000)
                         }
                         model.wind!!.speed?.let { viewState!!.setWindSpeed(it) }
-                        val disposableSup: Disposable = model.coordinates!!.lon?.let {
+                        model.coordinates!!.lon?.let {
                             model.coordinates!!.lat?.let { it1 ->
                                 weatherRepo.loadUVI(OPEN_WEATHER_API_KEY, it1, it)
                                         .subscribeOn(ioThreadScheduler)
