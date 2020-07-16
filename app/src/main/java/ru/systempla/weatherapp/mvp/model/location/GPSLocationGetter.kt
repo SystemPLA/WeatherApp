@@ -37,7 +37,7 @@ class GPSLocationGetter(private val locManager: LocationManager, private val loc
     }
 
     override fun stopUpdatingLocation() {
-        if (locListener != null) locManager.removeUpdates(locListener)
+        locManager.removeUpdates(locListener)
     }
 
 }

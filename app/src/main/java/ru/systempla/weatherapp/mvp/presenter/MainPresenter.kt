@@ -18,15 +18,12 @@ class MainPresenter : MvpPresenter<MainView>() {
     @Inject
     lateinit var router: Router
 
-
-//    get rig of it and check permissions at runtime, when the need occurs
-    override fun onFirstViewAttach() {
-        super.onFirstViewAttach()
-        viewState.checkGeolocationPermission()
-    }
-
     fun stopGPSUpdate() {
         locationGetter.stopUpdatingLocation()
+    }
+
+    fun requestGPSUpdate() {
+        viewState.checkForGPSUpdate()
     }
 
     fun startGPSUpdate() {
