@@ -5,14 +5,25 @@ import io.reactivex.Completable
 import io.reactivex.Single
 
 class PaperBasedSetting : ISettings {
-    override fun saveSetting(setting: String) {
+    override fun saveCitySetting(setting: String) {
         Completable.fromAction { Paper.book("settings").write("setting", setting) }.subscribe()
     }
 
-    override val setting: Single<String>
+    override val citySetting: Single<String>
         get() = Single.fromCallable<String> { Paper.book("settings").read("setting") }
 
-    override fun resetSetting() {
+    override fun resetCitySetting() {
         Completable.fromAction { Paper.book("settings").write("setting", "gps") }.subscribe()
+    }
+
+    override fun savePermissionsSetting(setting: Int) {
+        Completable.fromAction { Paper.book("settings").write("permissions", setting) }.subscribe()
+    }
+
+    override val permissionsSetting: Single<Int>
+        get() = Single.fromCallable<Int> { Paper.book("settings").read("permissions") }
+
+    override fun resetPermissionsSetting() {
+        Completable.fromAction { Paper.book("settings").write("permissions", 1) }.subscribe()
     }
 }

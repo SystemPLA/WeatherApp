@@ -113,7 +113,9 @@ class MainActivity : MvpAppCompatActivity(), MainView, NavigationView.OnNavigati
                         permission.granted -> presenter.startGPSUpdate()
                         permission.shouldShowRequestPermissionRationale ->
                             Toast.makeText(this, "Location permission refused temporally", Toast.LENGTH_SHORT).show()
-                        else -> Toast.makeText(this, "Location permission refused permanently", Toast.LENGTH_SHORT).show()
+                        else -> {
+                            presenter.setPermissionsSetting(0)
+                        }
                     }
                 }
     }

@@ -60,9 +60,16 @@ class ForecastPresenter(private val mainThreadScheduler: Scheduler, private val 
 
     @SuppressLint("CheckResult")
     fun loadAccordingToSettings() {
-        settings.setting.subscribe { res ->
+        settings.citySetting.subscribe { res ->
             if (res == "gps") {
-                viewState.checkForGPSUpdate()
+                settings.permissionsSetting.subscribe(
+                        {
+                            setting -> if (setting != 0) viewState.checkForGPSUpdate()
+                        },
+                        {
+                            settings.resetPermissionsSetting()
+                            viewState.checkForGPSUpdate()
+                        })
             } else {
                 loadData(res)
             }
@@ -71,7 +78,7 @@ class ForecastPresenter(private val mainThreadScheduler: Scheduler, private val 
 
     @SuppressLint("CheckResult")
     fun checkSettings() {
-       settings.setting.subscribe({}, { settings.resetSetting() })
+       settings.citySetting.subscribe({}, { settings.resetCitySetting() })
     }
 
     @SuppressLint("CheckResult")
@@ -93,13 +100,17 @@ class ForecastPresenter(private val mainThreadScheduler: Scheduler, private val 
                     viewState.hideLoading()
                 }, {
                     viewState.showMessage("Место не найдено")
-                    settings.resetSetting()
+                    settings.resetCitySetting()
                     viewState.hideLoading()
                 })
     }
 
-    fun setSetting(setting: String) {
-        settings.saveSetting(setting)
+    fun setCitySetting(setting: String) {
+        settings.saveCitySetting(setting)
+    }
+
+    fun setPermissionsSetting(setting: Int) {
+        settings.savePermissionsSetting(setting)
     }
 
     fun setLanguage(language: String) {

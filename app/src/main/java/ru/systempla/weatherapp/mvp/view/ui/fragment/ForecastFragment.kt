@@ -79,7 +79,8 @@ class ForecastFragment : MvpAppCompatFragment(), ForecastView {
                     return@setOnMenuItemClickListener true
                 }
                 R.id.change_to_gps -> {
-                    presenter.setSetting("gps")
+                    presenter.setPermissionsSetting(1)
+                    presenter.setCitySetting("gps")
                     presenter.loadAccordingToSettings()
                     return@setOnMenuItemClickListener true
                 }
@@ -96,7 +97,7 @@ class ForecastFragment : MvpAppCompatFragment(), ForecastView {
         input.inputType = InputType.TYPE_CLASS_TEXT
         builder.setView(input)
         builder.setPositiveButton("OK") { _: DialogInterface?, _: Int ->
-            presenter.setSetting(input.text.toString())
+            presenter.setCitySetting(input.text.toString())
             presenter.loadAccordingToSettings()
         }
         builder.show()
@@ -147,7 +148,10 @@ class ForecastFragment : MvpAppCompatFragment(), ForecastView {
                         permission.granted -> presenter.loadGPSData()
                         permission.shouldShowRequestPermissionRationale ->
                             showMessage("Location permission refused temporally")
-                        else -> showMessage("Location permission refused permanently")
+                        else -> {
+                            presenter.setPermissionsSetting(0)
+                            showMessage("Location permission refused permanently")
+                        }
                     }
                 }
     }

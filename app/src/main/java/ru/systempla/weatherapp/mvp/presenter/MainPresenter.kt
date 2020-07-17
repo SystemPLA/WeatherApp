@@ -1,8 +1,10 @@
 package ru.systempla.weatherapp.mvp.presenter
 
+import android.annotation.SuppressLint
 import moxy.InjectViewState
 import moxy.MvpPresenter
 import ru.systempla.weatherapp.mvp.model.location.ILocationGetter
+import ru.systempla.weatherapp.mvp.model.settings.ISettings
 import ru.systempla.weatherapp.mvp.view.MainView
 import ru.systempla.weatherapp.navigation.Screens.WeatherDataScreen
 import ru.systempla.weatherapp.navigation.Screens.WeekForcastScreen
@@ -18,12 +20,22 @@ class MainPresenter : MvpPresenter<MainView>() {
     @Inject
     lateinit var router: Router
 
+    @Inject
+    lateinit var settings: ISettings
+
     fun stopGPSUpdate() {
         locationGetter.stopUpdatingLocation()
     }
 
+    @SuppressLint("CheckResult")
     fun requestGPSUpdate() {
-        viewState.checkForGPSUpdate()
+        settings.permissionsSetting.subscribe(
+                {setting -> if (setting != 0) viewState.checkForGPSUpdate()},
+                {
+                    settings.resetPermissionsSetting()
+                    viewState.checkForGPSUpdate()
+                }
+        )
     }
 
     fun startGPSUpdate() {
@@ -36,5 +48,9 @@ class MainPresenter : MvpPresenter<MainView>() {
 
     fun navigateToForecast() {
         router.navigateTo(WeekForcastScreen())
+    }
+
+    fun setPermissionsSetting(setting: Int) {
+        settings.savePermissionsSetting(setting)
     }
 }
