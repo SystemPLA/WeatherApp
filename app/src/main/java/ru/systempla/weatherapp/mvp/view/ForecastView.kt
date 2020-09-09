@@ -9,7 +9,7 @@ import moxy.viewstate.strategy.StateStrategyType
 interface ForecastView : MvpView {
     fun init()
     fun updateList()
-    fun setCity(city: String?)
+    fun setCity(city: String)
     fun showLoading()
     fun hideLoading()
     fun checkForGPSUpdate()

@@ -4,11 +4,11 @@ import com.google.gson.annotations.Expose
 
 class WeatherRestModel {
     @Expose
-    var id: Int? = null
+    var id: Int = 0
 
     @Expose
-    var description: String? = null
+    lateinit var description: String
 
     @Expose
-    var icon: String? = null
+    lateinit var icon: String
 }

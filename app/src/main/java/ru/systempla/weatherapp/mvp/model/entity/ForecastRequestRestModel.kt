@@ -4,8 +4,8 @@ import com.google.gson.annotations.Expose
 
 class ForecastRequestRestModel {
     @Expose
-    var list: List<ForecastEntityRestModel>? = null
+    lateinit var list: List<ForecastEntityRestModel>
 
     @Expose
-    var city: CityRestModel? = null
+    lateinit var city: CityRestModel
 }

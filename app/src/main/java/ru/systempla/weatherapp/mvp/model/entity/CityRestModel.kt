@@ -7,5 +7,5 @@ class CityRestModel {
     var id: Int? = null
 
     @Expose
-    var name: String? = null
+    lateinit var name: String
 }

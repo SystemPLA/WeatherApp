@@ -27,15 +27,11 @@ class ForecastPresenter(private val mainThreadScheduler: Scheduler, private val 
         override var clickSubject: PublishSubject<ForecastItemView> = PublishSubject.create()
         override var forecastBlocks: MutableList<ForecastEntityRestModel> = ArrayList()
         override fun bind(view: ForecastItemView) {
-            forecastBlocks[view.pos].dt?.let { view.setDateTime(it) }
-            view.setTemperature(forecastBlocks[view.pos].main!!.temp)
-            forecastBlocks[view.pos].weather!![0].description?.let { view.setWeatherDescription(it) }
-            forecastBlocks[view.pos].weather!![0].id?.let {
-                forecastBlocks[view.pos].weather!![0].icon?.let { it1 ->
-                    view.setWeatherIcon(it,
-                            it1)
-                }
-            }
+            view.setDateTime(forecastBlocks[view.pos].dt)
+            view.setTemperature(forecastBlocks[view.pos].main.temp)
+            view.setWeatherDescription(forecastBlocks[view.pos].weather[0].description)
+            view.setWeatherIcon(forecastBlocks[view.pos].weather[0].id,
+                    forecastBlocks[view.pos].weather[0].icon)
         }
 
         override val count: Int
@@ -93,9 +89,9 @@ class ForecastPresenter(private val mainThreadScheduler: Scheduler, private val 
                 .subscribeOn(ioThreadScheduler)
                 .observeOn(mainThreadScheduler)
                 .subscribe({ model ->
-                    viewState.setCity(model.city!!.name)
+                    viewState.setCity(model.city.name)
                     forecastListPresenter.forecastBlocks.clear()
-                    model.list?.let { forecastListPresenter.forecastBlocks.addAll(it) }
+                    forecastListPresenter.forecastBlocks.addAll(model.list)
                     viewState.updateList()
                     viewState.hideLoading()
                 }, {

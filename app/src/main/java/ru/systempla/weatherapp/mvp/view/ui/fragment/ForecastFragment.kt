@@ -172,7 +172,7 @@ class ForecastFragment : MvpAppCompatFragment(), ForecastView {
         adapter.notifyDataSetChanged()
     }
 
-    override fun setCity(city: String?) {
+    override fun setCity(city: String) {
         cityText.text = city
     }
 

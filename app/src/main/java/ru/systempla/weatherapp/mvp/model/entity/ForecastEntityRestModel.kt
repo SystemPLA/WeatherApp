@@ -4,11 +4,11 @@ import com.google.gson.annotations.Expose
 
 class ForecastEntityRestModel {
     @Expose
-    var dt: Long? = null
+    var dt: Long = 0
 
     @Expose
-    var main: MainRestModel? = null
+    lateinit var main: MainRestModel
 
     @Expose
-    var weather: List<WeatherRestModel>? = null
+    lateinit var weather: List<WeatherRestModel>
 }
