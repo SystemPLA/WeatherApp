@@ -23,7 +23,7 @@ class ForecastPresenter(private val mainThreadScheduler: Scheduler, private val 
         forecastListPresenter = ForecastListPresenter()
     }
 
-    internal inner class ForecastListPresenter : IForecastListPresenter {
+    internal class ForecastListPresenter : IForecastListPresenter {
         override var clickSubject: PublishSubject<ForecastItemView> = PublishSubject.create()
         override var forecastBlocks: MutableList<ForecastEntityRestModel> = ArrayList()
         override fun bind(view: ForecastItemView) {
