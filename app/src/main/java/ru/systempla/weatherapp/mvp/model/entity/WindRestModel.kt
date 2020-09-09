@@ -4,5 +4,5 @@ import com.google.gson.annotations.Expose
 
 class WindRestModel {
     @Expose
-    var speed: Double? = null
+    var speed: Double = 0.0
 }

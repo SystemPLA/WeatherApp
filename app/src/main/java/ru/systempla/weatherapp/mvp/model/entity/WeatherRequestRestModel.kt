@@ -6,23 +6,23 @@ import com.google.gson.annotations.SerializedName
 class WeatherRequestRestModel {
     @SerializedName("coord")
     @Expose
-    var coordinates: CoordRestModel? = null
+    lateinit var coordinates: CoordRestModel
 
     @Expose
-    var weather: Array<WeatherRestModel>? = null
+    lateinit var weather: Array<WeatherRestModel>
 
     @Expose
-    var main: MainRestModel? = null
+    lateinit var main: MainRestModel
 
     @Expose
-    var wind: WindRestModel? = null
+    lateinit var wind: WindRestModel
 
     @Expose
-    var sys: SysRestModel? = null
+    lateinit var sys: SysRestModel
 
     @Expose
     var id: Long = 0
 
     @Expose
-    var name: String? = null
+    lateinit var name: String
 }

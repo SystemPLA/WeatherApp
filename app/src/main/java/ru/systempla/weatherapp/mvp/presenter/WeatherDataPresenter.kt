@@ -12,7 +12,7 @@ import javax.inject.Inject
 
 @InjectViewState
 class WeatherDataPresenter(private val mainThreadScheduler: Scheduler, private val ioThreadScheduler: Scheduler) : MvpPresenter<WeatherDataView>() {
-    private var language: String? = null
+    private lateinit var language: String
 
     @Inject
     lateinit var weatherRepo: IWeatherRepo
@@ -54,43 +54,35 @@ class WeatherDataPresenter(private val mainThreadScheduler: Scheduler, private v
     @SuppressLint("CheckResult")
     private fun loadData(city: String) {
         viewState.showLoading()
-        language?.let { it ->
-            weatherRepo.loadWeather(city, OPEN_WEATHER_API_KEY, METRIC_UNITS, it)
-                    .subscribeOn(ioThreadScheduler)
-                    .observeOn(mainThreadScheduler)
-                    .subscribe({ model ->
-                        model.name?.let { it1 -> viewState.setCityName(it1) }
-                        viewState.setCurrentTemperature(model.main!!.temp)
-                        viewState.setHumidity(model.main!!.humidity)
-                        viewState.setPressure(model.main!!.pressure)
-                        model.weather!![0].description?.let { viewState.setWeatherDescription(it) }
-                        model.weather!![0].id?.let {
-                            viewState.setWeatherIcon(it,
-                                    model.sys!!.sunrise * 1000,
-                                    model.sys!!.sunset * 1000)
-                        }
-                        model.wind!!.speed?.let { viewState!!.setWindSpeed(it) }
-                        model.coordinates!!.lon?.let {
-                            model.coordinates!!.lat?.let { it1 ->
-                                weatherRepo.loadUVI(OPEN_WEATHER_API_KEY, it1, it)
-                                        .subscribeOn(ioThreadScheduler)
-                                        .observeOn(mainThreadScheduler)
-                                        .subscribe({ uviRequestRestModel ->
-                                            viewState.setUVIndex(uviRequestRestModel.uviValue)
-                                            viewState.hideLoading()
-                                        }, {
-                                            viewState.showMessage("ошибка получения UV индекса")
-                                            viewState.setUVIndex(0f)
-                                            viewState.hideLoading()
-                                        })
-                            }
-                        }!!
-                    }, {
-                        viewState.showMessage("Место не найдено")
-                        settings.resetCitySetting()
-                        viewState.hideLoading()
-                    })
-        }!!
+        weatherRepo.loadWeather(city, OPEN_WEATHER_API_KEY, METRIC_UNITS, language)
+                .subscribeOn(ioThreadScheduler)
+                .observeOn(mainThreadScheduler)
+                .subscribe({ model ->
+                    viewState.setCityName(model.name)
+                    viewState.setCurrentTemperature(model.main.temp)
+                    viewState.setHumidity(model.main.humidity)
+                    viewState.setPressure(model.main.pressure)
+                    viewState.setWeatherDescription(model.weather[0].description)
+                    viewState.setWeatherIcon(model.weather[0].id,
+                        model.sys.sunrise * 1000,
+                        model.sys.sunset * 1000)
+                    viewState.setWindSpeed(model.wind.speed)
+                    weatherRepo.loadUVI(OPEN_WEATHER_API_KEY, model.coordinates.lat, model.coordinates.lon)
+                                .subscribeOn(ioThreadScheduler)
+                                .observeOn(mainThreadScheduler)
+                                .subscribe({ uviRequestRestModel ->
+                                    viewState.setUVIndex(uviRequestRestModel.uviValue)
+                                    viewState.hideLoading()
+                                }, {
+                                    viewState.showMessage("ошибка получения UV индекса")
+                                    viewState.setUVIndex(0f)
+                                    viewState.hideLoading()
+                                })
+                }, {
+                    viewState.showMessage("Место не найдено")
+                    settings.resetCitySetting()
+                    viewState.hideLoading()
+                })
     }
 
     fun setCitySetting(setting: String) {
@@ -101,7 +93,7 @@ class WeatherDataPresenter(private val mainThreadScheduler: Scheduler, private v
         settings.savePermissionsSetting(setting)
     }
 
-    fun setLanguage(language: String?) {
+    fun setLanguage(language: String) {
         this.language = language
     }
 
