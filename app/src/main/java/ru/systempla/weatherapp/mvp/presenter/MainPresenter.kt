@@ -7,7 +7,7 @@ import ru.systempla.weatherapp.mvp.model.location.ILocationGetter
 import ru.systempla.weatherapp.mvp.model.settings.ISettings
 import ru.systempla.weatherapp.mvp.view.MainView
 import ru.systempla.weatherapp.navigation.Screens.WeatherDataScreen
-import ru.systempla.weatherapp.navigation.Screens.WeekForcastScreen
+import ru.systempla.weatherapp.navigation.Screens.WeekForecastScreen
 import ru.terrakok.cicerone.Router
 import javax.inject.Inject
 
@@ -47,7 +47,7 @@ class MainPresenter : MvpPresenter<MainView>() {
     }
 
     fun navigateToForecast() {
-        router.navigateTo(WeekForcastScreen())
+        router.navigateTo(WeekForecastScreen())
     }
 
     fun setPermissionsSetting(setting: Int) {
