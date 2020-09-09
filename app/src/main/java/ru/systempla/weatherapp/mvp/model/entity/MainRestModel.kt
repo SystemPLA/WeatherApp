@@ -1,20 +1,14 @@
 package ru.systempla.weatherapp.mvp.model.entity
 
-import com.google.gson.annotations.SerializedName
+import com.google.gson.annotations.Expose
 
 class MainRestModel {
-    @SerializedName("temp")
+    @Expose
     var temp = 0f
 
-    @SerializedName("pressure")
+    @Expose
     var pressure = 0f
 
-    @SerializedName("humidity")
+    @Expose
     var humidity = 0f
-
-    @SerializedName("temp_min")
-    var tempMin = 0f
-
-    @SerializedName("temp_max")
-    var tempMax = 0f
 }

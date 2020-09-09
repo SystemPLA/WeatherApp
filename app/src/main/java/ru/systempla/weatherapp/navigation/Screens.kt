@@ -12,7 +12,7 @@ class Screens {
         }
     }
 
-    class WeekForcastScreen : SupportAppScreen() {
+    class WeekForecastScreen : SupportAppScreen() {
         override fun getFragment(): Fragment {
             return ForecastFragment.newInstance()
         }

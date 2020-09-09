@@ -1,14 +1,11 @@
 package ru.systempla.weatherapp.mvp.model.entity
 
 import com.google.gson.annotations.Expose
-import com.google.gson.annotations.SerializedName
 
 class CoordRestModel {
-    @SerializedName("lat")
     @Expose
-    var lat: Double? = null
+    var lat: Double = 0.0
 
-    @SerializedName("lon")
     @Expose
-    var lon: Double? = null
+    var lon: Double = 0.0
 }

@@ -1,44 +1,28 @@
 package ru.systempla.weatherapp.mvp.model.entity
 
+import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 
 class WeatherRequestRestModel {
     @SerializedName("coord")
-    var coordinates: CoordRestModel? = null
+    @Expose
+    lateinit var coordinates: CoordRestModel
 
-    @SerializedName("weather")
-    var weather: Array<WeatherRestModel>? = null
+    @Expose
+    lateinit var weather: Array<WeatherRestModel>
 
-    @SerializedName("base")
-    var base: String? = null
+    @Expose
+    lateinit var main: MainRestModel
 
-    @SerializedName("main")
-    var main: MainRestModel? = null
+    @Expose
+    lateinit var wind: WindRestModel
 
-    @SerializedName("visibility")
-    var visibility = 0
+    @Expose
+    lateinit var sys: SysRestModel
 
-    @SerializedName("wind")
-    var wind: WindRestModel? = null
-
-    @SerializedName("clouds")
-    var clouds: CloudsRestModel? = null
-
-    @SerializedName("dt")
-    var dt: Long = 0
-
-    @SerializedName("sys")
-    var sys: SysRestModel? = null
-
-    @SerializedName("id")
+    @Expose
     var id: Long = 0
 
-    @SerializedName("timezone")
-    var timezone = 0
-
-    @SerializedName("name")
-    var name: String? = null
-
-    @SerializedName("cod")
-    var cod = 0
+    @Expose
+    lateinit var name: String
 }
