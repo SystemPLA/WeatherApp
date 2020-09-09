@@ -1,17 +1,14 @@
 package ru.systempla.weatherapp.mvp.model.entity
 
-import com.google.gson.annotations.SerializedName
+import com.google.gson.annotations.Expose
 
 class SysRestModel {
-    var type = 0
-
+    @Expose
     var id = 0
 
-    var message = 0f
-
-    var country: String? = null
-
+    @Expose
     var sunrise: Long = 0
 
+    @Expose
     var sunset: Long = 0
 }
