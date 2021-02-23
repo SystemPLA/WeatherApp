@@ -106,18 +106,33 @@ class MainActivity : MvpAppCompatActivity(), MainView, NavigationView.OnNavigati
     }
 
     override fun checkForGPSUpdate() {
-        rxPermissions.requestEachCombined(Manifest.permission.ACCESS_FINE_LOCATION,
-            Manifest.permission.ACCESS_COARSE_LOCATION)
-                .subscribe { permission ->
-                    when {
-                        permission.granted -> presenter.startGPSUpdate()
-                        permission.shouldShowRequestPermissionRationale ->
-                            Toast.makeText(this, "Location permission refused temporally", Toast.LENGTH_SHORT).show()
-                        else -> {
-                            presenter.setPermissionsSetting(0)
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q) {
+            rxPermissions.requestEachCombined(Manifest.permission.ACCESS_FINE_LOCATION,
+                    Manifest.permission.ACCESS_COARSE_LOCATION,
+                    Manifest.permission.ACCESS_BACKGROUND_LOCATION)
+                    .subscribe { permission ->
+                        when {
+                            permission.granted -> presenter.startGPSUpdate()
+                            permission.shouldShowRequestPermissionRationale ->
+                                Toast.makeText(this, "Location permission refused temporally", Toast.LENGTH_SHORT).show()
+                            else -> {
+                                presenter.setPermissionsSetting(0)
+                            }
                         }
                     }
-                }
+        } else {
+            rxPermissions.requestEachCombined(Manifest.permission.ACCESS_FINE_LOCATION,
+                    Manifest.permission.ACCESS_COARSE_LOCATION)
+                    .subscribe { permission ->
+                        when {
+                            permission.granted -> presenter.startGPSUpdate()
+                            permission.shouldShowRequestPermissionRationale ->
+                                Toast.makeText(this, "Location permission refused temporally", Toast.LENGTH_SHORT).show()
+                            else -> {
+                                presenter.setPermissionsSetting(0)
+                            }
+                        }
+                    }
+        }
     }
-
 }
